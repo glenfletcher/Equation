@@ -44,6 +44,7 @@ class ExpressionValue( ExpressionObject ):
         super(ExpressionValue,self).__init__(*args,**kwargs)
         self.value = value
 
+    #TODO(Glen Fletcher): Fix to probably format number as R[x10^RE][+-\iota I[x10^IE]
     def tostr(self,args):
         return str(self.value)
     
@@ -57,10 +58,11 @@ class ExpressionValue( ExpressionObject ):
             return "<{0:s}.{1:s}({2:s}) object at {3:0=#10x}>".format(type(self).__module__,type(self).__name__,str(self.value),id(self))
 
 class ExpressionFunction( ExpressionObject ):
-    def __init__(self,function,nargs,display,id,isfunc,*args,**kwargs):
+    def __init__(self,function,nargs,form,display,id,isfunc,*args,**kwargs):
         super(ExpressionFunction,self).__init__(*args,**kwargs)
         self.function = function
         self.nargs = nargs
+        self.form = form
         self.display = display
         self.id = id
         self.isfunc = isfunc
@@ -79,9 +81,9 @@ class ExpressionFunction( ExpressionObject ):
         for i in xrange(self.nargs):
             params.append(args.pop())
         if self.isfunc:
-            return str(self.display.format(','.join(params[::-1])))
+            return str(self.form.format(','.join(params[::-1])))
         else:
-            return str(self.display.format(*params[::-1]))
+            return str(self.form.format(*params[::-1]))
             
     def __call__(self,args):
         params = []
@@ -109,7 +111,7 @@ class ExpressionVariable( ExpressionObject ):
     def __repr__(self):
         return "<{0:s}.{1:s}({2:s}) object at {3:0=#10x}>".format(type(self).__module__,type(self).__name__,str(self.name),id(self))
             
-def addFn(id,st,latex,r,args,func):
+def addFn(id,str,latex,args,func):
     global fmatch
     sys.modules[__name__].functions[id] = {
         'str': str,
@@ -229,6 +231,16 @@ class Expression( object ):
             return args[0]
 
     def __repr__(self):
+        """Convert to Represation String
+        
+        Generates a String that correctrly respresents the equation
+        
+        Returns
+        -------
+        str
+            Convert the Expression to a String that passed to the constructor, will constuct
+            an identical equation object (in terms of sequence of tokens, and token type/value)
+        """
         expr = self.__expr[::-1]
         args = [];
         while len(expr) > 0:
@@ -252,20 +264,20 @@ class Expression( object ):
                 op = stack.pop()
                 while op != "(":
                     fs = sys.modules[__name__].functions[op]
-                    self.__expr.append(ExpressionFunction(fs['func'],fs['args'],fs['str'],op,False,self))
+                    self.__expr.append(ExpressionFunction(fs['func'],fs['args'],fs['str'],fs['latex'],op,False,self))
                     op = stack.pop()
                 if len(stack) > 0 and stack[-1] in sys.modules[__name__].functions and sys.modules[__name__].functions[stack[-1]]['type'] == 'FUNC':
                     op = stack.pop()
                     fs = sys.modules[__name__].functions[op]
                     args = argc.pop()
                     if fs['args'] != '+' or (args != fs['args'] and args not in fs['args']):
-                        self.__expr.append(ExpressionFunction(fs['func'],args,fs['str'],op,True,self))
+                        self.__expr.append(ExpressionFunction(fs['func'],args,fs['str'],fs['latex'],op,True,self))
             elif v == ",":
                 argc[-1] += 1
                 op = stack.pop()
                 while op != "(":
                     fs = sys.modules[__name__].functions[op]
-                    self.__expr.append(ExpressionFunction(fs['func'],fs['args'],fs['str'],op,False,self))
+                    self.__expr.append(ExpressionFunction(fs['func'],fs['args'],fs['str'],fs['latex'],op,False,self))
                     op = stack.pop()
                 stack.append(op)
             elif v in sys.modules[__name__].functions:
@@ -287,7 +299,7 @@ class Expression( object ):
                     fs = sys.modules[__name__].functions[op]
                     while True:
                         if (fn['type'] == 'LEFT' and fn['prec'] == fs['prec']) or (fn['prec'] < fs['prec']):
-                            self.__expr.append(ExpressionFunction(fs['func'],fs['args'],fs['str'],op,False,self))
+                            self.__expr.append(ExpressionFunction(fs['func'],fs['args'],fs['str'],fs['latex'],op,False,self))
                             if len(stack) == 0:
                                 stack.append(v)
                                 break
@@ -310,7 +322,7 @@ class Expression( object ):
             op = stack.pop()
             while op != "(":
                 fs = sys.modules[__name__].functions[op]
-                self.__expr.append(ExpressionFunction(fs['func'],fs['args'],fs['str'],op,False,self))
+                self.__expr.append(ExpressionFunction(fs['func'],fs['args'],fs['str'],fs['latex'],op,False,self))
                 if len(stack) > 0:
                     op = stack.pop()
                 else:
