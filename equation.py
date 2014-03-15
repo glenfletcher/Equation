@@ -29,10 +29,10 @@ class ExpressionObject (object):
         super(ExpressionObject,self).__init__(*args,**kwargs)
         self.expression = expression
 
-    def tostr(self,it):
+    def toStr(self,it):
         return ""
 
-    def torepr(self,it):
+    def toRepr(self,it):
         return ""
 
     def __call__(self,it):
@@ -45,10 +45,10 @@ class ExpressionValue( ExpressionObject ):
         self.value = value
 
     #TODO(Glen Fletcher): Fix to probably format number as R[x10^RE][+-\iota I[x10^IE]
-    def tostr(self,args):
+    def toStr(self,args):
         return str(self.value)
     
-    def torepr(self,args):
+    def toRepr(self,args):
         return str(self.value)
 
     def __call__(self,args):
@@ -67,7 +67,7 @@ class ExpressionFunction( ExpressionObject ):
         self.id = id
         self.isfunc = isfunc
 
-    def tostr(self,args):
+    def toStr(self,args):
         params = []
         for i in xrange(self.nargs):
             params.append(args.pop())
@@ -76,7 +76,7 @@ class ExpressionFunction( ExpressionObject ):
         else:
             return str(self.display.format(*params[::-1]))
             
-    def torepr(self,args):
+    def toRepr(self,args):
         params = []
         for i in xrange(self.nargs):
             params.append(args.pop())
@@ -99,10 +99,10 @@ class ExpressionVariable( ExpressionObject ):
         super(ExpressionVariable,self).__init__(*args,**kwargs)
         self.name = name
 
-    def tostr(self,args):
+    def toStr(self,args):
         return str(self.name)
 
-    def torepr(self,args):
+    def toRepr(self,args):
         return str(self.name)
 
     def __call__(self,args):
@@ -212,7 +212,7 @@ class Expression( object ):
     def __str__(self):
         """Convert to Printable String
         
-        Generates a Printable version of the Expression, using Latex notation
+        Generates a Printable version of the Expression
         
         Returns
         -------
@@ -223,7 +223,7 @@ class Expression( object ):
         args = [];
         while len(expr) > 0:
             t = expr.pop()
-            r = t.tolatex(args)
+            r = t.toStr(args)
             args.append(r)
         if len(args) > 1:
             return args
@@ -245,7 +245,7 @@ class Expression( object ):
         args = [];
         while len(expr) > 0:
             t = expr.pop()
-            r = t.torepr(args)
+            r = t.toRepr(args)
             args.append(r)
         if len(args) > 1:
             return args
@@ -328,40 +328,40 @@ class Expression( object ):
                 else:
                     break
 
-def Load():
-    if not hasattr(Load, "loaded"):
-        Load.loaded = False
-    if not Load.loaded:
-        Load.loaded = True
+def load():
+    if not hasattr(load, "loaded"):
+        load.loaded = False
+    if not load.loaded:
+        load.loaded = True
         sys.modules[__name__].constants = {}
         sys.modules[__name__].functions = {}
         sys.modules[__name__].smatch = re.compile("\s*,")
         sys.modules[__name__].vmatch = re.compile("\s*(?P<rvalue>[+-]?(?:\d+\.\d+|\d+\.|\.\d+|\d+))(?:[Ee](?P<rexpoent>[+-]\d+))?(?:\s*(?P<sep>\+)?\s*(?P<ivalue>(?(rvalue)(?(sep)[+-]?|[+-])|[+-]?)?(?:\d+\.\d+|\d+\.|\.\d+|\d+))(?:[Ee](?P<iexpoent>[+-]\d+))?[ij])?")
         sys.modules[__name__].nmatch = re.compile("\s*([a-zA-Z_][a-zA-Z0-9_]*)")
         Plugins = {}
-        PluginsLoaded = {}
+        plugins_loaded = {}
         if __name__ == "__main__":
             dir = os.getcwd()
         else:
             dir = os.path.dirname(__PATH__)
         sys.path.append(dir)
         for file in glob.glob(dir + "/equation_*.py"):
-            Pluginfile,extension = os.path.splitext(os.path.basename(file))
-            if (Pluginfile == "__init__"):
+            plugin_file,extension = os.path.splitext(os.path.basename(file))
+            if (plugin_file == "__init__"):
                 continue
-            if (((extension == '.py') or (extension == '.pyc')) and (not PluginsLoaded.has_key(Pluginfile))):
-                PluginsLoaded[Pluginfile] = 1
+            if (((extension == '.py') or (extension == '.pyc')) and (not plugins_loaded.has_key(plugin_file))):
+                plugins_loaded[plugin_file] = 1
                 try:
-                        PluginScript = importlib.import_module(Pluginfile)
+                        plugin_script = importlib.import_module(plugin_file)
                 except:
                         errtype, errinfo, errtrace = sys.exc_info()
                         fulltrace = ''.join(traceback.format_exception(errtype, errinfo, errtrace)[1:])
-                        print "Was unable to load {0:s}: {1:s}\nTraceback:\n{2:s}".format(Pluginfile, errinfo, fulltrace)
+                        print "Was unable to load {0:s}: {1:s}\nTraceback:\n{2:s}".format(plugin_file, errinfo, fulltrace)
                         continue
-                if not hasattr(PluginScript,'equation_extend'):
-                    print "The plugin '{0:s}' from file '{1:s}' is invalid because its missing the attribute 'equation_extend'".format(Pluginfile,(dir.rstrip('/') + '/' + Pluginfile + '.' + extension))
+                if not hasattr(plugin_script,'equation_extend'):
+                    print "The plugin '{0:s}' from file '{1:s}' is invalid because its missing the attribute 'equation_extend'".format(plugin_file,(dir.rstrip('/') + '/' + plugin_file + '.' + extension))
                     continue
-                PluginScript.equation_extend(addOp,addFn,addConst)
-                print "{0:s} Loaded".format(Pluginfile)
+                plugin_script.equation_extend(addOp,addFn,addConst)
+                print "{0:s} Loaded".format(plugin_file)
         sys.modules[__name__].fmatch = re.compile('\s*(\(|\)|' + '|'.join(map(re.escape,sys.modules[__name__].functions.keys())) + ')')
-Load()
+load()
