@@ -1,14 +1,19 @@
-###################################################################################
-#
-#  Copyright 2014 AlphaOmega Technology
-#
-#  Licensed under the AlphaOmega Technology Open License Version 1.0
-#  You may not use this file except in compliance with this License.
-#  You may obtain a copy of the License at
-# 
-#      http://www.alphaomega-technology.com.au/license/AOT-OL/1.0
-#
-###################################################################################
+"""Equation Module
+
+  Copyright 2014 AlphaOmega Technology
+
+  Licensed under the AlphaOmega Technology Open License Version 1.0
+  You may not use this file except in compliance with this License.
+  You may obtain a copy of the License at
+ 
+      http://www.alphaomega-technology.com.au/license/AOT-OL/1.0
+
+"""
+__authors__   = "Glen Fletcher"
+__copyright__ = "(c) 2014, AlphaOmega Technology"
+__license__   = "AlphaOmega Technology Open License Version 1.0"
+__contact__   = "Glen Fletcher <glen.fletcher@alphaomega-technology.com.au>"
+__version__   = "1.0"
 
 import numpy as np
 import re
@@ -104,19 +109,21 @@ class ExpressionVariable( ExpressionObject ):
     def __repr__(self):
         return "<{0:s}.{1:s}({2:s}) object at {3:0=#10x}>".format(type(self).__module__,type(self).__name__,str(self.name),id(self))
             
-def addFn(id,str,args,func):
+def addFn(id,st,latex,r,args,func):
     global fmatch
     sys.modules[__name__].functions[id] = {
         'str': str,
+        'latex': latex,
         'args': args,
         'prec': 1,
         'type': 'FUNC',
         'func': func}
 
-def addOp(id,str,single,prec,left,func):
+def addOp(id,str,latex,single,prec,left,func):
     global fmatch
     sys.modules[__name__].functions[id] = {
         'str': str,
+        'latex': latex,
         'args': 1 if single else 2,
         'prec': prec,
         'type': 'LEFT' if left else 'RIGHT',
@@ -126,13 +133,36 @@ def addConst(name,value):
     sys.modules[__name__].constants[name] = value
 
 class Expression( object ):
+    """Expression or Equation Object
     
+    This is a object that respresents an equation string in a manner
+    that allows for it to be evaluated
+    """
     def __init__(self,expression,*args,**kwargs):
+        """Creates new Expression
+        
+        Parameters
+        ----------
+        expression: str
+            String resprenstation of an equation
+        """
         super(Expression,self).__init__(*args,**kwargs)
         self.__expression = expression
         self.__compile()
 
     def __call__(self,**variables):
+        """Evaluate Expression
+        
+        Parameters
+        ----------
+        **kwargs
+            List of variables to be used by the equation for evaluation
+            
+        Returns
+        -------
+            Result of evaluating the Expression, type will depende appon
+            the expression and the variables used to evaluate the expression.
+        """
         self.variables = sys.modules[__name__].constants # i.e. pi, e, i, etc.
         self.variables.update(variables)
         expr = self.__expr[::-1]
@@ -168,16 +198,30 @@ class Expression( object ):
             return ","
         return None
 
-    def show(self): 
+    def show(self):
+        """show RPN tokens
+        
+        This will print out the internal token list (RPN) of the expression
+        one token perline.
+        """
         for expr in self.__expr:
             print expr
             
     def __str__(self):
+        """Convert to Printable String
+        
+        Generates a Printable version of the Expression, using Latex notation
+        
+        Returns
+        -------
+        str
+            Latex String respresation of the Expression, suitable for rendering the equation
+        """
         expr = self.__expr[::-1]
         args = [];
         while len(expr) > 0:
             t = expr.pop()
-            r = t.tostr(args)
+            r = t.tolatex(args)
             args.append(r)
         if len(args) > 1:
             return args
