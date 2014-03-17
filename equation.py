@@ -106,7 +106,10 @@ class ExpressionVariable( ExpressionObject ):
         return str(self.name)
 
     def __call__(self,args):
-        return self.expression.variables[self.name]
+        if self.name in self.expression.variables:
+            return self.expression.variables[self.name]
+        else:
+            return 0 # Default variables to return 0
         
     def __repr__(self):
         return "<{0:s}.{1:s}({2:s}) object at {3:0=#10x}>".format(type(self).__module__,type(self).__name__,str(self.name),id(self))
@@ -140,7 +143,13 @@ class Expression( object ):
     This is a object that respresents an equation string in a manner
     that allows for it to be evaluated
     """
-    def __init__(self,expression,*args,**kwargs):
+    __vars = {} # intenral array of preset variables
+    __args = [] # internal arg indexs
+    __argsused = []
+    __expression = "" # equation string
+    __expr = [] # compiled equation tokens
+    variables = {} # call variables
+    def __init__(self,expression,argorder=[],*args,**kwargs):
         """Creates new Expression
         
         Parameters
@@ -150,9 +159,10 @@ class Expression( object ):
         """
         super(Expression,self).__init__(*args,**kwargs)
         self.__expression = expression
+        self.__args = argorder;
         self.__compile()
 
-    def __call__(self,**variables):
+    def __call__(self,*args,**kwargs):
         """Evaluate Expression
         
         Parameters
@@ -166,7 +176,21 @@ class Expression( object ):
             the expression and the variables used to evaluate the expression.
         """
         self.variables = sys.modules[__name__].constants # i.e. pi, e, i, etc.
-        self.variables.update(variables)
+        self.variables.update(self.__vars)
+        if len(args) > len(self.__args):
+            raise TypeError("<{0:s}.{1:s}({2:s}) object at {3:0=#10x}>() takes at most {4:d} arguments ({5:d} given)".format(
+                    type(self).__module__,type(self).__name__,repr(self),id(self),len(self.__args),len(args)))
+        for i in xrange(len(args)):
+            if i < len(self.__args):
+                if self.__args[i] in kwargs:
+                    raise TypeError("<{0:s}.{1:s}({2:s}) object at {3:0=#10x}>() got multiple values for keyword argument '{4:s}'".format(
+                        type(self).__module__,type(self).__name__,repr(self),id(self),self.__args[i]))
+                self.variables[self.__args[i]] = args[i]
+        self.variables.update(kwargs)
+        #TODO: sufficient args passed
+        ##    MIN_ARGS_EXPECTED = len(self.__argsused not in (self.__vars or sys.modules[__name__].constants))
+        ##    raise TypeError("<{0:s}.{1:s}({2:s}) object at {3:0=#10x}>() takes at least {4:d} arguments ({5:d} given)".format(
+        ##            type(self).__module__,type(self).__name__,repr(self),id(self),MIN_ARGS_EXPECTED,len(args)+len(kwargs)))
         expr = self.__expr[::-1]
         args = [];
         while len(expr) > 0:
