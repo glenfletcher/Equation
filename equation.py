@@ -145,7 +145,7 @@ class Expression( object ):
     """
     __vars = {} # intenral array of preset variables
     __args = [] # internal arg indexs
-    __argsused = []
+    __argsused = set()
     __expression = "" # equation string
     __expr = [] # compiled equation tokens
     variables = {} # call variables
@@ -161,7 +161,32 @@ class Expression( object ):
         self.__expression = expression
         self.__args = argorder;
         self.__compile()
-
+    
+    def __getitem__(self, name):
+        if name in self.__argsused:
+            if name in self.__vars:
+                return self.__vars[name]
+            else:
+                return None
+        else:
+            raise KeyError(name)
+    
+    def __setitem__(self,name,value):
+        if name in self.__argsused:
+            self.__vars[name] = value
+        else:
+            raise KeyError(name)
+    
+    def __delitem__(self,name):
+        if name in self.__argsused:
+            if name in self.__vars:
+                del self.__vars[name]
+        else:
+            raise KeyError(name)
+            
+    def __contains__(self, name):
+        return name in self.__argsused
+        
     def __call__(self,*args,**kwargs):
         """Evaluate Expression
         
@@ -175,7 +200,8 @@ class Expression( object ):
             Result of evaluating the Expression, type will depende appon
             the expression and the variables used to evaluate the expression.
         """
-        self.variables = sys.modules[__name__].constants # i.e. pi, e, i, etc.
+        self.variables = {}
+        self.variables.update(sys.modules[__name__].constants) # i.e. pi, e, i, etc.
         self.variables.update(self.__vars)
         if len(args) > len(self.__args):
             raise TypeError("<{0:s}.{1:s}({2:s}) object at {3:0=#10x}>() takes at most {4:d} arguments ({5:d} given)".format(
@@ -187,10 +213,11 @@ class Expression( object ):
                         type(self).__module__,type(self).__name__,repr(self),id(self),self.__args[i]))
                 self.variables[self.__args[i]] = args[i]
         self.variables.update(kwargs)
-        #TODO: sufficient args passed
-        ##    MIN_ARGS_EXPECTED = len(self.__argsused not in (self.__vars or sys.modules[__name__].constants))
-        ##    raise TypeError("<{0:s}.{1:s}({2:s}) object at {3:0=#10x}>() takes at least {4:d} arguments ({5:d} given)".format(
-        ##            type(self).__module__,type(self).__name__,repr(self),id(self),MIN_ARGS_EXPECTED,len(args)+len(kwargs)))
+        for arg in self.__argsused:
+            if arg not in self.variables:
+                min_args = len(self.__argsused - (set(self.__vars.keys()) | set(sys.modules[__name__].constants.keys())))
+                raise TypeError("<{0:s}.{1:s}({2:s}) object at {3:0=#10x}>() takes at least {4:d} arguments ({5:d} given) '{6:s}' not defined".format(
+                    type(self).__module__,type(self).__name__,repr(self),id(self),min_args,len(args)+len(kwargs),arg))
         expr = self.__expr[::-1]
         args = [];
         while len(expr) > 0:
@@ -338,6 +365,9 @@ class Expression( object ):
                             stack.append(v)
                             break
             elif isinstance(v,basestring):
+                self.__argsused.add(v)
+                if v not in self.__args:
+                    self.__args.append(v)
                 self.__expr.append(ExpressionVariable(v,self))
             else:
                 self.__expr.append(ExpressionValue(v,self))
