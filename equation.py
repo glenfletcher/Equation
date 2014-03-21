@@ -392,28 +392,32 @@ def load():
         sys.modules[__name__].smatch = re.compile("\s*,")
         sys.modules[__name__].vmatch = re.compile("\s*(?P<rvalue>[+-]?(?:\d+\.\d+|\d+\.|\.\d+|\d+))(?:[Ee](?P<rexpoent>[+-]\d+))?(?:\s*(?P<sep>\+)?\s*(?P<ivalue>(?(rvalue)(?(sep)[+-]?|[+-])|[+-]?)?(?:\d+\.\d+|\d+\.|\.\d+|\d+))(?:[Ee](?P<iexpoent>[+-]\d+))?[ij])?")
         sys.modules[__name__].nmatch = re.compile("\s*([a-zA-Z_][a-zA-Z0-9_]*)")
-        Plugins = {}
         plugins_loaded = {}
         if __name__ == "__main__":
-            dir = os.getcwd()
+            dirname = os.path.abspath(os.getcwd())
+            prefix = ""
         else:
-            dir = os.path.dirname(__PATH__)
-        sys.path.append(dir)
-        for file in glob.glob(dir + "/equation_*.py"):
+            dirname = os.path.dirname(os.path.abspath(__file__))
+            if __package__ != None:
+                prefix = __package__ + "."
+            else:
+                prefix = ""
+        for file in os.listdir(dirname):
             plugin_file,extension = os.path.splitext(os.path.basename(file))
-            if (plugin_file == "__init__"):
+            if not plugin_file.lower().startswith("equation_",0,9) or extension.lower() not in ['.py','.pyc']:
                 continue
-            if (((extension == '.py') or (extension == '.pyc')) and (not plugins_loaded.has_key(plugin_file))):
+            if not plugins_loaded.has_key(plugin_file):
                 plugins_loaded[plugin_file] = 1
+                print "Importing", prefix + plugin_file
                 try:
-                        plugin_script = importlib.import_module(plugin_file)
+                        plugin_script = importlib.import_module(prefix + plugin_file)
                 except:
                         errtype, errinfo, errtrace = sys.exc_info()
                         fulltrace = ''.join(traceback.format_exception(errtype, errinfo, errtrace)[1:])
                         print "Was unable to load {0:s}: {1:s}\nTraceback:\n{2:s}".format(plugin_file, errinfo, fulltrace)
                         continue
                 if not hasattr(plugin_script,'equation_extend'):
-                    print "The plugin '{0:s}' from file '{1:s}' is invalid because its missing the attribute 'equation_extend'".format(plugin_file,(dir.rstrip('/') + '/' + plugin_file + '.' + extension))
+                    print "The plugin '{0:s}' from file '{1:s}' is invalid because its missing the attribute 'equation_extend'".format(plugin_file,(dirname.rstrip('/') + '/' + plugin_file + extension))
                     continue
                 plugin_script.equation_extend(addOp,addFn,addConst)
                 print "{0:s} Loaded".format(plugin_file)
