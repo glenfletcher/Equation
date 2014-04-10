@@ -14,8 +14,9 @@ __license__   = "AlphaOmega Technology Open License Version 1.0"
 __contact__   = "Glen Fletcher <glen.fletcher@alphaomega-technology.com.au>"
 
 import numpy as np
+from Equation.util import addOp, addFn, addConst
 
-def equation_extend(addOp,addFn,addConst):
+def equation_extend():
     addOp('+',"({0:s} + {1:s})","\left({0:s} + {1:s}\right)",False,1,True,np.add)
     addOp('-',"({0:s} - {1:s})","\left({0:s} - {1:s}\right)",False,1,True,np.subtract)
     addOp('*',"({0:s} * {1:s})","\left({0:s} \times {1:s}\right)",False,2,True,np.multiply)
