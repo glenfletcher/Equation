@@ -38,7 +38,6 @@ class ExpressionObject (object):
     def __call__(self,it):
         pass
         
-
 class ExpressionValue( ExpressionObject ):
     def __init__(self,value,*args,**kwargs):
         super(ExpressionValue,self).__init__(*args,**kwargs)
@@ -408,18 +407,16 @@ def load():
                 continue
             if not plugins_loaded.has_key(plugin_file):
                 plugins_loaded[plugin_file] = 1
-                print "Importing", prefix + plugin_file
                 try:
                         plugin_script = importlib.import_module(prefix + plugin_file)
                 except:
                         errtype, errinfo, errtrace = sys.exc_info()
                         fulltrace = ''.join(traceback.format_exception(errtype, errinfo, errtrace)[1:])
-                        print "Was unable to load {0:s}: {1:s}\nTraceback:\n{2:s}".format(plugin_file, errinfo, fulltrace)
+                        sys.stderr.write("Was unable to load {0:s}: {1:s}\nTraceback:\n{2:s}\n".format(plugin_file, errinfo, fulltrace))
                         continue
                 if not hasattr(plugin_script,'equation_extend'):
-                    print "The plugin '{0:s}' from file '{1:s}' is invalid because its missing the attribute 'equation_extend'".format(plugin_file,(dirname.rstrip('/') + '/' + plugin_file + extension))
+                    sys.stderr.write("The plugin '{0:s}' from file '{1:s}' is invalid because its missing the attribute 'equation_extend'\n".format(plugin_file,(dirname.rstrip('/') + '/' + plugin_file + extension)))
                     continue
                 plugin_script.equation_extend(addOp,addFn,addConst)
-                print "{0:s} Loaded".format(plugin_file)
         sys.modules[__name__].fmatch = re.compile('\s*(\(|\)|' + '|'.join(map(re.escape,sys.modules[__name__].functions.keys())) + ')')
 load()
