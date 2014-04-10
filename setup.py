@@ -26,4 +26,11 @@ setup(
     url='https://github.com/alphaomega-technology/Equation',
     long_description=read('README.md'),
     install_requires = ["numpy"],
+    classifiers=[
+        "Development Status :: 2 - Pre-Alpha",
+        "Intended Audience :: Science/Research",
+        "Intended Audience :: Developers",
+        "Operating System :: OS Independent",
+        "Topic :: Scientific/Engineering :: Mathematics",
+        ]
 )
