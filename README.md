@@ -17,11 +17,30 @@ Example
 
 	>>> from Equation import Expression
 	>>> fn = Expression("sin(x+y^2)",["y","x"])
+	>>> fn
+	sin((x + (y ^ (2+0j))))
+	>>> print fn
+	\sin\left(\left(x + y^{(2+0j)}\right)\right)
 	>>> fn(3,4)
-	0.42016703682664092
+	(0.42016703682664092+0j)
+	>>> 
 
 Numpy Arrays Supported
 ----------------------
 
 The default function maping used by this package map the operators and functions to Numpy Functions, hence the generated object may be called with
 numpy arrays.
+
+Latex Support
+-------------
+
+The display string format i.e. str() is set to use Latex syntax allowing high quality equations to be rendered in output this syntax is supported by the grqaphing package matplotlib
+
+Note: repr() method will return a string suitable for passing to Expression, however it is recalucated from the tokenized expression, and has all brackets.
+
+Future Versions
+---------------
+Goals for future versions are:
+
+- Reduce repr() type respresentation to use only required brackets
+- Allow the use of function variable, rather than just predefined functions

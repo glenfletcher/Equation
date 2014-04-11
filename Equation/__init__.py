@@ -18,6 +18,8 @@ __version__   = "1.0"
 __title__     = "Equation"
 __desc__      = "General Equation Parser and Evaluator"
 
+all = ['util']
+
 from core import Expression
 
 def load():
@@ -26,6 +28,7 @@ def load():
     import sys
     import traceback
     import importlib
+    from core import recalculateFMatch
     if not hasattr(load, "loaded"):
         load.loaded = False
     if not load.loaded:
@@ -57,6 +60,7 @@ def load():
                     sys.stderr.write("The plugin '{0:s}' from file '{1:s}' is invalid because its missing the attribute 'equation_extend'\n".format(plugin_file,(dirname.rstrip('/') + '/' + plugin_file + extension)))
                     continue
                 plugin_script.equation_extend()
+        recalculateFMatch()
 load()
 
 del load

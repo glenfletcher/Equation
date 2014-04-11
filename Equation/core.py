@@ -14,6 +14,7 @@
 
 from . import __authors__,__copyright__,__license__,__contact__,__version__
 
+import numpy as np
 import sys
 import re
 
