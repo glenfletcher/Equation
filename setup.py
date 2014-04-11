@@ -27,7 +27,7 @@ setup(
     long_description=read('README.md'),
     install_requires = ["numpy"],
     classifiers=[
-        "Development Status :: 2 - Pre-Alpha",
+        "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Science/Research",
         "Intended Audience :: Developers",
         "Operating System :: OS Independent",
