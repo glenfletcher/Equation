@@ -3,23 +3,11 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Equation's documentation!
-====================================
+.. include:: ../../README.md
 
-Contents:
+License
+-------
 
-.. toctree::
-   :maxdepth: 2
-
-.. autoclass:: Equation.Expression
-   :members:
-   :private-members:
-   :special-members:
+.. include:: ../../LICENSE.md
    
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
 
