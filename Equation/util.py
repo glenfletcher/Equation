@@ -21,26 +21,23 @@ def addFn(id,str,latex,args,func):
         'str': str,
         'latex': latex,
         'args': args,
-        'prec': 1,
-        'type': 'FUNC',
         'func': func}
 
 def addOp(id,str,latex,single,prec,func):
-    core.functions[id] = {
+    if single:
+        raise RuntimeError("Single Ops Not Yet Supported")
+    core.ops[id] = {
         'str': str,
         'latex': latex,
-        'args': 1 if single else 2,
+        'args': 2,
         'prec': prec,
-        'type': 'LEFT',
         'func': func}
 
-def addUnaryOp(id,str,latex,prec,func):
-    core.functions['_unary'] = {
+def addUnaryOp(id,str,latex,func):
+    core.unary_ops = {
         'str': str,
         'latex': latex,
-        'args': 1,
-        'prec': prec,
-        'type': 'RIGHT',
+        'prec': 0,
         'func': func}
 
 def addConst(name,value):

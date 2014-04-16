@@ -14,18 +14,19 @@ __license__   = "AlphaOmega Technology Open License Version 1.0"
 __contact__   = "Glen Fletcher <glen.fletcher@alphaomega-technology.com.au>"
 
 import numpy as np
-from Equation.util import addOp, addFn, addConst
+from Equation.util import addOp, addFn, addConst, addUnaryOp
 
 def equation_extend():
-    addOp('+',"({0:s} + {1:s})","\\left({0:s} + {1:s}\\right)",False,1,True,np.add)
-    addOp('-',"({0:s} - {1:s})","\\left({0:s} - {1:s}\\right)",False,1,True,np.subtract)
-    addOp('*',"({0:s} * {1:s})","\\left({0:s} \\times {1:s}\\right)",False,2,True,np.multiply)
-    addOp('/',"({0:s} / {1:s})","\\frac{{{0:s}}}{{{1:s}}}",False,2,True,np.divide)
-    addOp('%',"({0:s} % {1:s})","\\left({0:s} \\bmod {1:s}\\right)",False,2,True,np.mod)
-    addOp('^',"({0:s} ^ {1:s})","{0:s}^{{{1:s}}}",False,3,True,np.power)
-    addOp('&',"({0:s} & {1:s})","\\left({0:s} \\land {1:s}\\right)",False,1,True,np.logical_and)
-    addOp('|',"({0:s} | {1:s})","\\left({0:s} \\lor {1:s}\\right)",False,1,True,np.logical_or)
-    addOp('!',"(!{0:s})","\\not{{{0:s}}}",True,0,False,np.logical_not)
+    addOp('+',"({0:s} + {1:s})","\\left({0:s} + {1:s}\\right)",False,1,np.add)
+    addOp('-',"({0:s} - {1:s})","\\left({0:s} - {1:s}\\right)",False,1,np.subtract)
+    addOp('*',"({0:s} * {1:s})","\\left({0:s} \\times {1:s}\\right)",False,2,np.multiply)
+    addOp('/',"({0:s} / {1:s})","\\frac{{{0:s}}}{{{1:s}}}",False,2,np.divide)
+    addOp('%',"({0:s} % {1:s})","\\left({0:s} \\bmod {1:s}\\right)",False,2,np.mod)
+    addOp('^',"({0:s} ^ {1:s})","{0:s}^{{{1:s}}}",False,3,np.power)
+    addOp('&',"({0:s} & {1:s})","\\left({0:s} \\land {1:s}\\right)",False,1,np.logical_and)
+    addOp('|',"({0:s} | {1:s})","\\left({0:s} \\lor {1:s}\\right)",False,1,np.logical_or)
+    addUnaryOp('!',"(!{0:s})","\\not{{{0:s}}}",np.logical_not)
+    addUnaryOp('-',"-{0:s}","-{0:s}",np.negative)
     addFn('abs',"abs({0:s})","\\left|{0:s}\\right|",1,np.abs)
     addFn('sin',"sin({0:s})","\\sin\\left({0:s}\\right)",1,np.sin)
     addFn('cos',"cos({0:s})","\\cos\\left({0:s}\\right)",1,np.cos)

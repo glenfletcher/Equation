@@ -221,21 +221,21 @@ class Expression( object ):
         if m != None:
             self.__expression = self.__expression[m.end():]
             g = m.groups()
-            return g[0]
+            return g[0],'FUNC'
         m = nmatch.match(self.__expression)
         if m != None:
             self.__expression = self.__expression[m.end():]
             g = m.groups()
-            return g[0]
+            return g[0],'NAME'
         m = vmatch.match(self.__expression)
         if m != None:
             self.__expression = self.__expression[m.end():]
             g = m.groupdict(0)
-            return np.complex(float(g["rvalue"])*10**float(g["rexpoent"]),float(g["ivalue"])*10**float(g["iexpoent"]))
+            return np.complex(float(g["rvalue"])*10**float(g["rexpoent"]),float(g["ivalue"])*10**float(g["iexpoent"])),'VALUE'
         m = smatch.match(self.__expression)
         if m != None:
             self.__expression = self.__expression[m.end():]
-            return ","
+            return ",",'SEP'
         return None
 
     def show(self):
@@ -294,11 +294,13 @@ class Expression( object ):
         self.__expr = []
         stack = []
         argc = []
-        v = self.__next()
+        __expect_op = False
+        v = self.__next(__expect_op)
         while v != None:
-            if v == "(":
+            if not __expect_op and v[0] == "(":
                 stack.append(v)
-            elif v == ")":
+                __expect_op = False       
+            elif __expect_op and v[0] == ")":
                 op = stack.pop()
                 while op != "(":
                     fs = functions[op]
@@ -310,7 +312,8 @@ class Expression( object ):
                     args = argc.pop()
                     if fs['args'] != '+' or (args != fs['args'] and args not in fs['args']):
                         self.__expr.append(ExpressionFunction(fs['func'],args,fs['str'],fs['latex'],op,True,self))
-            elif v == ",":
+                __expect_op = True
+            elif __expect_op and v[0] == ",":
                 argc[-1] += 1
                 op = stack.pop()
                 while op != "(":
@@ -318,47 +321,57 @@ class Expression( object ):
                     self.__expr.append(ExpressionFunction(fs['func'],fs['args'],fs['str'],fs['latex'],op,False,self))
                     op = stack.pop()
                 stack.append(op)
-            elif v in functions:
-                fn = functions[v]
-                if fn['type'] == 'FUNC':
+                __expect_op = False
+            elif __expect_op and v[0] in ops:
+                fn = ops[v[0]]
+                if len(stack) == 0:
                     stack.append(v)
-                    argc.append(1)
-                else:
-                    if len(stack) == 0:
-                        stack.append(v)
-                        v = self.__next()
-                        continue
-                    op = stack.pop()
-                    if op == "(":
-                        stack.append(op)
-                        stack.append(v)
-                        v = self.__next()
-                        continue
-                    fs = functions[op]
-                    while True:
-                        if (fn['type'] == 'LEFT' and fn['prec'] == fs['prec']) or (fn['prec'] < fs['prec']):
-                            self.__expr.append(ExpressionFunction(fs['func'],fs['args'],fs['str'],fs['latex'],op,False,self))
-                            if len(stack) == 0:
-                                stack.append(v)
-                                break
-                            op = stack.pop()
-                            if op == "(":
-                                stack.append(op)
-                                stack.append(v)
-                                break                            
-                            fs = functions[op]
-                        else:
-                            stack.append(op)
+                    v = self.__next(__expect_op)
+                    continue
+                op = stack.pop()
+                if op[0] == "(":
+                    stack.append(op)
+                    stack.append(v)
+                    v = self.__next(__expect_op)
+                    continue
+                fs = functions[op[0]]
+                while True:
+                    if (fn['prec'] <= fs['prec']):
+                        self.__expr.append(ExpressionFunction(fs['func'],fs['args'],fs['str'],fs['latex'],op[0],False,self))
+                        if len(stack) == 0:
                             stack.append(v)
                             break
-            elif isinstance(v,basestring):
+                        op = stack.pop()
+                        if op[0] == "(":
+                            stack.append(op)
+                            stack.append(v)
+                            break                            
+                        fs = functions[op[0]]
+                    else:
+                        stack.append(op)
+                        stack.append(v)
+                        break
+                __expect_op = False
+            elif not __expect_op and v[0] in unary_ops:
+                fn = unary_ops[v[0]]
+                stack.append(v)
+                __expect_op = False
+            elif not __expect_op and v[0] in functions:
+                stack.append(v)
+                argc.append(1)
+                __expect_op = False
+            elif not __expect_op and v[1] == 'NAME':
                 self.__argsused.add(v)
                 if v not in self.__args:
                     self.__args.append(v)
                 self.__expr.append(ExpressionVariable(v,self))
-            else:
+                __expect_op = True
+            elif not __expect_op and v[1] == 'VALUE':
                 self.__expr.append(ExpressionValue(v,self))
-            v = self.__next()
+                __expect_op = True
+            else:
+                raise SyntaxError("Invalid Token \"{0:s}\" in Expression, Expected {1:s}".format(v,"Op" if __expect_op else "Value"))
+            v = self.__next(__expect_op)
         if len(stack) > 0:
             op = stack.pop()
             while op != "(":
