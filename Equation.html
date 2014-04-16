@@ -1,0 +1,254 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Equation Module &mdash; Equation v1.0 Documentation</title>
+    
+    <link rel="stylesheet" href="_static/cloud.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/cloud.js"></script>
+    <link rel="top" title="Equation v1.0 Documentation" href="index.html" />
+    <link rel="prev" title="Functions, Operators &amp; Constants" href="Functions.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="contents.html" title="Table Of Contents"
+             accesskey="C">toc</a></li>
+        <li class="right" >
+          <a href="Functions.html" title="Functions, Operators &amp; Constants"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Equation 1.0 Documentation</a> &raquo;</li>
+ 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-Equation">
+<span id="equation-module"></span><h1>Equation Module<a class="headerlink" href="#module-Equation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2>Equation Module<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>This is the only module you should need to import</p>
+<p>It maps the Expression Class from <cite>Equation.core.Expression</cite></p>
+<p>Its recomended you use the code:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">Equation</span> <span class="kn">import</span> <span class="n">Expression</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+<p>to import the Expression Class, as this is the only Class/Function you
+should use.</p>
+</div>
+<dl class="class">
+<dt id="Equation.Expression">
+<em class="property">class </em><tt class="descclassname">Equation.</tt><tt class="descname">Expression</tt><big>(</big><em>expression</em>, <em>argorder=</em><span class="optional">[</span><span class="optional">]</span>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#Equation.Expression" title="Permalink to this definition">¶</a></dt>
+<dd><p>Expression or Equation Object</p>
+<p>This is a object that respresents an equation string in a manner
+that allows for it to be evaluated</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>expression</strong> (<em>str</em>) &#8211; String resprenstation of an equation</li>
+<li><strong>argorder</strong> (<em>list of str</em>) &#8211; List of variable names, indicating the position of variable
+for mapping from positional arguments</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="Equation.Expression.fn">
+<tt class="descname">fn</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#Equation.Expression.fn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the Expression object using the variables passed, where preset arguments will act as the
+defualt value for said arguments.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>*args</strong> &#8211; Positional variables, order as defined by argorder, then position in equation</li>
+<li><strong>**kwargs</strong> &#8211; List of variables to be used by the equation for evaluation</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Result of Expression Evaluation</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Raises TypeError:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first last">For Invalid number of arguments, or arguments given multiple values, as with normal python functions</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<tt class="descname">fn[var]</tt></dt>
+<dd><p>Get the preset variable <cite>var</cite>, from the Expression Object</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<tt class="descname">fn[var] = value</tt></dt>
+<dd><p>Set the preset variable <cite>var</cite> to the value <cite>value</cite></p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<tt class="descname">del fn[var]</tt></dt>
+<dd><p>Removes the preset variable <cite>var</cite> from the Expression Object</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<tt class="descname">var in fn</tt></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if <cite>fn</cite> has a preset variable <cite>var</cite></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Equation.Expression.str">
+<tt class="descname">str</tt><big>(</big><em>fn</em><big>)</big><a class="headerlink" href="#Equation.Expression.str" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a Printable version of the Expression</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Latex String respresation of the Expression, suitable for rendering the equation</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Equation.Expression.repr">
+<tt class="descname">repr</tt><big>(</big><em>fn</em><big>)</big><a class="headerlink" href="#Equation.Expression.repr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a String that correctrly respresents the equation</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Convert the Expression to a String that passed to the constructor, will constuct an identical equation object (in terms of sequence of tokens, and token type/value)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Equation.Expression.show">
+<tt class="descname">show</tt><big>(</big><big>)</big><a class="headerlink" href="#Equation.Expression.show" title="Permalink to this definition">¶</a></dt>
+<dd><p>Show RPN tokens</p>
+<p>This will print out the internal token list (RPN) of the expression
+one token perline.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="index.html" title="index">
+          <img class="logo" src="_static/logo.png" alt="Logo"/>
+        </a></p><div class="sphinxlocaltoc">
+    <h3><a href="contents.html">Page contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Equation Module</a><ul>
+<li><a class="reference internal" href="#id1">Equation Module</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div class="sphinxprev">
+    <h4>Previous page</h4>
+    <p class="topless"><a href="Functions.html"
+                          title="Previous page">&larr; Functions, Operators &amp; Constants</a></p>
+  </div>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="contents.html" title="Table Of Contents"
+             >toc</a></li>
+        <li class="right" >
+          <a href="Functions.html" title="Functions, Operators &amp; Constants"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Equation 1.0 Documentation</a> &raquo;</li>
+ 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2014, AlphaoOmega Technology.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

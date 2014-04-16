@@ -1,0 +1,362 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Functions, Operators &amp; Constants &mdash; Equation v1.0 Documentation</title>
+    
+    <link rel="stylesheet" href="_static/cloud.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/cloud.js"></script>
+    <link rel="top" title="Equation v1.0 Documentation" href="index.html" />
+    <link rel="next" title="Equation Module" href="Equation.html" />
+    <link rel="prev" title="Equation Interpeter" href="index.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="contents.html" title="Table Of Contents"
+             accesskey="C">toc</a></li>
+        <li class="right" >
+          <a href="Equation.html" title="Equation Module"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Equation Interpeter"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Equation 1.0 Documentation</a> &raquo;</li>
+ 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="functions-operators-constants">
+<h1>Functions, Operators &amp; Constants<a class="headerlink" href="#functions-operators-constants" title="Permalink to this headline">¶</a></h1>
+<p>The Following Functions, Operators and Constants are defined and useable in Expression Strings.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">All names are case-senitive</p>
+</div>
+<div class="section" id="constants">
+<h2>Constants<a class="headerlink" href="#constants" title="Permalink to this headline">¶</a></h2>
+<p>Constants are basicaly unchanging global variabes, an used to define special values</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="29%" />
+<col width="71%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>pi</strong></td>
+<td><span class="math">\(\pi\)</span></td>
+</tr>
+<tr class="row-odd"><td><strong>e</strong></td>
+<td><span class="math">\(\mathrm{e}\)</span></td>
+</tr>
+<tr class="row-even"><td><strong>Inf</strong></td>
+<td><span class="math">\(\infty\)</span></td>
+</tr>
+<tr class="row-odd"><td><strong>NaN</strong></td>
+<td><span class="math">\(\mathrm{NaN}\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="operators">
+<h2>Operators<a class="headerlink" href="#operators" title="Permalink to this headline">¶</a></h2>
+<p>Operators are special function maped to a symbol, that will appear between the operands
+rather than as a name folloed by a comma seperated list of operands.</p>
+<p>Operators have a Precedence this indicate the Priotiy with which they are applied
+i.e. high Precedence valued operators will be evaluated before lower valued ones.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Values of the same Precedence are evaluated left to right</p>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="8%" />
+<col width="31%" />
+<col width="13%" />
+<col width="12%" />
+<col width="36%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Symbol</th>
+<th class="head">Operation</th>
+<th class="head">Syntax</th>
+<th class="head">Precedence</th>
+<th class="head">Display</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>+</td>
+<td>Added A to B</td>
+<td><cite>A + B</cite></td>
+<td>1</td>
+<td><span class="math">\(\left(A + B\right)\)</span></td>
+</tr>
+<tr class="row-odd"><td>-</td>
+<td>Subtract B from A</td>
+<td><cite>A - B</cite></td>
+<td>1</td>
+<td><span class="math">\(\left(A - B\right)\)</span></td>
+</tr>
+<tr class="row-even"><td>*</td>
+<td>Mutlipy A by B</td>
+<td><cite>A * B</cite></td>
+<td>2</td>
+<td><span class="math">\(\left(A \times B\right)\)</span></td>
+</tr>
+<tr class="row-odd"><td>/</td>
+<td>Divide A by B</td>
+<td><cite>A / B</cite></td>
+<td>2</td>
+<td><span class="math">\(\frac{A}{B}\)</span></td>
+</tr>
+<tr class="row-even"><td>%</td>
+<td>Reminder of A Divided by B</td>
+<td><cite>A % B</cite></td>
+<td>2</td>
+<td><span class="math">\(\left(A \bmod B\right)\)</span></td>
+</tr>
+<tr class="row-odd"><td>^</td>
+<td>Raise A to the B&#8217;th power</td>
+<td><cite>A ^ B</cite></td>
+<td>3</td>
+<td><span class="math">\(A^{B}\)</span></td>
+</tr>
+<tr class="row-even"><td>&amp;</td>
+<td>Logical AND of A and B</td>
+<td><cite>A &amp; B</cite></td>
+<td>1</td>
+<td><span class="math">\(\left(A \land B\right)\)</span></td>
+</tr>
+<tr class="row-odd"><td>|</td>
+<td>Logical OR of A and B</td>
+<td><cite>A | B</cite></td>
+<td>1</td>
+<td><span class="math">\(\left(A \lor B\right)\)</span></td>
+</tr>
+<tr class="row-even"><td>!</td>
+<td>Logical NOT of A</td>
+<td><cite>!A</cite></td>
+<td>0</td>
+<td><span class="math">\(\not{A}\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<p>These as normal functions a name followed by a list of parameters</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="12%" />
+<col width="37%" />
+<col width="15%" />
+<col width="36%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Operation</th>
+<th class="head">Syntax</th>
+<th class="head">Display</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>abs</strong></td>
+<td>Absolute value of A</td>
+<td><cite>abs(A)</cite></td>
+<td><span class="math">\(\left|A\right|\)</span></td>
+</tr>
+<tr class="row-odd"><td><strong>sin</strong></td>
+<td>Sine value of A</td>
+<td><cite>sin(A)</cite></td>
+<td><span class="math">\(\sin\left(A\right)\)</span></td>
+</tr>
+<tr class="row-even"><td><strong>cos</strong></td>
+<td>Cosine value of A</td>
+<td><cite>cos(A)</cite></td>
+<td><span class="math">\(\cos\left(A\right)\)</span></td>
+</tr>
+<tr class="row-odd"><td><strong>tan</strong></td>
+<td>Tangent value of A</td>
+<td><cite>tan(A)</cite></td>
+<td><span class="math">\(\tan\left(A\right)\)</span></td>
+</tr>
+<tr class="row-even"><td><strong>re</strong></td>
+<td>Real Compoent of A</td>
+<td><cite>re(A)</cite></td>
+<td><span class="math">\(Re\left(A\right)\)</span></td>
+</tr>
+<tr class="row-odd"><td><strong>im</strong></td>
+<td>Imagery Compoent of A</td>
+<td><cite>im(A)</cite></td>
+<td><span class="math">\(Im\left(A\right)\)</span></td>
+</tr>
+<tr class="row-even"><td><strong>root</strong></td>
+<td>B&#8217;th root of A</td>
+<td><cite>root(A,B)</cite></td>
+<td><span class="math">\(\sqrt[B]{A}\)</span></td>
+</tr>
+<tr class="row-odd"><td><strong>sqrt</strong></td>
+<td>Square root of A</td>
+<td><cite>sqrt(A)</cite></td>
+<td><span class="math">\(\sqrt{A}\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>The Following are some example expressions demonstrating the Precedence order and display formating</p>
+<div class="highlight-none"><div class="highlight"><pre>sin(x*(y+z))
+sin((x * (y + z)))
+</pre></div>
+</div>
+<div class="math">
+\[\sin\left(\left(x \times \left(y + z\right)\right)\right)\]</div>
+<div class="highlight-none"><div class="highlight"><pre>(a+b)/(c+d)
+((a + b) / (c + d))
+</pre></div>
+</div>
+<div class="math">
+\[\frac{\left(a + b\right)}{\left(c + d\right)}\]</div>
+<div class="highlight-none"><div class="highlight"><pre>a+b/c+d*e^f
+((a + (b / c)) + (d * (e ^ f)))
+</pre></div>
+</div>
+<div class="math">
+\[\left(\left(a + \frac{b}{c}\right) + \left(d \times e^{f}\right)\right)\]</div>
+<div class="highlight-none"><div class="highlight"><pre>a^b/c^d
+((a ^ b) / (c ^ d))
+</pre></div>
+</div>
+<div class="math">
+\[\frac{a^{b}}{c^{d}}\]</div>
+<div class="highlight-none"><div class="highlight"><pre>a*b/c*d
+(((a * b) / c) * d)
+</pre></div>
+</div>
+<div class="math">
+\[\left(\frac{\left(a \times b\right)}{c} \times d\right)\]</div>
+<div class="highlight-none"><div class="highlight"><pre>a*b/(c*d)
+((a * b) / (c * d))
+</pre></div>
+</div>
+<div class="math">
+\[\frac{\left(a \times b\right)}{\left(c \times d\right)}\]</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="index.html" title="index">
+          <img class="logo" src="_static/logo.png" alt="Logo"/>
+        </a></p><div class="sphinxlocaltoc">
+    <h3><a href="contents.html">Page contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Functions, Operators &amp; Constants</a><ul>
+<li><a class="reference internal" href="#constants">Constants</a></li>
+<li><a class="reference internal" href="#operators">Operators</a></li>
+<li><a class="reference internal" href="#functions">Functions</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div class="sphinxprev">
+    <h4>Previous page</h4>
+    <p class="topless"><a href="index.html"
+                          title="Previous page">&larr; Equation Interpeter</a></p>
+  </div>
+  <div class="sphinxnext">
+    <h4>Next page</h4>
+    <p class="topless"><a href="Equation.html"
+                          title="Next page">&rarr; Equation Module</a></p>
+  </div>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="contents.html" title="Table Of Contents"
+             >toc</a></li>
+        <li class="right" >
+          <a href="Equation.html" title="Equation Module"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Equation Interpeter"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Equation 1.0 Documentation</a> &raquo;</li>
+ 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2014, AlphaoOmega Technology.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>
