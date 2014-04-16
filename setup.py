@@ -25,7 +25,11 @@ setup(
     packages=find_packages(),
     url='https://github.com/alphaomega-technology/' + pkg.__title__,
     long_description=read('README.md'),
-    install_requires = ["numpy"],
+    install_requires = [],
+    extras_require = {
+        'VectorMaths': ['numpy'],
+        'SciConst': ['scipy>=0.12.0']
+    ]
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Science/Research",
