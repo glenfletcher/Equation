@@ -23,7 +23,7 @@ setup(
     author_email=pkg.__authors__[0][1],
     license=pkg.__license__,
     packages=find_packages(),
-    url='https://github.com/alphaomega-technology/Equation',
+    url='https://github.com/alphaomega-technology/' . pkg.__title__,
     long_description=read('README.md'),
     install_requires = ["numpy"],
     classifiers=[

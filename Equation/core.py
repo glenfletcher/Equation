@@ -112,27 +112,30 @@ class Expression( object ):
     
     This is a object that respresents an equation string in a manner
     that allows for it to be evaluated
+    
+    Parameters
+    ----------
+    expression: str
+        String resprenstation of an equation
+    argorder: list of str
+        List of variable names, indicating the position of variable
+        for mapping from positional arguments
     """
-    __vars = {} # intenral array of preset variables
-    __args = [] # internal arg indexs
-    __argsused = set()
-    __expression = "" # equation string
-    __expr = [] # compiled equation tokens
-    variables = {} # call variables
     def __init__(self,expression,argorder=[],*args,**kwargs):
-        """Creates new Expression
-        
-        Parameters
-        ----------
-        expression: str
-            String resprenstation of an equation
-        """
         super(Expression,self).__init__(*args,**kwargs)
         self.__expression = expression
         self.__args = argorder;
+        self.__vars = {} # intenral array of preset variables
+        self.__argsused = set()
+        self.__expr = [] # compiled equation tokens
+        self.variables = {} # call variables
         self.__compile()
     
     def __getitem__(self, name):
+        """fn[var]
+        
+        Fetch the preset variable `var`,from the Expression Object
+        """
         if name in self.__argsused:
             if name in self.__vars:
                 return self.__vars[name]
@@ -142,12 +145,20 @@ class Expression( object ):
             raise KeyError(name)
     
     def __setitem__(self,name,value):
+        """fn[var] = value
+        
+        Set the preset variable `var` to the value `value`
+        """
         if name in self.__argsused:
             self.__vars[name] = value
         else:
             raise KeyError(name)
     
     def __delitem__(self,name):
+        """del fn[var]
+        
+        Removes the preset variable `var` from the Expression Object
+        """
         if name in self.__argsused:
             if name in self.__vars:
                 del self.__vars[name]
@@ -155,20 +166,26 @@ class Expression( object ):
             raise KeyError(name)
             
     def __contains__(self, name):
+        """var in fn
+        
+        Returns True if `fn` has a preset variable `var`
+        """
         return name in self.__argsused
         
     def __call__(self,*args,**kwargs):
-        """Evaluate Expression
+        """fn(\*args,\*\*kwargs)
         
-        Parameters
-        ----------
-        **kwargs
+        Arguments
+        ---------
+        \*args:
+            Positional variables, order as defined by argorder, then position in equation
+        \*\*kwargs:
             List of variables to be used by the equation for evaluation
             
         Returns
         -------
-            Result of evaluating the Expression, type will depende appon
-            the expression and the variables used to evaluate the expression.
+        varies
+            Result of evaluating the Expression, type will depende appon the expression and the variables used to evaluate the expression.
         """
         self.variables = {}
         self.variables.update(constants) # i.e. pi, e, i, etc.
@@ -222,7 +239,7 @@ class Expression( object ):
         return None
 
     def show(self):
-        """show RPN tokens
+        """Show RPN tokens
         
         This will print out the internal token list (RPN) of the expression
         one token perline.
@@ -231,7 +248,7 @@ class Expression( object ):
             print expr
             
     def __str__(self):
-        """Convert to Printable String
+        """str(fn)
         
         Generates a Printable version of the Expression
         
@@ -252,7 +269,7 @@ class Expression( object ):
             return args[0]
 
     def __repr__(self):
-        """Convert to Represation String
+        """repr(fn)
         
         Generates a String that correctrly respresents the equation
         
@@ -324,11 +341,11 @@ class Expression( object ):
                             if len(stack) == 0:
                                 stack.append(v)
                                 break
+                            op = stack.pop()
                             if op == "(":
                                 stack.append(op)
                                 stack.append(v)
-                                break
-                            op = stack.pop()
+                                break                            
                             fs = functions[op]
                         else:
                             stack.append(op)
@@ -353,6 +370,8 @@ class Expression( object ):
                     break
 
 constants = {}
+unary_ops = {}
+ops = {}
 functions = {}
 smatch = re.compile("\s*,")
 vmatch = re.compile("\s*(?P<rvalue>[+-]?(?:\d+\.\d+|\d+\.|\.\d+|\d+))(?:[Ee](?P<rexpoent>[+-]\d+))?(?:\s*(?P<sep>\+)?\s*(?P<ivalue>(?(rvalue)(?(sep)[+-]?|[+-])|[+-]?)?(?:\d+\.\d+|\d+\.|\.\d+|\d+))(?:[Ee](?P<iexpoent>[+-]\d+))?[ij])?")

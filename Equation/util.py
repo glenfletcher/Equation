@@ -25,13 +25,22 @@ def addFn(id,str,latex,args,func):
         'type': 'FUNC',
         'func': func}
 
-def addOp(id,str,latex,single,prec,left,func):
+def addOp(id,str,latex,single,prec,func):
     core.functions[id] = {
         'str': str,
         'latex': latex,
         'args': 1 if single else 2,
         'prec': prec,
-        'type': 'LEFT' if left else 'RIGHT',
+        'type': 'LEFT',
+        'func': func}
+
+def addUnaryOp(id,str,latex,prec,func):
+    core.functions['_unary'] = {
+        'str': str,
+        'latex': latex,
+        'args': 1,
+        'prec': prec,
+        'type': 'RIGHT',
         'func': func}
 
 def addConst(name,value):

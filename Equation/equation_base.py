@@ -32,7 +32,6 @@ def equation_extend():
     addFn('tan',"tan({0:s})","\\tan\\left({0:s}\\right)",1,np.tan)
     addFn('re',"re({0:s})","Re\\left({0:s}\\right)",1,np.real)
     addFn('im',"re({0:s})","Im\\left({0:s}\\right)",1,np.imag)
-    addFn('im',"re({0:s})","Im\\left({0:s}\\right)",1,np.imag)
     addFn('root',"root({0:s},{1:s})","\\sqrt[{1:s}]{{{0:s}}}",2,np.imag)
     addFn('sqrt',"sqrt({0:s})","\\sqrt{{{0:s}}}",1,np.imag)
     addConst("pi",np.pi)
