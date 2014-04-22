@@ -34,9 +34,10 @@ def addOp(id,str,latex,single,prec,func):
         'func': func}
 
 def addUnaryOp(id,str,latex,func):
-    core.unary_ops = {
+    core.unary_ops[id] = {
         'str': str,
         'latex': latex,
+        'args': 1,
         'prec': 0,
         'func': func}
 

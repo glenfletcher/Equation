@@ -29,7 +29,7 @@ def equation_extend():
     addOp('/',"({0:s} / {1:s})","\\frac{{{0:s}}}{{{1:s}}}",False,2,op.div)
     addOp('%',"({0:s} % {1:s})","\\left({0:s} \\bmod {1:s}\\right)",False,2,op.mod)
     addOp('^',"({0:s} ^ {1:s})","{0:s}^{{{1:s}}}",False,3,op.pow)
-    addOp('&',"({0:s} & {1:s})","\\left({0:s} \\land {1:s}\\right)",False,1,op.amd_)
+    addOp('&',"({0:s} & {1:s})","\\left({0:s} \\land {1:s}\\right)",False,1,op.and_)
     addOp('|',"({0:s} | {1:s})","\\left({0:s} \\lor {1:s}\\right)",False,1,op.or_)
     addUnaryOp('!',"(!{0:s})","\\not{{{0:s}}}",op.not_)
     addUnaryOp('-',"-{0:s}","-{0:s}",op.neg)
