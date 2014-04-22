@@ -20,14 +20,20 @@ try:
     def equation_extend():
         addConst("h",scipy.constants.h)
         addConst("hbar",scipy.constants.hbar)
-        addConst("eV",scipy.constants.electron_volt)
-        addConst("me",scipy.constants.electron_mass)
-        addConst("mp",scipy.constants.electron_mass)
-        addConst("c",scipy.constants.speed_of_light)
+        addConst("me",scipy.constants.m_e)
+        addConst("mp",scipy.constants.m_p)
+        addConst("mn",scipy.constants.m_n)
+        addConst("c",scipy.constants.c)
         addConst("N_A",scipy.constants.N_A)
         addConst("mu_0",scipy.constants.mu_0)
         addConst("eps_0",scipy.constants.epsilon_0)
-        addConst("kb",scipy.constants.Boltzmann)
+        addConst("k",scipy.constants.k)
+        addConst("G",scipy.constants.G)
+        addConst("g",scipy.constants.g)
+        addConst("ee",scipy.constants.e)
+        addConst("R",scipy.constants.R)
+        addConst("sigma",scipy.constants.e)
+        addConst("Rb",scipy.constants.Rydberg)
 except ImportError:
     def equation_extend():
         pass
