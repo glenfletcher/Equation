@@ -45,4 +45,5 @@ setup(
         "Programming Language :: Python :: 3.4",
     ],
     zip_safe=False,
+    test_suite='tests',
 )
