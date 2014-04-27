@@ -20,7 +20,6 @@ import re
 
 class ExpressionObject (object):
     def __init__(self,*args,**kwargs):
-        print args
         super(ExpressionObject,self).__init__(*args,**kwargs)
 
     def toStr(self,args,expression):
