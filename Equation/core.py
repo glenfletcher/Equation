@@ -12,11 +12,17 @@
 .. moduleauthor:: Glen Fletcher <glen.fletcher@alphaomega-technology.com.au>
 """
 
+from __future__ import print_function
+
 from . import __authors__,__copyright__,__license__,__contact__,__version__
 
 import numpy as np
 import sys
 import re
+
+if sys.version_info.major == 3:
+    xrange = range
+    basestring = str
 
 class ExpressionObject (object):
     def __init__(self,*args,**kwargs):
@@ -277,7 +283,7 @@ class Expression( object ):
         one token perline.
         """
         for expr in self.__expr:
-            print expr
+            print(expr)
             
     def __str__(self):
         """str(fn)
@@ -322,11 +328,17 @@ class Expression( object ):
         else:
             return args[0]
             
-    def __cmp__(self,other):
-        if isinstance(other,Expression):
-            return cmp(repr(self),repr(other))
+    def __lt__(self, other):
+        if isinstance(other, Expression):
+            return repr(self) < repr(other)
         else:
-            raise TypeError("{0:s} is not an {1:s} Object, and can't be compared to an Expression Object".format(repr(other),type(other)))
+            raise TypeError("{0:s} is not an {1:s} Object, and can't be compared to an Expression Object".format(repr(other), type(other)))
+
+    def __eq__(self, other):
+        if isinstance(other, Expression):
+            return repr(self) == repr(other)
+        else:
+            raise TypeError("{0:s} is not an {1:s} Object, and can't be compared to an Expression Object".format(repr(other), type(other)))
     
     def __combine(self,other,op):  
         if op not in ops or not isinstance(other,(int,float,complex,type(self),basestring)):
