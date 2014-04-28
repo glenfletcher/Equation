@@ -600,7 +600,7 @@ class Expression( object ):
                     continue
                 fs = self.__getfunction(op)
                 while True:
-                    if (fn['prec'] <= fs['prec']):
+                    if (fn['prec'] >= fs['prec']):
                         self.__expr.append(ExpressionFunction(fs['func'],fs['args'],fs['str'],fs['latex'],op[0],False))
                         if len(stack) == 0:
                             stack.append(v)

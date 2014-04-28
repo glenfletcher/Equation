@@ -23,14 +23,14 @@ import operator as op
 from Equation.util import addOp, addFn, addConst, addUnaryOp
 
 def equation_extend():
-    addOp('+',"({0:s} + {1:s})","\\left({0:s} + {1:s}\\right)",False,1,op.add)
-    addOp('-',"({0:s} - {1:s})","\\left({0:s} - {1:s}\\right)",False,1,op.sub)
+    addOp('+',"({0:s} + {1:s})","\\left({0:s} + {1:s}\\right)",False,3,op.add)
+    addOp('-',"({0:s} - {1:s})","\\left({0:s} - {1:s}\\right)",False,3,op.sub)
     addOp('*',"({0:s} * {1:s})","\\left({0:s} \\times {1:s}\\right)",False,2,op.mul)
     addOp('/',"({0:s} / {1:s})","\\frac{{{0:s}}}{{{1:s}}}",False,2,op.truediv)
     addOp('%',"({0:s} % {1:s})","\\left({0:s} \\bmod {1:s}\\right)",False,2,op.mod)
-    addOp('^',"({0:s} ^ {1:s})","{0:s}^{{{1:s}}}",False,3,op.pow)
-    addOp('&',"({0:s} & {1:s})","\\left({0:s} \\land {1:s}\\right)",False,1,op.and_)
-    addOp('|',"({0:s} | {1:s})","\\left({0:s} \\lor {1:s}\\right)",False,1,op.or_)
+    addOp('^',"({0:s} ^ {1:s})","{0:s}^{{{1:s}}}",False,1,op.pow)
+    addOp('&',"({0:s} & {1:s})","\\left({0:s} \\land {1:s}\\right)",False,4,op.and_)
+    addOp('|',"({0:s} | {1:s})","\\left({0:s} \\lor {1:s}\\right)",False,4,op.or_)
     addUnaryOp('!',"(!{0:s})","\\not{{{0:s}}}",op.not_)
     addUnaryOp('-',"-{0:s}","-{0:s}",op.neg)
     addFn('abs',"abs({0:s})","\\left|{0:s}\\right|",1,op.abs)
