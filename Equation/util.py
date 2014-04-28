@@ -14,7 +14,10 @@ Created on Fri Apr 11 00:51:34 2014
 """
 
 from . import __authors__,__copyright__,__license__,__contact__,__version__
-import core
+try:
+    from Equation import core
+except ImportError:
+    import core
 
 def addFn(id,str,latex,args,func):
     core.functions[id] = {

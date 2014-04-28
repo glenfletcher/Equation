@@ -26,7 +26,7 @@ def equation_extend():
     addOp('+',"({0:s} + {1:s})","\\left({0:s} + {1:s}\\right)",False,1,op.add)
     addOp('-',"({0:s} - {1:s})","\\left({0:s} - {1:s}\\right)",False,1,op.sub)
     addOp('*',"({0:s} * {1:s})","\\left({0:s} \\times {1:s}\\right)",False,2,op.mul)
-    addOp('/',"({0:s} / {1:s})","\\frac{{{0:s}}}{{{1:s}}}",False,2,op.div)
+    addOp('/',"({0:s} / {1:s})","\\frac{{{0:s}}}{{{1:s}}}",False,2,op.truediv)
     addOp('%',"({0:s} % {1:s})","\\left({0:s} \\bmod {1:s}\\right)",False,2,op.mod)
     addOp('^',"({0:s} ^ {1:s})","{0:s}^{{{1:s}}}",False,3,op.pow)
     addOp('&',"({0:s} & {1:s})","\\left({0:s} \\land {1:s}\\right)",False,1,op.and_)

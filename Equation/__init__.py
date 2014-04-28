@@ -35,7 +35,10 @@ __desc__      = "General Equation Parser and Evaluator"
 
 all = ['util']
 
-from core import Expression
+try:
+    from Equation.core import Expression
+except ImportError:
+    from core import Expression
 
 def load():
     import os
@@ -43,7 +46,10 @@ def load():
     import sys
     import traceback
     import importlib
-    from core import recalculateFMatch
+    try:
+        from Equation.core import recalculateFMatch
+    except ImportError:
+        from core import recalculateFMatch
     if not hasattr(load, "loaded"):
         load.loaded = False
     if not load.loaded:
@@ -62,7 +68,7 @@ def load():
             plugin_file,extension = os.path.splitext(os.path.basename(file))
             if not plugin_file.lower().startswith("equation_",0,9) or extension.lower() not in ['.py','.pyc']:
                 continue
-            if not plugins_loaded.has_key(plugin_file):
+            if plugin_file not in plugins_loaded:
                 plugins_loaded[plugin_file] = 1
                 try:
                         plugin_script = importlib.import_module(prefix + plugin_file)
