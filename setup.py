@@ -29,7 +29,7 @@ setup(
     extras_require = {
         'VectorMaths': ['numpy'],
         'SciConst': ['scipy>=0.12.0']
-    ]
+    },
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Science/Research",
