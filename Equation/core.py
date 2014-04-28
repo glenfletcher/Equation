@@ -327,6 +327,9 @@ class Expression( object ):
             return args
         else:
             return args[0]
+    
+    def __iter__(self):
+        return iter(self.__argsused)
             
     def __lt__(self, other):
         if isinstance(other, Expression):
