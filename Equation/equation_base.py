@@ -23,24 +23,53 @@ import operator as op
 from Equation.util import addOp, addFn, addConst, addUnaryOp
 
 def equation_extend():
+    def simlar(a,b):
+        return abs(1-a/b)<=1e-5
+        
+    def product(*args):
+        if len(args) == 1 and has_numpy:
+            return np.prod(args[0])
+        else:
+            return reduce(op.mul,args,1)
+    
+    def sumargs(*args):
+        return sum(args)
+            
     addOp('+',"({0:s} + {1:s})","\\left({0:s} + {1:s}\\right)",False,3,op.add)
     addOp('-',"({0:s} - {1:s})","\\left({0:s} - {1:s}\\right)",False,3,op.sub)
     addOp('*',"({0:s} * {1:s})","\\left({0:s} \\times {1:s}\\right)",False,2,op.mul)
     addOp('/',"({0:s} / {1:s})","\\frac{{{0:s}}}{{{1:s}}}",False,2,op.truediv)
     addOp('%',"({0:s} % {1:s})","\\left({0:s} \\bmod {1:s}\\right)",False,2,op.mod)
     addOp('^',"({0:s} ^ {1:s})","{0:s}^{{{1:s}}}",False,1,op.pow)
+    addOp('**',"({0:s} ^ {1:s})","{0:s}^{{{1:s}}}",False,1,op.pow)
     addOp('&',"({0:s} & {1:s})","\\left({0:s} \\land {1:s}\\right)",False,4,op.and_)
     addOp('|',"({0:s} | {1:s})","\\left({0:s} \\lor {1:s}\\right)",False,4,op.or_)
-    addUnaryOp('!',"(!{0:s})","\\not{{{0:s}}}",op.not_)
+    addOp('</>',"({0:s} </> {1:s})","\\left({0:s} \\oplus {1:s}\\right)",False,4,op.xor)
+    addOp('&|',"({0:s} </> {1:s})","\\left({0:s} \\oplus {1:s}\\right)",False,4,op.xor)
+    addOp('|&',"({0:s} </> {1:s})","\\left({0:s} \\oplus {1:s}\\right)",False,4,op.xor)
+    addOp('==',"({0:s} == {1:s})","\\left({0:s} = {1:s}\\right)",False,5,op.eq)
+    addOp('=',"({0:s} == {1:s})","\\left({0:s} = {1:s}\\right)",False,5,op.eq)
+    addOp('~',"({0:s} ~ {1:s})","\\left({0:s} \\approx {1:s}\\right)",False,5,simlar)
+    addOp('!=',"({0:s} != {1:s})","\\left({0:s} \\neg {1:s}\\right)",False,5,op.ne)
+    addOp('<>',"({0:s} != {1:s})","\\left({0:s} \\neg {1:s}\\right)",False,5,op.ne)
+    addOp('><',"({0:s} != {1:s})","\\left({0:s} \\neg {1:s}\\right)",False,5,op.ne)
+    addOp('<',"({0:s} < {1:s})","\\left({0:s} < {1:s}\\right)",False,5,op.lt)
+    addOp('>',"({0:s} > {1:s})","\\left({0:s} > {1:s}\\right)",False,5,op.gt)
+    addOp('<=',"({0:s} <= {1:s})","\\left({0:s} \\leq {1:s}\\right)",False,5,op.lt)
+    addOp('>=',"({0:s} >= {1:s})","\\left({0:s} \\geq {1:s}\\right)",False,5,op.gt)
+    addOp('=<',"({0:s} <= {1:s})","\\left({0:s} \\leq {1:s}\\right)",False,5,op.lt)
+    addOp('=>',"({0:s} >= {1:s})","\\left({0:s} \\geq {1:s}\\right)",False,5,op.gt)
+    addUnaryOp('!',"(!{0:s})","\\neg{0:s}",op.not_)
     addUnaryOp('-',"-{0:s}","-{0:s}",op.neg)
     addFn('abs',"abs({0:s})","\\left|{0:s}\\right|",1,op.abs)
-    addFn('root',"root({0:s},{1:s})","\\sqrt[{1:s}]{{{0:s}}}",2,lambda a,b: a**(1/b))
+    addFn('sum',"sum({0:s})","\\sum\\left({0:s}\\right)",'+',sumargs)
+    addFn('prod',"prod({0:s})","\\prod\\left({0:s}\\right)",'+',product)
     if has_numpy:
         addFn('sin',"sin({0:s})","\\sin\\left({0:s}\\right)",1,np.sin)
         addFn('cos',"cos({0:s})","\\cos\\left({0:s}\\right)",1,np.cos)
         addFn('tan',"tan({0:s})","\\tan\\left({0:s}\\right)",1,np.tan)
-        addFn('re',"re({0:s})","Re\\left({0:s}\\right)",1,np.real)
-        addFn('im',"re({0:s})","Im\\left({0:s}\\right)",1,np.imag)
+        addFn('re',"re({0:s})","\\Re\\left({0:s}\\right)",1,np.real)
+        addFn('im',"re({0:s})","\\Im\\left({0:s}\\right)",1,np.imag)
         addFn('sqrt',"sqrt({0:s})","\\sqrt{{{0:s}}}",1,np.sqrt)
         addConst("pi",np.pi)
         addConst("e",np.e)
@@ -50,8 +79,8 @@ def equation_extend():
         addFn('sin',"sin({0:s})","\\sin\\left({0:s}\\right)",1,math.sin)
         addFn('cos',"cos({0:s})","\\cos\\left({0:s}\\right)",1,math.cos)
         addFn('tan',"tan({0:s})","\\tan\\left({0:s}\\right)",1,math.tan)
-        addFn('re',"re({0:s})","Re\\left({0:s}\\right)",1,complex.real)
-        addFn('im',"re({0:s})","Im\\left({0:s}\\right)",1,complex.imag)
+        addFn('re',"re({0:s})","\\Re\\left({0:s}\\right)",1,complex.real)
+        addFn('im',"re({0:s})","\\Im\\left({0:s}\\right)",1,complex.imag)
         addFn('sqrt',"sqrt({0:s})","\\sqrt{{{0:s}}}",1,math.sqrt)
         addConst("pi",math.pi)
         addConst("e",math.e)

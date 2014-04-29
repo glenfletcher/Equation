@@ -235,6 +235,10 @@ class Expression( object ):
                 self.__expression = self.__expression[m.end():]
                 g = m.groups()
                 return g[0],'CLOSE'
+            m = smatch.match(self.__expression)
+            if m != None:
+                self.__expression = self.__expression[m.end():]
+                return ",",'SEP'
             m = omatch.match(self.__expression)    
             if m != None:
                 self.__expression = self.__expression[m.end():]
@@ -271,10 +275,6 @@ class Expression( object ):
                     return float(g["rvalue"])*10**int(g["rexpoent"]),'VALUE'
                 else:
                     return int(g["rvalue"]),'VALUE'
-            m = smatch.match(self.__expression)
-            if m != None:
-                self.__expression = self.__expression[m.end():]
-                return ",",'SEP'
             return None
 
     def show(self):
@@ -569,17 +569,17 @@ class Expression( object ):
                     fs = self.__getfunction(op)
                     self.__expr.append(ExpressionFunction(fs['func'],fs['args'],fs['str'],fs['latex'],op[0],False))
                     op = stack.pop()
-                if len(stack) > 0 and stack[-1] in functions:
+                if len(stack) > 0 and stack[-1][0] in functions:
                     op = stack.pop()
                     fs = functions[op[0]]
                     args = argc.pop()
-                    if fs['args'] != '+' or (args != fs['args'] and args not in fs['args']):
+                    if fs['args'] == '+' or (args != fs['args'] and args not in fs['args']):
                         self.__expr.append(ExpressionFunction(fs['func'],args,fs['str'],fs['latex'],op[0],True))
                 __expect_op = True
             elif __expect_op and v[0] == ",":
                 argc[-1] += 1
                 op = stack.pop()
-                while op != "(":
+                while op[1] != "OPEN":
                     fs = self.__getfunction(op)
                     self.__expr.append(ExpressionFunction(fs['func'],fs['args'],fs['str'],fs['latex'],op[0],False))
                     op = stack.pop()
@@ -656,9 +656,6 @@ vmatch = re.compile("\s*(?P<rvalue>[+-]?(?:\d+\.\d+|\d+\.|\.\d+|\d+))(?:[Ee](?P<
 nmatch = re.compile("\s*([a-zA-Z_][a-zA-Z0-9_]*)")
 gsmatch = re.compile('\s*(\()')
 gematch = re.compile('\s*(\))')
-fmatch = re.compile('\s*(' + '|'.join(map(re.escape,functions.keys())) + ')')
-omatch = re.compile('\s*(' + '|'.join(map(re.escape,ops.keys())) + ')')
-umatch = re.compile('\s*(' + '|'.join(map(re.escape,unary_ops.keys())) + ')')
 
 def recalculateFMatch():
     global fmatch, omatch, umatch
