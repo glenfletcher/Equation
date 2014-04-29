@@ -16,7 +16,6 @@ from __future__ import print_function
 
 from . import __authors__,__copyright__,__license__,__contact__,__version__
 
-import numpy as np
 import sys
 import re
 
@@ -267,9 +266,11 @@ class Expression( object ):
                 self.__expression = self.__expression[m.end():]
                 g = m.groupdict(0)
                 if g["ivalue"]:
-                    return np.complex(float(g["rvalue"])*10**int(g["rexpoent"]),float(g["ivalue"])*10**int(g["iexpoent"])),'VALUE'
-                else:
+                    return complex(float(g["rvalue"])*10**int(g["rexpoent"]),float(g["ivalue"])*10**int(g["iexpoent"])),'VALUE'
+                elif g["rexpoent"] or g["rvalue"].find('.')>=0:
                     return float(g["rvalue"])*10**int(g["rexpoent"]),'VALUE'
+                else:
+                    return int(g["rvalue"]),'VALUE'
             m = smatch.match(self.__expression)
             if m != None:
                 self.__expression = self.__expression[m.end():]
@@ -661,6 +662,13 @@ umatch = re.compile('\s*(' + '|'.join(map(re.escape,unary_ops.keys())) + ')')
 
 def recalculateFMatch():
     global fmatch, omatch, umatch
-    fmatch = re.compile('\s*(' + '|'.join(map(re.escape,functions.keys())) + ')')
-    omatch = re.compile('\s*(' + '|'.join(map(re.escape,ops.keys())) + ')')
-    umatch = re.compile('\s*(' + '|'.join(map(re.escape,unary_ops.keys())) + ')')
+    ls = lambda a,b: len(b)-len(a)
+    fks = functions.keys()
+    fks.sort(ls)
+    oks = ops.keys()
+    oks.sort(ls)
+    uks = unary_ops.keys()
+    uks.sort(ls)
+    fmatch = re.compile('\s*(' + '|'.join(map(re.escape,fks)) + ')')
+    omatch = re.compile('\s*(' + '|'.join(map(re.escape,oks)) + ')')
+    umatch = re.compile('\s*(' + '|'.join(map(re.escape,uks)) + ')')
