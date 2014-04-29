@@ -86,7 +86,7 @@ class TestNotEquation(unittest.TestCase):
     def testCall(self):
         self.assertFalse(self.fn(1))
         self.assertTrue(self.fn(0))
-        self.assertFalse(self.fn(10), 0)
+        self.assertFalse(self.fn(10))
         self.assertFalse(self.fn(True))
         self.assertTrue(self.fn(False))
         self.assertFalse(self.fn("string content"))
