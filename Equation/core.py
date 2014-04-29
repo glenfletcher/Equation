@@ -659,13 +659,9 @@ gematch = re.compile('\s*(\))')
 
 def recalculateFMatch():
     global fmatch, omatch, umatch
-    ls = lambda a,b: len(b)-len(a)
-    fks = functions.keys()
-    fks.sort(ls)
-    oks = ops.keys()
-    oks.sort(ls)
-    uks = unary_ops.keys()
-    uks.sort(ls)
+    fks = sorted(functions.keys(), key=len, reverse=True)
+    oks = sorted(ops.keys(), key=len, reverse=True)
+    uks = sorted(unary_ops.keys(), key=len, reverse=True)
     fmatch = re.compile('\s*(' + '|'.join(map(re.escape,fks)) + ')')
     omatch = re.compile('\s*(' + '|'.join(map(re.escape,oks)) + ')')
     umatch = re.compile('\s*(' + '|'.join(map(re.escape,uks)) + ')')
