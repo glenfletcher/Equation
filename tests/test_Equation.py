@@ -91,8 +91,164 @@ class TestNotEquation(unittest.TestCase):
         self.assertTrue(self.fn(False))
         self.assertFalse(self.fn("string content"))
         self.assertTrue(self.fn(None))
+
+    def testType(self):
         self.assertEqual(type(self.fn(True)), bool)
         self.assertEqual(type(self.fn(0)), bool)
+
+    def tearDown(self):
+        pass
+
+
+class TestEqualsEquation(unittest.TestCase):
+    def setUp(self):
+        self.fn = Expression("x == y")
+
+    def testStr(self):
+        self.assertEqual(str(self.fn), r"\left(x = y\right)")
+
+    def testCall(self):
+        self.assertFalse(self.fn(1, 0))
+        self.assertTrue(self.fn(0, 0))
+        self.assertFalse(self.fn(10, 0))
+        self.assertFalse(self.fn(1.0, 0))
+        self.assertTrue(self.fn(1.0, 1.0))
+        self.assertFalse(self.fn(True, False))
+        self.assertTrue(self.fn(False, False))
+        self.assertTrue(self.fn("string content", "string content"))
+        self.assertFalse(self.fn("string content", "different string"))
+        self.assertTrue(self.fn(None, None))
+
+    def testType(self):
+        self.assertEqual(type(self.fn(1, 1)), bool)
+        self.assertTrue(self.fn(1, 1.0))
+
+    def tearDown(self):
+        pass
+
+
+class TestNotEqualsEquation(unittest.TestCase):
+    def setUp(self):
+        self.fn = Expression("x != y")
+
+    def testStr(self):
+        self.assertEqual(str(self.fn), r"\left(x \neq y\right)")
+
+    def testCall(self):
+        self.assertTrue(self.fn(1, 0))
+        self.assertFalse(self.fn(0, 0))
+        self.assertTrue(self.fn(10, 0))
+        self.assertTrue(self.fn(1.0, 0))
+        self.assertFalse(self.fn(1.0, 1.0))
+        self.assertTrue(self.fn(True, False))
+        self.assertFalse(self.fn(False, False))
+        self.assertFalse(self.fn("string content", "string content"))
+        self.assertTrue(self.fn("string content", "different string"))
+        self.assertFalse(self.fn(None, None))
+
+    def testType(self):
+        self.assertEqual(type(self.fn(1, 1)), bool)
+        self.assertFalse(self.fn(1, 1.0))
+
+    def tearDown(self):
+        pass
+
+
+class TestGreaterThanEquation(unittest.TestCase):
+    def setUp(self):
+        self.fn = Expression("x > y")
+
+    def testStr(self):
+        self.assertEqual(str(self.fn), r"\left(x > y\right)")
+
+    def testCall(self):
+        self.assertTrue(self.fn(1, 0))
+        self.assertFalse(self.fn(0, 0))
+        self.assertFalse(self.fn(0, 1))
+        self.assertFalse(self.fn(-2, -1))
+        self.assertTrue(self.fn(10, 0))
+        self.assertTrue(self.fn(True, False))
+        self.assertFalse(self.fn(False, True))
+        self.assertFalse(self.fn(False, False))
+        self.assertFalse(self.fn("string content", "string content"))
+        self.assertTrue(self.fn("string content", "string alphabetically earlier"))
+
+    def testType(self):
+        self.assertEqual(type(self.fn(1, 1)), bool)
+        self.assertFalse(self.fn(1, 1.0))
+
+    def tearDown(self):
+        pass
+
+class TestGreaterThanOrEqualToEquation(unittest.TestCase):
+    def setUp(self):
+        self.fn = Expression("x >= y")
+
+    def testStr(self):
+        self.assertEqual(str(self.fn), r"\left(x \geq y\right)")
+
+    def testCall(self):
+        self.assertTrue(self.fn(1, 0))
+        self.assertTrue(self.fn(0, 0))
+        self.assertFalse(self.fn(0, 1))
+        self.assertFalse(self.fn(-2, -1))
+        self.assertTrue(self.fn(10, 0))
+        self.assertTrue(self.fn(True, False))
+        self.assertFalse(self.fn(False, True))
+        self.assertTrue(self.fn(False, False))
+        self.assertTrue(self.fn("string content", "string content"))
+        self.assertTrue(self.fn("string content", "string alphabetically earlier"))
+
+    def testType(self):
+        self.assertEqual(type(self.fn(1, 1)), bool)
+        self.assertTrue(self.fn(1, 1.0))
+
+
+class TestLessThanEquation(unittest.TestCase):
+    def setUp(self):
+        self.fn = Expression("x < y")
+
+    def testStr(self):
+        self.assertEqual(str(self.fn), r"\left(x < y\right)")
+
+    def testCall(self):
+        self.assertFalse(self.fn(1, 0))
+        self.assertFalse(self.fn(0, 0))
+        self.assertTrue(self.fn(0, 1))
+        self.assertTrue(self.fn(-2, -1))
+        self.assertFalse(self.fn(10, 0))
+        self.assertFalse(self.fn(True, False))
+        self.assertTrue(self.fn(False, True))
+        self.assertFalse(self.fn(False, False))
+        self.assertFalse(self.fn("string content", "string content"))
+        self.assertFalse(self.fn("string content", "string alphabetically earlier"))
+
+    def testType(self):
+        self.assertEqual(type(self.fn(1, 1)), bool)
+        self.assertFalse(self.fn(1, 1.0))
+
+class TestLessThanOrEqualToEquation(unittest.TestCase):
+    def setUp(self):
+        self.fn = Expression("x <= y")
+
+    def testStr(self):
+        self.assertEqual(str(self.fn), r"\left(x \leq y\right)")
+
+    def testCall(self):
+        self.assertFalse(self.fn(1, 0))
+        self.assertTrue(self.fn(0, 0))
+        self.assertTrue(self.fn(0, 1))
+        self.assertTrue(self.fn(-2, -1))
+        self.assertFalse(self.fn(10, 0))
+        self.assertFalse(self.fn(True, False))
+        self.assertTrue(self.fn(False, True))
+        self.assertTrue(self.fn(False, False))
+        self.assertTrue(self.fn("string content", "string content"))
+        self.assertFalse(self.fn("string content", "string alphabetically earlier"))
+
+    def testType(self):
+        self.assertEqual(type(self.fn(1, 1)), bool)
+        self.assertTrue(self.fn(1, 1.0))
 
     def tearDown(self):
         pass
