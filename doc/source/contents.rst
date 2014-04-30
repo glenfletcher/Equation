@@ -6,10 +6,11 @@
 Contents
 ========
 .. toctree::
-   :maxdepth: 2
+    :maxdepth: 2
    
-   index
-   Functions
-   Equation
+    index
+    Functions
+    Equation
+    Examples
 
 

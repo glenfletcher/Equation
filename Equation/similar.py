@@ -9,7 +9,16 @@
 #       http://www.alphaomega-technology.com.au/license/AOT-OL/1.0
 #==============================================================================
 r"""
+Equation.similar Module
+=======================
+
 Provides support for similar type comparsion, and allows the tolerance to be changed
+
+Comparsions work by detriming if the following is true
+
+.. math::
+    
+    1-\frac{\min(A,B)}{\max(A,B)}\leq tolerance
 """
 
 _tol = 1e-5
@@ -36,16 +45,17 @@ def lsim(a,b):
         return True
     return (1-b/a)<=_tol
     
-def set_tol(value=None):
+def set_tol(value=1e-5):
     r"""Set Error Tolerance
     
     Set the tolerance for detriming if two numbers are simliar, i.e
-    :math:`\frac{a}{b} = 1 \pm tol`
+    :math:`\frac{a}{b} = 1 \pm tolerance`
     
-    Paramters
-    =========
+    Parameters
+    ----------
     value: float
-        The Value to set the tolerance to show be very small i.e. > 1e^-3
+        The Value to set the tolerance to show be very small as it respresents the
+        percentage of acceptable error in detriming if two values are the same.
     """
     global _tol
     if isinstance(value,float):
