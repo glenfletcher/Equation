@@ -20,6 +20,17 @@ import sys, os
 
 import cloud_sptheme as csp
 
+# Get the project root dir, which is the grandparent dir of this
+cwd = os.getcwd()
+project_root = os.path.dirname(os.path.dirname(cwd))
+
+# Insert the project root dir as the first element in the PYTHONPATH.
+# This lets us ensure that the source package is imported, and that its
+# version is used.
+sys.path.insert(0, project_root)
+
+from Equation import __version__,__desc__,__title__
+
 # -- General configuration -----------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
@@ -35,7 +46,7 @@ extensions = [
     'sphinx.ext.coverage',
     'sphinx.ext.mathjax',
     'sphinx.ext.todo',
-    
+
     # cloud's extensions
     'cloud_sptheme.ext.autodoc_sections',
     'cloud_sptheme.ext.index_styling',
@@ -43,7 +54,7 @@ extensions = [
     'cloud_sptheme.ext.escaped_samp_literals',
     'cloud_sptheme.ext.issue_tracker',
     'cloud_sptheme.ext.table_styling',]
-    
+
 # autodoc config
 autoclass_content = 'both'
 autodoc_docstring_signature = True
@@ -74,7 +85,6 @@ master_doc = 'contents'
 
 # The frontpage document.
 index_doc = 'index'
-from Equation import __version__,__desc__,__title__
 # General information about the project.
 project = __title__
 author = u"AlphaoOmega Technology"
