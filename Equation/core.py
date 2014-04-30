@@ -1,16 +1,13 @@
 # -*- coding: utf-8 -*-
-"""Equation Module
-
-  Copyright 2014 AlphaOmega Technology
-
-  Licensed under the AlphaOmega Technology Open License Version 1.0
-  You may not use this file except in compliance with this License.
-  You may obtain a copy of the License at
- 
-      http://www.alphaomega-technology.com.au/license/AOT-OL/1.0
-      
-.. moduleauthor:: Glen Fletcher <glen.fletcher@alphaomega-technology.com.au>
-"""
+#==============================================================================
+#   Copyright 2014 AlphaOmega Technology
+# 
+#   Licensed under the AlphaOmega Technology Open License Version 1.0
+#   You may not use this file except in compliance with this License.
+#   You may obtain a copy of the License at
+#  
+#       http://www.alphaomega-technology.com.au/license/AOT-OL/1.0
+#==============================================================================
 
 from __future__ import print_function
 
@@ -573,8 +570,9 @@ class Expression( object ):
                     op = stack.pop()
                     fs = functions[op[0]]
                     args = argc.pop()
-                    if fs['args'] == '+' or (args != fs['args'] and args not in fs['args']):
-                        self.__expr.append(ExpressionFunction(fs['func'],args,fs['str'],fs['latex'],op[0],True))
+                    if fs['args'] != '+' and (args != fs['args'] and args not in fs['args']):
+                        raise SyntaxError("Invalid number of arguments for {0:s} function".format(op[0]))
+                    self.__expr.append(ExpressionFunction(fs['func'],args,fs['str'],fs['latex'],op[0],True))
                 __expect_op = True
             elif __expect_op and v[0] == ",":
                 argc[-1] += 1

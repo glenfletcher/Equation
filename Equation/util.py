@@ -1,17 +1,13 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Fri Apr 11 00:51:34 2014
-
-  Copyright 2014 AlphaOmega Technology
-
-  Licensed under the AlphaOmega Technology Open License Version 1.0
-  You may not use this file except in compliance with this License.
-  You may obtain a copy of the License at
- 
-      http://www.alphaomega-technology.com.au/license/AOT-OL/1.0
-      
-.. moduleauthor:: Glen Fletcher <glen.fletcher@alphaomega-technology.com.au>
-"""
+#==============================================================================
+#   Copyright 2014 AlphaOmega Technology
+# 
+#   Licensed under the AlphaOmega Technology Open License Version 1.0
+#   You may not use this file except in compliance with this License.
+#   You may obtain a copy of the License at
+#  
+#       http://www.alphaomega-technology.com.au/license/AOT-OL/1.0
+#==============================================================================
 
 from . import __authors__,__copyright__,__license__,__contact__,__version__
 try:

@@ -1,13 +1,14 @@
-"""
-  Copyright 2014 AlphaOmega Technology
+# -*- coding: utf-8 -*-
+#==============================================================================
+#   Copyright 2014 AlphaOmega Technology
+# 
+#   Licensed under the AlphaOmega Technology Open License Version 1.0
+#   You may not use this file except in compliance with this License.
+#   You may obtain a copy of the License at
+#  
+#       http://www.alphaomega-technology.com.au/license/AOT-OL/1.0
+#==============================================================================
 
-  Licensed under the AlphaOmega Technology Open License Version 1.0
-  You may not use this file except in compliance with this License.
-  You may obtain a copy of the License at
- 
-      http://www.alphaomega-technology.com.au/license/AOT-OL/1.0
-
-"""
 __authors__   = "Glen Fletcher"
 __copyright__ = "(c) 2014, AlphaOmega Technology"
 __license__   = "AlphaOmega Technology Open License Version 1.0"
@@ -21,11 +22,9 @@ except ImportError:
     has_numpy = False
 import operator as op
 from Equation.util import addOp, addFn, addConst, addUnaryOp
+from Equation.similar import sim, nsim, gsim, lsim
 
 def equation_extend():
-    def simlar(a,b):
-        return abs(1-a/b)<=1e-5
-        
     def product(*args):
         if len(args) == 1 and has_numpy:
             return np.prod(args[0])
@@ -33,7 +32,10 @@ def equation_extend():
             return reduce(op.mul,args,1)
     
     def sumargs(*args):
-        return sum(args)
+        if len(args) == 1:
+            return sum(args[0])
+        else:
+            return sum(args)
             
     addOp('+',"({0:s} + {1:s})","\\left({0:s} + {1:s}\\right)",False,3,op.add)
     addOp('-',"({0:s} - {1:s})","\\left({0:s} - {1:s}\\right)",False,3,op.sub)
@@ -49,7 +51,8 @@ def equation_extend():
     addOp('|&',"({0:s} </> {1:s})","\\left({0:s} \\oplus {1:s}\\right)",False,4,op.xor)
     addOp('==',"({0:s} == {1:s})","\\left({0:s} = {1:s}\\right)",False,5,op.eq)
     addOp('=',"({0:s} == {1:s})","\\left({0:s} = {1:s}\\right)",False,5,op.eq)
-    addOp('~',"({0:s} ~ {1:s})","\\left({0:s} \\approx {1:s}\\right)",False,5,simlar)
+    addOp('~',"({0:s} ~ {1:s})","\\left({0:s} \\sim {1:s}\\right)",False,5,sim)
+    addOp('!~',"({0:s} !~ {1:s})","\\left({0:s} \\nsim {1:s}\\right)",False,5,nsim)
     addOp('!=',"({0:s} != {1:s})","\\left({0:s} \\neg {1:s}\\right)",False,5,op.ne)
     addOp('<>',"({0:s} != {1:s})","\\left({0:s} \\neg {1:s}\\right)",False,5,op.ne)
     addOp('><',"({0:s} != {1:s})","\\left({0:s} \\neg {1:s}\\right)",False,5,op.ne)
@@ -59,6 +62,10 @@ def equation_extend():
     addOp('>=',"({0:s} >= {1:s})","\\left({0:s} \\geq {1:s}\\right)",False,5,op.ge)
     addOp('=<',"({0:s} <= {1:s})","\\left({0:s} \\leq {1:s}\\right)",False,5,op.le)
     addOp('=>',"({0:s} >= {1:s})","\\left({0:s} \\geq {1:s}\\right)",False,5,op.ge)
+    addOp('<~',"({0:s} <~ {1:s})","\\left({0:s} \\lesssim {1:s}\\right)",False,5,lsim)
+    addOp('>~',"({0:s} >~ {1:s})","\\left({0:s} \\gtrsim {1:s}\\right)",False,5,gsim)
+    addOp('~<',"({0:s} <~ {1:s})","\\left({0:s} \\lesssim {1:s}\\right)",False,5,lsim)
+    addOp('~>',"({0:s} >~ {1:s})","\\left({0:s} \\gtrsim {1:s}\\right)",False,5,gsim)
     addUnaryOp('!',"(!{0:s})","\\neg{0:s}",op.not_)
     addUnaryOp('-',"-{0:s}","-{0:s}",op.neg)
     addFn('abs',"abs({0:s})","\\left|{0:s}\\right|",1,op.abs)
