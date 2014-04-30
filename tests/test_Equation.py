@@ -199,10 +199,10 @@ class TestSimilarEquation(unittest.TestCase):
             le = a*(1-1e-5)
             gt = a*(1+1.1e-5)
             lt = a*(1-1.1e-5)
-            self.assertTrue(self.fn(a,ge),"a={0:g},b={1:g}".format(a,ge))
-            self.assertTrue(self.fn(a,le),"a={0:g},b={1:g}".format(a,le))
-            self.assertFalse(self.fn(a,gt),"a={0:g},b={1:g}".format(a,gt))
-            self.assertFalse(self.fn(a,lt),"a={0:g},b={1:g}".format(a,lt))
+            self.assertTrue(self.fn(a,ge),"{0:g} ~ {1:g}, is False".format(a,ge))
+            self.assertTrue(self.fn(a,le),"{0:g} ~ {1:g}, is False".format(a,le))
+            self.assertFalse(self.fn(a,gt),"{0:g} ~ {1:g}, is True".format(a,gt))
+            self.assertFalse(self.fn(a,lt),"{0:g} ~ {1:g}, is True".format(a,lt))
 
     def testType(self):
         self.assertEqual(type(self.fn(1, 1)), bool)
@@ -239,7 +239,7 @@ class TestNotEqualsEquation(unittest.TestCase):
 
 class TestNotSimilarEquation(unittest.TestCase):
     def setUp(self):
-        self.fn = Expression("x ~ y")
+        self.fn = Expression("x !~ y")
 
     def testRepr(self):
         self.assertEqual(Expression(repr(self.fn)),self.fn)
@@ -254,14 +254,14 @@ class TestNotSimilarEquation(unittest.TestCase):
             le = a*(1-1e-5)
             gt = a*(1+1.1e-5)
             lt = a*(1-1.1e-5)
-            self.assertFalse(self.fn(a,ge),"a={0:g},b={1:g}".format(a,ge))
-            self.assertFalse(self.fn(a,le),"a={0:g},b={1:g}".format(a,le))
-            self.assertTrue(self.fn(a,gt),"a={0:g},b={1:g}".format(a,gt))
-            self.assertTrue(self.fn(a,lt),"a={0:g},b={1:g}".format(a,lt))
+            self.assertFalse(self.fn(a,ge),"{0:g} !~ {1:g}, is True".format(a,ge))
+            self.assertFalse(self.fn(a,le),"{0:g} !~ {1:g}, is True".format(a,le))
+            self.assertTrue(self.fn(a,gt),"{0:g} !~ {1:g}, is False".format(a,gt))
+            self.assertTrue(self.fn(a,lt),"{0:g} !~ {1:g}, is False".format(a,lt))
 
     def testType(self):
         self.assertEqual(type(self.fn(1, 1)), bool)
-        self.assertTrue(self.fn(1, 1.0))
+        self.assertFalse(self.fn(1, 1.0))
 
     def tearDown(self):
         pass
@@ -319,7 +319,7 @@ class TestGreaterThanOrEqualToEquation(unittest.TestCase):
 
 class TestGreaterThanOrSimilarToEquation(unittest.TestCase):
     def setUp(self):
-        self.fn = Expression("x ~ y")
+        self.fn = Expression("x >~ y")
 
     def testRepr(self):
         self.assertEqual(Expression(repr(self.fn)),self.fn)
@@ -334,10 +334,10 @@ class TestGreaterThanOrSimilarToEquation(unittest.TestCase):
             le = a*(1-1e-5)
             gt = a*(1+1.1e-5)
             lt = a*(1-1.1e-5)
-            self.assertTrue(self.fn(a,ge),"a={0:g},b={1:g}".format(a,ge))
-            self.assertTrue(self.fn(a,le),"a={0:g},b={1:g}".format(a,le))
-            self.assertTrue(self.fn(a,gt),"a={0:g},b={1:g}".format(a,gt))
-            self.assertFalse(self.fn(a,lt),"a={0:g},b={1:g}".format(a,lt))
+            self.assertTrue(self.fn(a,ge),"{0:g} >~ {1:g}, is False".format(a,ge))
+            self.assertTrue(self.fn(a,le),"{0:g} >~ {1:g}, is False".format(a,le))
+            self.assertFalse(self.fn(a,gt),"{0:g} >~ {1:g}, is True".format(a,gt))
+            self.assertTrue(self.fn(a,lt),"{0:g} >~ {1:g}, is False".format(a,lt))
 
     def testType(self):
         self.assertEqual(type(self.fn(1, 1)), bool)
@@ -398,7 +398,7 @@ class TestLessThanOrEqualToEquation(unittest.TestCase):
 
 class TestLessThanOrSimilarToEquation(unittest.TestCase):
     def setUp(self):
-        self.fn = Expression("x ~ y")
+        self.fn = Expression("x <~ y")
 
     def testRepr(self):
         self.assertEqual(Expression(repr(self.fn)),self.fn)
@@ -413,10 +413,10 @@ class TestLessThanOrSimilarToEquation(unittest.TestCase):
             le = a*(1-1e-5)
             gt = a*(1+1.1e-5)
             lt = a*(1-1.1e-5)
-            self.assertTrue(self.fn(a,ge),"a={0:g},b={1:g}".format(a,ge))
-            self.assertTrue(self.fn(a,le),"a={0:g},b={1:g}".format(a,le))
-            self.assertFalse(self.fn(a,gt),"a={0:g},b={1:g}".format(a,gt))
-            self.assertTrue(self.fn(a,lt),"a={0:g},b={1:g}".format(a,lt))
+            self.assertTrue(self.fn(a,ge),"{0:g} <~ {1:g}, is False".format(a,ge))
+            self.assertTrue(self.fn(a,le),"{0:g} <~ {1:g}, is False".format(a,le))
+            self.assertTrue(self.fn(a,gt),"{0:g} <~ {1:g}, is False".format(a,gt))
+            self.assertFalse(self.fn(a,lt),"{0:g} <~ {1:g}, is True".format(a,lt))
 
     def testType(self):
         self.assertEqual(type(self.fn(1, 1)), bool)
