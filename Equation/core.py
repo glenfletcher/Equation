@@ -47,16 +47,23 @@ class ExpressionValue( ExpressionObject ):
             B = [0,0]
             out = ["",""]
             for i in xrange(2):
-                E[i] = int(math.floor(math.log10(abs(V[i]))))
-                B[i] = V[i]*10**-E[i]
-                if E[i] in [0,1,2,3] and str(V[i])[-2:] == ".0":
-                    B[i] = int(V[i])
+                if V[i] == 0:
                     E[i] = 0
+                    B[i] = 0
+                else:
+                    E[i] = int(math.floor(math.log10(abs(V[i]))))
+                    B[i] = V[i]*10**-E[i]
+                    if E[i] in [0,1,2,3] and str(V[i])[-2:] == ".0":
+                        B[i] = int(V[i])
+                        E[i] = 0
+                    if E[i] in [-1,-2] and len(str(V[i])) <= 7:
+                        B[i] = V[i]
+                        E[i] = 0
                 if i == 1:
                     fmt = "{{0:+{0:s}}}"
                 else:
                     fmt = "{{0:-{0:s}}}"
-                if type(B[i]) == "int":
+                if type(B[i]) == int:
                     out[i] += fmt.format('d').format(B[i])
                 else:
                     out[i] += fmt.format('.5f').format(B[i]).rstrip("0.")
@@ -70,11 +77,18 @@ class ExpressionValue( ExpressionObject ):
             E = 0
             B = 0
             out = ""
-            E = int(math.floor(math.log10(abs(V))))
-            B = V*10**-E
-            if E in [0,1,2,3] and str(V)[-2:] == ".0":
-                B = int(V)
+            if V == 0:
                 E = 0
+                B = 0
+            else:
+                E = int(math.floor(math.log10(abs(V))))
+                B = V*10**-E
+                if E in [0,1,2,3] and str(V)[-2:] == ".0":
+                    B = int(V)
+                    E = 0
+                if E in [-1,-2] and len(str(V)) <= 7:
+                    B = V
+                    E = 0
             if type(B) == int:
                 out += "{0:-d}".format(B)
             else:
