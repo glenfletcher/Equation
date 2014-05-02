@@ -13,6 +13,8 @@ from __future__ import print_function
 
 from . import __authors__,__copyright__,__license__,__contact__,__version__
 
+import math
+
 import sys
 import re
 
@@ -38,9 +40,52 @@ class ExpressionValue( ExpressionObject ):
         super(ExpressionValue,self).__init__(*args,**kwargs)
         self.value = value
 
-    #TODO(Glen Fletcher): Fix to probably format number as R[x10^RE][+-\iota I[x10^IE]
     def toStr(self,args,expression):
-        return str(self.value)
+        if (isinstance(self.value,complex)):
+            V = [self.value.real,self.value.imag]
+            E = [0,0]
+            B = [0,0]
+            out = ["",""]
+            for i in xrange(2):
+                E[i] = int(math.floor(math.log10(abs(V[i]))))
+                B[i] = V[i]*10**-E[i]
+                if E[i] in [0,1,2,3] and str(V[i])[-2:] == ".0":
+                    B[i] = int(V[i])
+                    E[i] = 0
+                if i == 1:
+                    fmt = "{{0:+{0:s}}}"
+                else:
+                    fmt = "{{0:-{0:s}}}"
+                if type(B[i]) == "int":
+                    out[i] += fmt.format('d').format(B[i])
+                else:
+                    out[i] += fmt.format('.5f').format(B[i]).rstrip("0.")
+                if i == 1:
+                    out[i] += "\\imath"
+                if E[i] != 0:
+                    out[i] += "\\times10^{{{0:d}}}".format(E[i])
+            return "\\left(" + ''.join(out) + "\\right)"
+        elif (isinstance(self.value,float)):
+            V = self.value
+            E = 0
+            B = 0
+            out = ""
+            E = int(math.floor(math.log10(abs(V))))
+            B = V*10**-E
+            if E in [0,1,2,3] and str(V)[-2:] == ".0":
+                B = int(V)
+                E = 0
+            if type(B) == int:
+                out += "{0:-d}".format(B)
+            else:
+                out += "{0:-.5f}".format(B).rstrip("0.")
+            if E != 0:
+                out += "\\times10^{{{0:d}}}".format(E)
+                return "\\left(" + out + "\\right)"
+            else:
+                return out
+        else:
+            return str(self.value)
     
     def toRepr(self,args,expression):
         return str(self.value)
@@ -254,7 +299,7 @@ class Expression( object ):
                 if g["ivalue"]:
                     return complex(int(g["rsign"]+"1")*float(g["rvalue"])*10**int(g["rexpoent"]),int(g["isign"]+"1")*float(g["ivalue"])*10**int(g["iexpoent"])),'VALUE'
                 elif g["rexpoent"] or g["rvalue"].find('.')>=0:
-                    return int(g["rsign"]+"1")*float(g["rsign"]+"1")*float(g["rvalue"])*10**int(g["rexpoent"]),'VALUE'
+                    return int(g["rsign"]+"1")*float(g["rvalue"])*10**int(g["rexpoent"]),'VALUE'
                 else:
                     return int(g["rsign"]+"1")*int(g["rvalue"]),'VALUE'
             m = nmatch.match(self.__expression)
