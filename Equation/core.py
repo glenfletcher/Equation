@@ -173,13 +173,32 @@ class Expression( object ):
     This is a object that respresents an equation string in a manner
     that allows for it to be evaluated
     
+    Arithmetic Operators:
+        Expression objects support combining with the standard arithmetic operators
+        to create new Expression objects, they may also be combined with numerical
+        constant, and strings containg a valid Expression.
+        
+            >>> from Equation import Expression
+            >>> fn = Expression("x")
+            >>> fn += 2
+            >>> fn
+            (x + 2)
+            >>> fn **=3
+            >>> fn
+            ((x + 2) ^ 3)
+            >>> fn -= "z"
+            >>> fn
+            (((x + 2) ^ 3) - z)
+            >>> fn(1,2)
+            25
+    
     Parameters
     ----------
     expression: str
         String resprenstation of an equation
     argorder: list of str
         List of variable names, indicating the position of variable
-        for mapping from positional arguments
+        for mapping from positional arguments    
     """
     def __init__(self,expression,argorder=[],*args,**kwargs):
         super(Expression,self).__init__(*args,**kwargs)
@@ -433,7 +452,7 @@ class Expression( object ):
         else:
             obj = type(self)(self)
             if isinstance(other,(int,float,complex)):
-                obj.__expr.insert(0,ExpressionValue(other,obj))
+                obj.__expr.insert(0,ExpressionValue(other))
             else:
                 if isinstance(other,basestring):
                     try:
@@ -462,7 +481,7 @@ class Expression( object ):
         else:
             obj = self
             if isinstance(other,(int,float,complex)):
-                obj.__expr.append(ExpressionValue(other,obj))
+                obj.__expr.append(ExpressionValue(other))
             else:
                 if isinstance(other,basestring):
                     try:

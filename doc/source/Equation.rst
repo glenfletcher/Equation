@@ -32,7 +32,15 @@ Modules
 
 	.. method:: var in fn
 	
-		:returns: True if `fn` has a preset variable `var`
+		:returns: True if `fn` has a variable `var`
+
+	.. method:: var not in fn
+	
+		:returns: True if `fn` dosen't have a variable `var`
+
+	.. method:: for var in fn
+	
+		Iterates over all variables `var` in `fn`
 
 	.. method:: str(fn)
 	
@@ -45,6 +53,7 @@ Modules
 		Generates a String that correctrly respresents the equation
 		
 		:returns: Convert the Expression to a String that passed to the constructor, will constuct an identical equation object (in terms of sequence of tokens, and token type/value)
+		
 		
 .. automodule:: Equation.similar
 	:members:
