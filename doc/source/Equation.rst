@@ -45,6 +45,6 @@ Modules
 		Generates a String that correctrly respresents the equation
 		
 		:returns: Convert the Expression to a String that passed to the constructor, will constuct an identical equation object (in terms of sequence of tokens, and token type/value)
-
+		
 .. automodule:: Equation.similar
 	:members:
