@@ -62,6 +62,27 @@ class TestEquation3(unittest.TestCase):
     def tearDown(self):
         pass
 
+class TestComplexEquation(unittest.TestCase):
+    def setUp(self):
+        pass
+
+    def testCall(self):
+        for expr,value in [ ("-8-2j",(-8-2j)),
+                            ("-(8+2j)",(-8-2j)),
+                            ("- 8+2j",(-8+2j)),
+                            ("-8-2i",(-8-2j)),
+                            ("-(8+2i)",(-8-2j)),
+                            ("- 8+2i",(-8+2j)),
+                            ("- 8 + -2j",(-8-2j)),
+                            ("-(8 + - 2j)",(-8+2j)),
+                            ("- 8 + +2j",(-8+2j)),
+                            ]:
+            result = Expression(expr)()
+            self.assertEqual(result,value,"Expression(\"{0:s}\")() = {1!r:s} not {2!r:s}".format(expr,result,value))
+
+    def tearDown(self):
+        pass
+
 
 class TestAddEquation(unittest.TestCase):
     def setUp(self):
@@ -85,6 +106,96 @@ class TestAddEquation(unittest.TestCase):
     def tearDown(self):
         pass
 
+class TestSubtractEquation(unittest.TestCase):
+    def setUp(self):
+        self.fn = Expression("x - y")
+        
+    def testRepr(self):
+        self.assertEqual(Expression(repr(self.fn)),self.fn)
+
+    def testCall(self):
+        self.assertEqual(self.fn(1, 0), 1)
+        self.assertEqual(self.fn(1, 1), 0)
+        self.assertEqual(self.fn(2, 1), 1)
+        self.assertEqual(self.fn(3, 1), 2)
+        self.assertEqual(self.fn(15, 3), 12)
+
+    def testType(self):
+        self.assertEqual(type(self.fn(1, 2)), int)
+        self.assertEqual(type(self.fn(1.0, 2.0)), float)
+        self.assertEqual(type(self.fn(1, 2.0)), float)
+
+    def tearDown(self):
+        pass
+
+class TestMultiplyEquation(unittest.TestCase):
+    def setUp(self):
+        self.fn = Expression("x * y")
+        
+    def testRepr(self):
+        self.assertEqual(Expression(repr(self.fn)),self.fn)
+
+    def testCall(self):
+        self.assertEqual(self.fn(1, 0), 0)
+        self.assertEqual(self.fn(1, 1), 1)
+        self.assertEqual(self.fn(2, 1), 2)
+        self.assertEqual(self.fn(3, 1), 3)
+        self.assertEqual(self.fn(15, 3), 45)
+
+    def testType(self):
+        self.assertEqual(type(self.fn(1, 2)), int)
+        self.assertEqual(type(self.fn(1.0, 2.0)), float)
+        self.assertEqual(type(self.fn(1, 2.0)), float)
+
+    def tearDown(self):
+        pass
+    
+class TestPowerEquation(unittest.TestCase):
+    def setUp(self):
+        self.fn = Expression("x ^ y")
+        
+    def testRepr(self):
+        self.assertEqual(Expression(repr(self.fn)),self.fn)
+
+    def testCall(self):
+        self.assertEqual(self.fn(1, 0), 1)
+        self.assertEqual(self.fn(1, 1), 1)
+        self.assertEqual(self.fn(2, 2), 4)
+        self.assertEqual(self.fn(2, 0), 1)
+        self.assertEqual(self.fn(3, 2), 9)
+        self.assertEqual(self.fn(15, 3), 3375)
+
+    def testType(self):
+        self.assertEqual(type(self.fn(1, 2)), int)
+        self.assertEqual(type(self.fn(1.0, 2.0)), float)
+        self.assertEqual(type(self.fn(1, 2.0)), float)
+
+    def tearDown(self):
+        pass
+
+class TestDivisionEquation(unittest.TestCase):
+    def setUp(self):
+        self.fn = Expression("x / y")
+        
+    def testRepr(self):
+        self.assertEqual(Expression(repr(self.fn)),self.fn)
+
+    def testCall(self):
+        self.assertEqual(self.fn(0, 1), 0)
+        self.assertEqual(self.fn(1, 1), 1)
+        self.assertEqual(self.fn(2, 1), 2)
+        self.assertEqual(self.fn(3, 1), 3)
+        self.assertEqual(self.fn(15, 3), 5)
+        with self.assertRaises(ZeroDivisionError):
+            self.fn(1,0)
+
+    def testType(self):
+        self.assertEqual(type(self.fn(1, 2)), float)
+        self.assertEqual(type(self.fn(1.0, 2.0)), float)
+        self.assertEqual(type(self.fn(1, 2.0)), float)
+
+    def tearDown(self):
+        pass
 
 class TestAndEquation(unittest.TestCase):
     def setUp(self):
@@ -154,6 +265,19 @@ class TestNotEquation(unittest.TestCase):
     def tearDown(self):
         pass
 
+class TestNegEquation(unittest.TestCase):
+    def setUp(self):
+        self.fn = Expression("-x")
+        
+    def testRepr(self):
+        self.assertEqual(Expression(repr(self.fn)),self.fn)
+
+    def testCall(self):
+        self.assertEqual(self.fn(1),-1)
+        self.assertEqual(self.fn(6+3j),(-6-3j))
+
+    def tearDown(self):
+        pass
 
 class TestEqualsEquation(unittest.TestCase):
     def setUp(self):

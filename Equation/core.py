@@ -247,31 +247,31 @@ class Expression( object ):
                 self.__expression = self.__expression[m.end():]
                 g = m.groups()
                 return g[0],'OPEN'
-            m = umatch.match(self.__expression)
-            if m != None:
-                self.__expression = self.__expression[m.end():]
-                g = m.groups()
-                return g[0],'UNARY'
-            m = fmatch.match(self.__expression)
-            if m != None:
-                self.__expression = self.__expression[m.end():]
-                g = m.groups()
-                return g[0],'FUNC'
-            m = nmatch.match(self.__expression)
-            if m != None:
-                self.__expression = self.__expression[m.end():]
-                g = m.groups()
-                return g[0],'NAME'
             m = vmatch.match(self.__expression)
             if m != None:
                 self.__expression = self.__expression[m.end():]
                 g = m.groupdict(0)
                 if g["ivalue"]:
-                    return complex(float(g["rvalue"])*10**int(g["rexpoent"]),float(g["ivalue"])*10**int(g["iexpoent"])),'VALUE'
+                    return complex(int(g["rsign"]+"1")*float(g["rvalue"])*10**int(g["rexpoent"]),int(g["isign"]+"1")*float(g["ivalue"])*10**int(g["iexpoent"])),'VALUE'
                 elif g["rexpoent"] or g["rvalue"].find('.')>=0:
-                    return float(g["rvalue"])*10**int(g["rexpoent"]),'VALUE'
+                    return int(g["rsign"]+"1")*float(g["rsign"]+"1")*float(g["rvalue"])*10**int(g["rexpoent"]),'VALUE'
                 else:
-                    return int(g["rvalue"]),'VALUE'
+                    return int(g["rsign"]+"1")*int(g["rvalue"]),'VALUE'
+            m = nmatch.match(self.__expression)
+            if m != None:
+                self.__expression = self.__expression[m.end():]
+                g = m.groups()
+                return g[0],'NAME'
+            m = fmatch.match(self.__expression)
+            if m != None:
+                self.__expression = self.__expression[m.end():]
+                g = m.groups()
+                return g[0],'FUNC'
+            m = umatch.match(self.__expression)
+            if m != None:
+                self.__expression = self.__expression[m.end():]
+                g = m.groups()
+                return g[0],'UNARY'
             return None
 
     def show(self):
@@ -650,7 +650,7 @@ unary_ops = {}
 ops = {}
 functions = {}
 smatch = re.compile("\s*,")
-vmatch = re.compile("\s*(?P<rvalue>[+-]?(?:\d+\.\d+|\d+\.|\.\d+|\d+))(?:[Ee](?P<rexpoent>[+-]\d+))?(?:\s*(?P<sep>\+)?\s*(?P<ivalue>(?(rvalue)(?(sep)[+-]?|[+-])|[+-]?)?(?:\d+\.\d+|\d+\.|\.\d+|\d+))(?:[Ee](?P<iexpoent>[+-]\d+))?[ij])?")
+vmatch = re.compile("\s*(?P<rsign>[+-]?)\s*(?P<rvalue>(?:\d+\.\d+|\d+\.|\.\d+|\d+))(?:[Ee](?P<rexpoent>[+-]?\d+))?(?:\s*(?P<sep>(?(rvalue)\+|))?\s*(?P<isign>(?(rvalue)(?(sep)[+-]?|[+-])|[+-]?)?)\s*(?P<ivalue>(?:\d+\.\d+|\d+\.|\.\d+|\d+))(?:[Ee](?P<iexpoent>[+-]?\d+))?[ij])?")
 nmatch = re.compile("\s*([a-zA-Z_][a-zA-Z0-9_]*)")
 gsmatch = re.compile('\s*(\()')
 gematch = re.compile('\s*(\))')
