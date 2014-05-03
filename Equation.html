@@ -9,7 +9,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Equation Module &mdash; Equation v1.0 Documentation</title>
+    <title>Modules &mdash; Equation v1.1 Documentation</title>
     
     <link rel="stylesheet" href="_static/cloud.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -18,7 +18,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '1.0',
+        VERSION:     '1.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -30,7 +30,8 @@
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="_static/jquery.cookie.js"></script>
     <script type="text/javascript" src="_static/cloud.js"></script>
-    <link rel="top" title="Equation v1.0 Documentation" href="index.html" />
+    <link rel="top" title="Equation v1.1 Documentation" href="index.html" />
+    <link rel="next" title="Examples" href="Examples.html" />
     <link rel="prev" title="Functions, Operators &amp; Constants" href="Functions.html" /> 
         <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
@@ -44,9 +45,12 @@
           <a href="contents.html" title="Table Of Contents"
              accesskey="C">toc</a></li>
         <li class="right" >
+          <a href="Examples.html" title="Examples"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
           <a href="Functions.html" title="Functions, Operators &amp; Constants"
              accesskey="P">previous</a> &nbsp; &nbsp;</li>
-    <li><a href="index.html">Equation 1.0 Documentation</a> &raquo;</li>
+    <li><a href="index.html">Equation 1.1 Documentation</a> &raquo;</li>
  
       </ul>
     </div>
@@ -59,9 +63,9 @@
           <div class="body">
             
   <div class="section" id="module-Equation">
-<span id="equation-module"></span><h1>Equation Module<a class="headerlink" href="#module-Equation" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="id1">
-<h2>Equation Module<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<span id="modules"></span><h1>Modules<a class="headerlink" href="#module-Equation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="equation-module">
+<h2>Equation Module<a class="headerlink" href="#equation-module" title="Permalink to this headline">¶</a></h2>
 <p>This is the only module you should need to import</p>
 <p>It maps the Expression Class from <cite>Equation.core.Expression</cite></p>
 <p>Its recomended you use the code:</p>
@@ -78,6 +82,28 @@ should use.</p>
 <dd><p>Expression or Equation Object</p>
 <p>This is a object that respresents an equation string in a manner
 that allows for it to be evaluated</p>
+<dl class="docutils">
+<dt>Arithmetic Operators:</dt>
+<dd><p class="first">Expression objects support combining with the standard arithmetic operators
+to create new Expression objects, they may also be combined with numerical
+constant, and strings containg a valid Expression.</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Equation</span> <span class="kn">import</span> <span class="n">Expression</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span> <span class="o">=</span> <span class="n">Expression</span><span class="p">(</span><span class="s">&quot;x&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span> <span class="o">+=</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span>
+<span class="go">(x + 2)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span> <span class="o">**=</span><span class="mi">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span>
+<span class="go">((x + 2) ^ 3)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span> <span class="o">-=</span> <span class="s">&quot;z&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span>
+<span class="go">(((x + 2) ^ 3) - z)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">25</span>
+</pre></div>
+</div>
+</dd>
+</dl>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -142,10 +168,29 @@ defualt value for said arguments.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if <cite>fn</cite> has a preset variable <cite>var</cite></td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if <cite>fn</cite> has a variable <cite>var</cite></td>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<tt class="descname">var not in fn</tt></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if <cite>fn</cite> dosen&#8217;t have a variable <cite>var</cite></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<tt class="descname">for var in fn</tt></dt>
+<dd><p>Iterates over all variables <cite>var</cite> in <cite>fn</cite></p>
 </dd></dl>
 
 <dl class="method">
@@ -186,6 +231,53 @@ one token perline.</p>
 
 </dd></dl>
 
+<span class="target" id="module-Equation.similar"></span><div class="section" id="equation-similar-module">
+<span id="similar-module"></span><h2>Equation.similar Module<a class="headerlink" href="#equation-similar-module" title="Permalink to this headline">¶</a></h2>
+<p>Provides support for similar type comparsion, and allows the tolerance to be changed</p>
+<p>Comparsions work by detriming if the following is true</p>
+<div class="math">
+\[1-\frac{\min(A,B)}{\max(A,B)}\leq tolerance\]</div>
+<p>If it is true the <span class="math">\(A\)</span> and <span class="math">\(B\)</span> are considered to be equal</p>
+<p>This module only needs to be imported if you need to change the tolerance for similarlity
+tests, otherwise you just need to use the similarlity operators in your expression</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Equation</span> <span class="kn">import</span> <span class="n">Expression</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span> <span class="o">=</span> <span class="n">Expression</span><span class="p">(</span><span class="s">&quot;x ~ y&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mf">1.1</span><span class="p">)</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mf">1.00001</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mf">1.001</span><span class="p">)</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Equation.similar</span> <span class="kn">import</span> <span class="n">set_tol</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">set_tol</span><span class="p">(</span><span class="mf">1e-2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mf">1.1</span><span class="p">)</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mf">1.00001</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mf">1.001</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>By default the tolerance is <span class="math">\(10^{-5}\)</span> Hence 1.001 isn&#8217;t condisered similar to 1, but by
+changing the tolerance to <span class="math">\(10^{-2}\)</span>, 1.001 is condisered similar to 1</p>
+<dl class="function">
+<dt id="Equation.similar.set_tol">
+<tt class="descclassname">Equation.similar.</tt><tt class="descname">set_tol</tt><big>(</big><em>value=1e-05</em><big>)</big><a class="headerlink" href="#Equation.similar.set_tol" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Error Tolerance</p>
+<p>Set the tolerance for detriming if two numbers are simliar, i.e
+<span class="math">\(\left|\frac{a}{b}\right| = 1 \pm tolerance\)</span></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<em>float</em>) &#8211; The Value to set the tolerance to show be very small as it respresents the
+percentage of acceptable error in detriming if two values are the same.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
 </div>
 
 
@@ -199,8 +291,9 @@ one token perline.</p>
         </a></p><div class="sphinxlocaltoc">
     <h3><a href="contents.html">Page contents</a></h3>
     <ul>
-<li><a class="reference internal" href="#">Equation Module</a><ul>
-<li><a class="reference internal" href="#id1">Equation Module</a></li>
+<li><a class="reference internal" href="#">Modules</a><ul>
+<li><a class="reference internal" href="#equation-module">Equation Module</a></li>
+<li><a class="reference internal" href="#equation-similar-module">Equation.similar Module</a></li>
 </ul>
 </li>
 </ul>
@@ -210,6 +303,11 @@ one token perline.</p>
     <h4>Previous page</h4>
     <p class="topless"><a href="Functions.html"
                           title="Previous page">&larr; Functions, Operators &amp; Constants</a></p>
+  </div>
+  <div class="sphinxnext">
+    <h4>Next page</h4>
+    <p class="topless"><a href="Examples.html"
+                          title="Next page">&rarr; Examples</a></p>
   </div>
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
@@ -237,9 +335,12 @@ one token perline.</p>
           <a href="contents.html" title="Table Of Contents"
              >toc</a></li>
         <li class="right" >
+          <a href="Examples.html" title="Examples"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
           <a href="Functions.html" title="Functions, Operators &amp; Constants"
              >previous</a> &nbsp; &nbsp;</li>
-    <li><a href="index.html">Equation 1.0 Documentation</a> &raquo;</li>
+    <li><a href="index.html">Equation 1.1 Documentation</a> &raquo;</li>
  
       </ul>
     </div>

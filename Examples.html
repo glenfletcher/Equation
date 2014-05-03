@@ -1,0 +1,200 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Examples &mdash; Equation v1.1 Documentation</title>
+    
+    <link rel="stylesheet" href="_static/cloud.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/cloud.js"></script>
+    <link rel="top" title="Equation v1.1 Documentation" href="index.html" />
+    <link rel="prev" title="Modules" href="Equation.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="contents.html" title="Table Of Contents"
+             accesskey="C">toc</a></li>
+        <li class="right" >
+          <a href="Equation.html" title="Modules"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Equation 1.1 Documentation</a> &raquo;</li>
+ 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="examples">
+<h1>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h1>
+<p>The following code demonstrates more advanced uses of the Equation Package</p>
+<div class="section" id="dynamic-ploting-of-functions">
+<h2>Dynamic Ploting of functions<a class="headerlink" href="#dynamic-ploting-of-functions" title="Permalink to this headline">¶</a></h2>
+<p>Requires numpy, matplotlib and h5py</p>
+<p><strong>sample/DPOF.py</strong></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#!/usr/bin/env python</span>
+<span class="c">#############################################</span>
+<span class="c"># Dynamic Plotting of Function Sample</span>
+<span class="c">#############################################</span>
+<span class="kn">from</span> <span class="nn">Equation</span> <span class="kn">import</span> <span class="n">Expression</span>
+<span class="kn">from</span> <span class="nn">Equation.core</span> <span class="kn">import</span> <span class="n">constants</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">h5py</span>
+
+<span class="n">db</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="s">&quot;dataset.hdf5&quot;</span><span class="p">,</span> <span class="s">&quot;r&quot;</span><span class="p">)</span> <span class="c"># External Data base of consts and values</span>
+
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="n">expr</span> <span class="o">=</span> <span class="nb">raw_input</span><span class="p">(</span><span class="s">&quot;Enter Equation to Plot in terms of (x): &quot;</span><span class="p">)</span> <span class="c"># Fetch Equation From User Input</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">fn</span> <span class="o">=</span> <span class="n">Expression</span><span class="p">(</span><span class="n">expr</span><span class="p">,[</span><span class="s">&#39;x&#39;</span><span class="p">])</span>
+    <span class="k">except</span> <span class="ne">SyntaxError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+        <span class="k">print</span> <span class="n">err</span><span class="o">.</span><span class="n">message</span>
+        <span class="k">continue</span>
+
+    <span class="k">if</span> <span class="s">&#39;x&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">fn</span><span class="p">:</span> <span class="c"># check &#39;x&#39; is used in expr</span>
+        <span class="k">print</span> <span class="s">&quot;Error: Equation must have a variable named x&quot;</span>
+        <span class="k">continue</span>
+
+    <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">fn</span><span class="p">:</span> <span class="c"># load all data values from db</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="s">&#39;x&#39;</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">db</span><span class="p">:</span>
+            <span class="n">fn</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">db</span><span class="p">[</span><span class="n">v</span><span class="p">]</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">db</span><span class="o">.</span><span class="n">attrs</span><span class="p">:</span>
+            <span class="n">fn</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">v</span><span class="p">]</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">constants</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">print</span> <span class="s">&quot;Error: Variable &#39;{0:s}&#39; is not defined in database&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="k">break</span> <span class="c"># Break the For Loop</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">break</span> <span class="c"># Break the While Loop</span>
+
+<span class="c"># One We get Here fn is a valid Expression object requiring a single argument &#39;x&#39;</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1000</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">fn</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&quot;Plot of ${0:s}$&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fn</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The Following is the result of running the script, given &#8220;dataset.hdf5&#8221; contains the attribute <tt class="docutils literal"><span class="pre">A</span> <span class="pre">=</span> <span class="pre">3</span></tt></p>
+<div class="highlight-none"><div class="highlight"><pre>Enter Equation to Plot in terms of (x): A*sin(x*re(sqrt(x-(0.5+0j))))
+</pre></div>
+</div>
+<img alt="_images/DPOF01.png" src="_images/DPOF01.png" />
+<div class="highlight-none"><div class="highlight"><pre>Enter Equation to Plot in terms of (x): A*sin(x*im(sqrt(x-(0.5+0j))))
+</pre></div>
+</div>
+<img alt="_images/DPOF02.png" src="_images/DPOF02.png" />
+<p>This sample asks the user for some function of <tt class="docutils literal"><span class="pre">x</span></tt> and then loads required data from a hdf5 file by search the file for
+variables in the function the user entered. Once the data has been retrived the function is plotted in the range <span class="math">\([0,1]\)</span>
+and the plot is titled using the display form of the function the user entered.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is important to search the hdf5 file for variables as hdf5 files may contain thousands of variables and take several Gigabytes of space.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="index.html" title="index">
+          <img class="logo" src="_static/logo.png" alt="Logo"/>
+        </a></p><div class="sphinxlocaltoc">
+    <h3><a href="contents.html">Page contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Examples</a><ul>
+<li><a class="reference internal" href="#dynamic-ploting-of-functions">Dynamic Ploting of functions</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div class="sphinxprev">
+    <h4>Previous page</h4>
+    <p class="topless"><a href="Equation.html"
+                          title="Previous page">&larr; Modules</a></p>
+  </div>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="contents.html" title="Table Of Contents"
+             >toc</a></li>
+        <li class="right" >
+          <a href="Equation.html" title="Modules"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Equation 1.1 Documentation</a> &raquo;</li>
+ 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2014, AlphaoOmega Technology.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

@@ -9,7 +9,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Functions, Operators &amp; Constants &mdash; Equation v1.0 Documentation</title>
+    <title>Functions, Operators &amp; Constants &mdash; Equation v1.1 Documentation</title>
     
     <link rel="stylesheet" href="_static/cloud.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -18,7 +18,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '1.0',
+        VERSION:     '1.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -30,8 +30,8 @@
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="_static/jquery.cookie.js"></script>
     <script type="text/javascript" src="_static/cloud.js"></script>
-    <link rel="top" title="Equation v1.0 Documentation" href="index.html" />
-    <link rel="next" title="Equation Module" href="Equation.html" />
+    <link rel="top" title="Equation v1.1 Documentation" href="index.html" />
+    <link rel="next" title="Modules" href="Equation.html" />
     <link rel="prev" title="Equation Interpeter" href="index.html" /> 
         <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
@@ -45,12 +45,12 @@
           <a href="contents.html" title="Table Of Contents"
              accesskey="C">toc</a></li>
         <li class="right" >
-          <a href="Equation.html" title="Equation Module"
+          <a href="Equation.html" title="Modules"
              accesskey="N">next</a> &nbsp; &nbsp;</li>
         <li class="right" >
           <a href="index.html" title="Equation Interpeter"
              accesskey="P">previous</a> &nbsp; &nbsp;</li>
-    <li><a href="index.html">Equation 1.0 Documentation</a> &raquo;</li>
+    <li><a href="index.html">Equation 1.1 Documentation</a> &raquo;</li>
  
       </ul>
     </div>
@@ -74,27 +74,103 @@
 <p>Constants are basicaly unchanging global variabes, an used to define special values</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="29%" />
-<col width="71%" />
+<col width="10%" />
+<col width="14%" />
+<col width="76%" />
 </colgroup>
 <thead valign="bottom">
 <tr class="row-odd"><th class="head">Name</th>
+<th class="head">Version Added</th>
 <th class="head">Value</th>
 </tr>
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td><strong>pi</strong></td>
-<td><span class="math">\(\pi\)</span></td>
+<td>1.0</td>
+<td>Pi (<span class="math">\(\pi\)</span>)</td>
 </tr>
 <tr class="row-odd"><td><strong>e</strong></td>
-<td><span class="math">\(\mathrm{e}\)</span></td>
+<td>1.0</td>
+<td>Euler&#8217;s number (<span class="math">\(\mathrm{e}\)</span>)</td>
 </tr>
 <tr class="row-even"><td><strong>Inf</strong></td>
-<td><span class="math">\(\infty\)</span></td>
+<td>1.0</td>
+<td>Infinity (<span class="math">\(\infty\)</span>)</td>
 </tr>
 <tr class="row-odd"><td><strong>NaN</strong></td>
-<td><span class="math">\(\mathrm{NaN}\)</span></td>
+<td>1.0</td>
+<td>Not a Number</td>
 </tr>
+<tr class="row-even"><td><strong>h</strong></td>
+<td>1.1</td>
+<td>Plancks Constant (<span class="math">\(h\)</span>) <a class="footnote-reference" href="#scipy-const" id="id1">[1]</a></td>
+</tr>
+<tr class="row-odd"><td><strong>hbar</strong></td>
+<td>1.1</td>
+<td>Reduced Plancks Constant (<span class="math">\(\hbar\)</span>) <a class="footnote-reference" href="#scipy-const" id="id2">[1]</a></td>
+</tr>
+<tr class="row-even"><td><strong>m_e</strong></td>
+<td>1.1</td>
+<td>Electron Mass (<span class="math">\(m_{\rm e}\)</span>) <a class="footnote-reference" href="#scipy-const" id="id3">[1]</a></td>
+</tr>
+<tr class="row-odd"><td><strong>m_p</strong></td>
+<td>1.1</td>
+<td>Proton Mass (<span class="math">\(m_{\rm p}\)</span>) <a class="footnote-reference" href="#scipy-const" id="id4">[1]</a></td>
+</tr>
+<tr class="row-even"><td><strong>m_n</strong></td>
+<td>1.1</td>
+<td>Neturon Mass (<span class="math">\(m_{\rm n}\)</span>) <a class="footnote-reference" href="#scipy-const" id="id5">[1]</a></td>
+</tr>
+<tr class="row-odd"><td><strong>c</strong></td>
+<td>1.1</td>
+<td>Speed of Light (<span class="math">\(c\)</span>) <a class="footnote-reference" href="#scipy-const" id="id6">[1]</a></td>
+</tr>
+<tr class="row-even"><td><strong>N_A</strong></td>
+<td>1.1</td>
+<td>Avogardo&#8217;s Number (<span class="math">\(N_{\rm A}\)</span>) <a class="footnote-reference" href="#scipy-const" id="id7">[1]</a></td>
+</tr>
+<tr class="row-odd"><td><strong>mu_0</strong></td>
+<td>1.1</td>
+<td>Magnetic Constant (<span class="math">\(\mu_0\)</span>) <a class="footnote-reference" href="#scipy-const" id="id8">[1]</a></td>
+</tr>
+<tr class="row-even"><td><strong>eps_0</strong></td>
+<td>1.1</td>
+<td>Electric Constant (<span class="math">\(\varepsilon_0\)</span>) <a class="footnote-reference" href="#scipy-const" id="id9">[1]</a></td>
+</tr>
+<tr class="row-odd"><td><strong>k</strong></td>
+<td>1.1</td>
+<td>Boltzmann Constant (<span class="math">\(k_\mathrm{b}\)</span>) <a class="footnote-reference" href="#scipy-const" id="id10">[1]</a></td>
+</tr>
+<tr class="row-even"><td><strong>G</strong></td>
+<td>1.1</td>
+<td>Gravitational Constant (<span class="math">\(G\)</span>) <a class="footnote-reference" href="#scipy-const" id="id11">[1]</a></td>
+</tr>
+<tr class="row-odd"><td><strong>g</strong></td>
+<td>1.1</td>
+<td>Standard Accleration due to gravity (<span class="math">\(\mathrm{g}\)</span>) <a class="footnote-reference" href="#scipy-const" id="id12">[1]</a></td>
+</tr>
+<tr class="row-even"><td><strong>q</strong></td>
+<td>1.1</td>
+<td>Elementary Charge (<span class="math">\(\mathit{e}\)</span>) <a class="footnote-reference" href="#scipy-const" id="id13">[1]</a></td>
+</tr>
+<tr class="row-odd"><td><strong>R</strong></td>
+<td>1.1</td>
+<td>Ideal Gas Constant (<span class="math">\(R\)</span>) <a class="footnote-reference" href="#scipy-const" id="id14">[1]</a></td>
+</tr>
+<tr class="row-even"><td><strong>sigma</strong></td>
+<td>1.1</td>
+<td>Stefan-Boltzmann Constant (<span class="math">\(\sigma\)</span>) <a class="footnote-reference" href="#scipy-const" id="id15">[1]</a></td>
+</tr>
+<tr class="row-odd"><td><strong>Rb</strong></td>
+<td>1.1</td>
+<td>Rydberg Constant (<span class="math">\(R_\infty\)</span>) <a class="footnote-reference" href="#scipy-const" id="id16">[1]</a></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="scipy-const" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[1]</td><td><em>(<a class="fn-backref" href="#id1">1</a>, <a class="fn-backref" href="#id2">2</a>, <a class="fn-backref" href="#id3">3</a>, <a class="fn-backref" href="#id4">4</a>, <a class="fn-backref" href="#id5">5</a>, <a class="fn-backref" href="#id6">6</a>, <a class="fn-backref" href="#id7">7</a>, <a class="fn-backref" href="#id8">8</a>, <a class="fn-backref" href="#id9">9</a>, <a class="fn-backref" href="#id10">10</a>, <a class="fn-backref" href="#id11">11</a>, <a class="fn-backref" href="#id12">12</a>, <a class="fn-backref" href="#id13">13</a>, <a class="fn-backref" href="#id14">14</a>, <a class="fn-backref" href="#id15">15</a>, <a class="fn-backref" href="#id16">16</a>)</em> Requires scipy to use these constants</td></tr>
 </tbody>
 </table>
 </div>
@@ -103,18 +179,18 @@
 <p>Operators are special function maped to a symbol, that will appear between the operands
 rather than as a name folloed by a comma seperated list of operands.</p>
 <p>Operators have a Precedence this indicate the Priotiy with which they are applied
-i.e. high Precedence valued operators will be evaluated before lower valued ones.</p>
+i.e. low Precedence valued operators will be evaluated before higher valued ones.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Values of the same Precedence are evaluated left to right</p>
 </div>
 <table border="1" class="docutils">
 <colgroup>
-<col width="8%" />
-<col width="31%" />
-<col width="13%" />
-<col width="12%" />
-<col width="36%" />
+<col width="6%" />
+<col width="34%" />
+<col width="11%" />
+<col width="9%" />
+<col width="40%" />
 </colgroup>
 <thead valign="bottom">
 <tr class="row-odd"><th class="head">Symbol</th>
@@ -127,58 +203,130 @@ i.e. high Precedence valued operators will be evaluated before lower valued ones
 <tbody valign="top">
 <tr class="row-even"><td>+</td>
 <td>Added A to B</td>
-<td><cite>A + B</cite></td>
-<td>1</td>
+<td><tt class="docutils literal"><span class="pre">A</span> <span class="pre">+</span> <span class="pre">B</span></tt></td>
+<td>3</td>
 <td><span class="math">\(\left(A + B\right)\)</span></td>
 </tr>
 <tr class="row-odd"><td>-</td>
 <td>Subtract B from A</td>
-<td><cite>A - B</cite></td>
-<td>1</td>
+<td><tt class="docutils literal"><span class="pre">A</span> <span class="pre">-</span> <span class="pre">B</span></tt></td>
+<td>3</td>
 <td><span class="math">\(\left(A - B\right)\)</span></td>
 </tr>
 <tr class="row-even"><td>*</td>
 <td>Mutlipy A by B</td>
-<td><cite>A * B</cite></td>
+<td><tt class="docutils literal"><span class="pre">A</span> <span class="pre">*</span> <span class="pre">B</span></tt></td>
 <td>2</td>
 <td><span class="math">\(\left(A \times B\right)\)</span></td>
 </tr>
 <tr class="row-odd"><td>/</td>
 <td>Divide A by B</td>
-<td><cite>A / B</cite></td>
+<td><tt class="docutils literal"><span class="pre">A</span> <span class="pre">/</span> <span class="pre">B</span></tt></td>
 <td>2</td>
 <td><span class="math">\(\frac{A}{B}\)</span></td>
 </tr>
 <tr class="row-even"><td>%</td>
 <td>Reminder of A Divided by B</td>
-<td><cite>A % B</cite></td>
+<td><tt class="docutils literal"><span class="pre">A</span> <span class="pre">%</span> <span class="pre">B</span></tt></td>
 <td>2</td>
 <td><span class="math">\(\left(A \bmod B\right)\)</span></td>
 </tr>
 <tr class="row-odd"><td>^</td>
 <td>Raise A to the B&#8217;th power</td>
-<td><cite>A ^ B</cite></td>
-<td>3</td>
+<td><tt class="docutils literal"><span class="pre">A</span> <span class="pre">^</span> <span class="pre">B</span></tt></td>
+<td>1</td>
 <td><span class="math">\(A^{B}\)</span></td>
 </tr>
 <tr class="row-even"><td>&amp;</td>
 <td>Logical AND of A and B</td>
-<td><cite>A &amp; B</cite></td>
-<td>1</td>
+<td><tt class="docutils literal"><span class="pre">A</span> <span class="pre">&amp;</span> <span class="pre">B</span></tt></td>
+<td>4</td>
 <td><span class="math">\(\left(A \land B\right)\)</span></td>
 </tr>
 <tr class="row-odd"><td>|</td>
 <td>Logical OR of A and B</td>
-<td><cite>A | B</cite></td>
-<td>1</td>
+<td><tt class="docutils literal"><span class="pre">A</span> <span class="pre">|</span> <span class="pre">B</span></tt></td>
+<td>4</td>
 <td><span class="math">\(\left(A \lor B\right)\)</span></td>
 </tr>
-<tr class="row-even"><td>!</td>
-<td>Logical NOT of A</td>
-<td><cite>!A</cite></td>
-<td>0</td>
-<td><span class="math">\(\not{A}\)</span></td>
+<tr class="row-even"><td>&lt;\&gt;</td>
+<td>Logical XOR of A and B</td>
+<td><tt class="docutils literal"><span class="pre">A</span> <span class="pre">&lt;\&gt;</span> <span class="pre">B</span></tt></td>
+<td>4</td>
+<td><span class="math">\(\left(A \oplus B\right)\)</span></td>
 </tr>
+<tr class="row-odd"><td>!</td>
+<td>Logical NOT of A</td>
+<td><tt class="docutils literal"><span class="pre">!A</span></tt></td>
+<td>UNARY</td>
+<td><span class="math">\(\neg A\)</span></td>
+</tr>
+<tr class="row-even"><td>==</td>
+<td>Test if A is equal to B</td>
+<td><tt class="docutils literal"><span class="pre">A</span> <span class="pre">==</span> <span class="pre">B</span></tt></td>
+<td>5</td>
+<td><span class="math">\(\left(A = B\right)\)</span></td>
+</tr>
+<tr class="row-odd"><td>~</td>
+<td>Test if A is similar to B</td>
+<td><tt class="docutils literal"><span class="pre">A</span> <span class="pre">~</span> <span class="pre">B</span></tt></td>
+<td>5</td>
+<td><span class="math">\(\left(A \sim B\right)\)</span> <a class="footnote-reference" href="#similar" id="id17">[2]</a></td>
+</tr>
+<tr class="row-even"><td>!=</td>
+<td>Test if A isn&#8217;t equal to B</td>
+<td><tt class="docutils literal"><span class="pre">A</span> <span class="pre">!=</span> <span class="pre">B</span></tt></td>
+<td>5</td>
+<td><span class="math">\(\left(A \neq B\right)\)</span></td>
+</tr>
+<tr class="row-odd"><td>!~</td>
+<td>Test if A isn&#8217;t similar to B</td>
+<td><tt class="docutils literal"><span class="pre">A</span> <span class="pre">!~</span> <span class="pre">B</span></tt></td>
+<td>5</td>
+<td><span class="math">\(\left(A \nsim B\right)\)</span> <a class="footnote-reference" href="#similar" id="id18">[2]</a></td>
+</tr>
+<tr class="row-even"><td>&lt;</td>
+<td>Test if A is less than to B</td>
+<td><tt class="docutils literal"><span class="pre">A</span> <span class="pre">&lt;</span> <span class="pre">B</span></tt></td>
+<td>5</td>
+<td><span class="math">\(\left(A &lt; B\right)\)</span></td>
+</tr>
+<tr class="row-odd"><td>&gt;</td>
+<td>Test if A is more than to B</td>
+<td><tt class="docutils literal"><span class="pre">A</span> <span class="pre">&gt;</span> <span class="pre">B</span></tt></td>
+<td>5</td>
+<td><span class="math">\(\left(A &gt; B\right)\)</span></td>
+</tr>
+<tr class="row-even"><td>&lt;=</td>
+<td>Test if A is less than or equal to B</td>
+<td><tt class="docutils literal"><span class="pre">A</span> <span class="pre">&lt;</span> <span class="pre">B</span></tt></td>
+<td>5</td>
+<td><span class="math">\(\left(A \leq B\right)\)</span></td>
+</tr>
+<tr class="row-odd"><td>&gt;=</td>
+<td>Test if A is more than or equal to B</td>
+<td><tt class="docutils literal"><span class="pre">A</span> <span class="pre">&gt;</span> <span class="pre">B</span></tt></td>
+<td>5</td>
+<td><span class="math">\(\left(A \geq B\right)\)</span></td>
+</tr>
+<tr class="row-even"><td>&lt;~</td>
+<td>Test if A is less than or similar to B</td>
+<td><tt class="docutils literal"><span class="pre">A</span> <span class="pre">&lt;</span> <span class="pre">B</span></tt></td>
+<td>5</td>
+<td><span class="math">\(\left(A \lesssim B\right)\)</span> <a class="footnote-reference" href="#similar" id="id19">[2]</a></td>
+</tr>
+<tr class="row-odd"><td>&gt;~</td>
+<td>Test if A is more than or similar to B</td>
+<td><tt class="docutils literal"><span class="pre">A</span> <span class="pre">&gt;</span> <span class="pre">B</span></tt></td>
+<td>5</td>
+<td><span class="math">\(\left(A \gtrsim B\right)\)</span> <a class="footnote-reference" href="#similar" id="id20">[2]</a></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="similar" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[2]</td><td><em>(<a class="fn-backref" href="#id17">1</a>, <a class="fn-backref" href="#id18">2</a>, <a class="fn-backref" href="#id19">3</a>, <a class="fn-backref" href="#id20">4</a>)</em> Check it values are very close rather then just equal, i.e. 1 is similar to 1.000001 but not equal (see <a class="reference internal" href="Equation.html#similar-module"><em>Equation.similar Module</em></a>)</td></tr>
 </tbody>
 </table>
 </div>
@@ -188,8 +336,8 @@ i.e. high Precedence valued operators will be evaluated before lower valued ones
 <table border="1" class="docutils">
 <colgroup>
 <col width="12%" />
-<col width="37%" />
-<col width="15%" />
+<col width="35%" />
+<col width="17%" />
 <col width="36%" />
 </colgroup>
 <thead valign="bottom">
@@ -202,42 +350,37 @@ i.e. high Precedence valued operators will be evaluated before lower valued ones
 <tbody valign="top">
 <tr class="row-even"><td><strong>abs</strong></td>
 <td>Absolute value of A</td>
-<td><cite>abs(A)</cite></td>
+<td><tt class="docutils literal"><span class="pre">abs(A)</span></tt></td>
 <td><span class="math">\(\left|A\right|\)</span></td>
 </tr>
 <tr class="row-odd"><td><strong>sin</strong></td>
 <td>Sine value of A</td>
-<td><cite>sin(A)</cite></td>
+<td><tt class="docutils literal"><span class="pre">sin(A)</span></tt></td>
 <td><span class="math">\(\sin\left(A\right)\)</span></td>
 </tr>
 <tr class="row-even"><td><strong>cos</strong></td>
 <td>Cosine value of A</td>
-<td><cite>cos(A)</cite></td>
+<td><tt class="docutils literal"><span class="pre">cos(A)</span></tt></td>
 <td><span class="math">\(\cos\left(A\right)\)</span></td>
 </tr>
 <tr class="row-odd"><td><strong>tan</strong></td>
 <td>Tangent value of A</td>
-<td><cite>tan(A)</cite></td>
+<td><tt class="docutils literal"><span class="pre">tan(A)</span></tt></td>
 <td><span class="math">\(\tan\left(A\right)\)</span></td>
 </tr>
 <tr class="row-even"><td><strong>re</strong></td>
 <td>Real Compoent of A</td>
-<td><cite>re(A)</cite></td>
-<td><span class="math">\(Re\left(A\right)\)</span></td>
+<td><tt class="docutils literal"><span class="pre">re(A)</span></tt></td>
+<td><span class="math">\(\Re\left(A\right)\)</span></td>
 </tr>
 <tr class="row-odd"><td><strong>im</strong></td>
 <td>Imagery Compoent of A</td>
-<td><cite>im(A)</cite></td>
-<td><span class="math">\(Im\left(A\right)\)</span></td>
+<td><tt class="docutils literal"><span class="pre">im(A)</span></tt></td>
+<td><span class="math">\(\Im\left(A\right)\)</span></td>
 </tr>
-<tr class="row-even"><td><strong>root</strong></td>
-<td>B&#8217;th root of A</td>
-<td><cite>root(A,B)</cite></td>
-<td><span class="math">\(\sqrt[B]{A}\)</span></td>
-</tr>
-<tr class="row-odd"><td><strong>sqrt</strong></td>
+<tr class="row-even"><td><strong>sqrt</strong></td>
 <td>Square root of A</td>
-<td><cite>sqrt(A)</cite></td>
+<td><tt class="docutils literal"><span class="pre">sqrt(A)</span></tt></td>
 <td><span class="math">\(\sqrt{A}\)</span></td>
 </tr>
 </tbody>
@@ -314,7 +457,7 @@ sin((x * (y + z)))
   <div class="sphinxnext">
     <h4>Next page</h4>
     <p class="topless"><a href="Equation.html"
-                          title="Next page">&rarr; Equation Module</a></p>
+                          title="Next page">&rarr; Modules</a></p>
   </div>
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
@@ -342,12 +485,12 @@ sin((x * (y + z)))
           <a href="contents.html" title="Table Of Contents"
              >toc</a></li>
         <li class="right" >
-          <a href="Equation.html" title="Equation Module"
+          <a href="Equation.html" title="Modules"
              >next</a> &nbsp; &nbsp;</li>
         <li class="right" >
           <a href="index.html" title="Equation Interpeter"
              >previous</a> &nbsp; &nbsp;</li>
-    <li><a href="index.html">Equation 1.0 Documentation</a> &raquo;</li>
+    <li><a href="index.html">Equation 1.1 Documentation</a> &raquo;</li>
  
       </ul>
     </div>
