@@ -336,6 +336,12 @@ class Expression( object ):
                         return int(g["rsign"]+"1")*float(g["rvalue"])*10**int(g["rexpoent"]),'VALUE'
                     else:
                         return int(g["rsign"]+"1")*int(g["rvalue"]),'VALUE'
+                elif g["hex"]:
+                    return int(g["hexsign"]+"1")*int(g["hexvalue"],16),'VALUE'
+                elif g["oct"]:
+                    return int(g["octsign"]+"1")*int(g["octvalue"],8),'VALUE'
+                elif g["bin"]:
+                    return int(g["binsign"]+"1")*int(g["binvalue"],2),'VALUE'
                 else:
                     raise NotImplemented("'{0:s}' Values Not Implemented Yet".format(m.string))
             m = nmatch.match(self.__expression)
@@ -731,7 +737,7 @@ unary_ops = {}
 ops = {}
 functions = {}
 smatch = re.compile("\s*,")
-vmatch = re.compile("\s*(?:(?<oct>(?P<octsign>[+-]?)\s*0o(?P<octvalue>[0-7]+))(?<hex>(?P<hexsign>[+-]?)\s*0x(?P<hexvalue>[0-9a-fA-F]+))(?<bin>(?P<binsign>[+-]?)\s*0o(?P<binvalue>[01]+))(?P<dec>(?P<rsign>[+-]?)\s*(?P<rvalue>(?:\d+\.\d+|\d+\.|\.\d+|\d+))(?:[Ee](?P<rexpoent>[+-]?\d+))?(?:\s*(?P<sep>(?(rvalue)\+|))?\s*(?P<isign>(?(rvalue)(?(sep)[+-]?|[+-])|[+-]?)?)\s*(?P<ivalue>(?:\d+\.\d+|\d+\.|\.\d+|\d+))(?:[Ee](?P<iexpoent>[+-]?\d+))?[ij])?))")
+vmatch = re.compile("\s*(?:(?<oct>(?P<octsign>[+-]?)\s*0o(?P<octvalue>[0-7]+))(?<hex>(?P<hexsign>[+-]?)\s*0x(?P<hexvalue>[0-9a-fA-F]+))(?<bin>(?P<binsign>[+-]?)\s*0b(?P<binvalue>[01]+))(?P<dec>(?P<rsign>[+-]?)\s*(?P<rvalue>(?:\d+\.\d+|\d+\.|\.\d+|\d+))(?:[Ee](?P<rexpoent>[+-]?\d+))?(?:\s*(?P<sep>(?(rvalue)\+|))?\s*(?P<isign>(?(rvalue)(?(sep)[+-]?|[+-])|[+-]?)?)\s*(?P<ivalue>(?:\d+\.\d+|\d+\.|\.\d+|\d+))(?:[Ee](?P<iexpoent>[+-]?\d+))?[ij])?))")
 nmatch = re.compile("\s*([a-zA-Z_][a-zA-Z0-9_]*)")
 gsmatch = re.compile('\s*(\()')
 gematch = re.compile('\s*(\))')
