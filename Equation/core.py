@@ -167,6 +167,36 @@ class ExpressionVariable( ExpressionObject ):
     def __repr__(self):
         return "<{0:s}.{1:s}({2:s}) object at {3:0=#10x}>".format(type(self).__module__,type(self).__name__,str(self.name),id(self))
 
+class ExpressionVariableFunction( ExpressionVariable ):
+    def __init__(self,nargs,*args,**kwargs):
+        super(ExpressionVariableFunction,self).__init__(*args,**kwargs)
+        self.nargs = nargs
+
+    def toStr(self,args,expression):
+        var = super(ExpressionVariableFunction,self).__init__(args,expression)
+        params = []
+        for i in xrange(self.nargs):
+            params.append(args.pop())
+        return "\\mathrm{{{0:s}}}\\left({1:s}\\right)".format(var,','.join(params[::-1]))
+
+    def toRepr(self,args,expression):
+        var = super(ExpressionVariableFunction,self).__init__(args,expression)
+        params = []
+        for i in xrange(self.nargs):
+            params.append(args.pop())
+        return "{0:s}({1:s})".format(var,','.join(params[::-1]))
+
+    def __call__(self,args,expression):
+        var = super(ExpressionVariableFunction,self).__init__(args,expression)
+        params = []
+        for i in xrange(self.nargs):
+            params.append(args.pop())
+        return var(*params[::-1])
+        
+        
+    def __repr__(self):
+        return "<{0:s}.{1:s}({2:s},{3:d}) object at {4:0=#10x}>".format(type(self).__module__,type(self).__name__,str(self.name),str(self.argc),id(self))
+
 class Expression( object ):
     """Expression or Equation Object
     
@@ -633,9 +663,13 @@ class Expression( object ):
         stack = []
         argc = []
         __expect_op = False
+        __allow_func = True
         v = self.__next(__expect_op)
         while v != None:
-            if not __expect_op and v[1] == "OPEN":
+            if not __expect_op or __allow_func and v[1] == "OPEN":
+                if __allow_func: # Variable Just read is a function record
+                    variable = self.__expr.pop()
+                    v = (variable.name,'VAR_FUNC')
                 stack.append(v)
                 __expect_op = False       
             elif __expect_op and v[1] == "CLOSE":
@@ -644,13 +678,16 @@ class Expression( object ):
                     fs = self.__getfunction(op)
                     self.__expr.append(ExpressionFunction(fs['func'],fs['args'],fs['str'],fs['latex'],op[0],False))
                     op = stack.pop()
-                if len(stack) > 0 and stack[-1][0] in functions:
+                if len(stack) > 0 and stack[-1][1] in ['FUNC','VAR_FUNC']:
                     op = stack.pop()
-                    fs = functions[op[0]]
                     args = argc.pop()
-                    if fs['args'] != '+' and (args != fs['args'] and args not in fs['args']):
-                        raise SyntaxError("Invalid number of arguments for {0:s} function".format(op[0]))
-                    self.__expr.append(ExpressionFunction(fs['func'],args,fs['str'],fs['latex'],op[0],True))
+                    if op[1] == 'FUNC':
+                        fs = functions[op[0]]
+                        if fs['args'] != '+' and (args != fs['args'] and args not in fs['args']):
+                            raise SyntaxError("Invalid number of arguments for {0:s} function".format(op[0]))
+                        self.__expr.append(ExpressionFunction(fs['func'],args,fs['str'],fs['latex'],op[0],True))
+                    else:
+                        self.__expr.append(ExpressionVariableFunction(op[0],args))
                 __expect_op = True
             elif __expect_op and v[0] == ",":
                 argc[-1] += 1
@@ -707,6 +744,7 @@ class Expression( object ):
                     self.__args.append(v[0])
                 self.__expr.append(ExpressionVariable(v[0]))
                 __expect_op = True
+                __allow_func = True
             elif not __expect_op and v[1] == 'VALUE':
                 self.__expr.append(ExpressionValue(v[0]))
                 __expect_op = True
