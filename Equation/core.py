@@ -737,21 +737,21 @@ unary_ops = {}
 ops = {}
 functions = {}
 smatch = re.compile("\s*,")
-vmatch = re.compile("\s*
+vmatch = re.compile("\s*"
                     "(?:"
-                        "(?<oct>"
+                        "(?P<oct>"
                             "(?P<octsign>[+-]?)"
                             "\s*0o"
                             "(?P<octvalue>[0-7]+)"
-                        ")(?<hex>"
+                        ")|(?P<hex>"
                             "(?P<hexsign>[+-]?)"
                             "\s*0x"
                             "(?P<hexvalue>[0-9a-fA-F]+)"
-                        ")(?<bin>"
+                        ")|(?P<bin>"
                             "(?P<binsign>[+-]?)"
                             "\s*0b"
                             "(?P<binvalue>[01]+)"
-                        ")(?P<dec>"
+                        ")|(?P<dec>"
                             "(?P<rsign>[+-]?)"
                             "\s*"
                             "(?P<rvalue>(?:\d+\.\d+|\d+\.|\.\d+|\d+))"
@@ -773,7 +773,7 @@ vmatch = re.compile("\s*
                                 "[ij]"
                             ")?"
                         ")"
-                    ")"")
+                    ")")
 nmatch = re.compile("\s*([a-zA-Z_][a-zA-Z0-9_]*)")
 gsmatch = re.compile('\s*(\()')
 gematch = re.compile('\s*(\))')

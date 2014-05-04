@@ -92,12 +92,14 @@ class TestHexEquation(unittest.TestCase):
 
     def testCall(self):
         for n in xrange(-784323,294924,6831):
-            hexstr = hex(n)[2:]
-            self.assertEqual(Expression('0x' + hexstr)(),n)
-            self.assertEqual(Expression('0x' + hexstr.upper())(),n)
-
-    def testType(self):
-        self.assertEqual(type(self.fn(1)), bool)
+            if n < 0:
+                hexstr = hex(n)[3:]
+                prefix = "-0x"
+            else:
+                hexstr = hex(n)[2:]
+                prefix = "0x"
+            self.assertEqual(Expression(prefix + hexstr)(),n)
+            self.assertEqual(Expression(prefix + hexstr.upper())(),n)
     
     def tearDown(self):
         pass
@@ -112,11 +114,13 @@ class TestOctEquation(unittest.TestCase):
         else:
             l = 1
         for n in xrange(-784323,294924,6831):
-            hexstr = oct(n)[l:]
-            self.assertEqual(Expression('0x' + hexstr)(),n)
-
-    def testType(self):
-        self.assertEqual(type(self.fn(1)), bool)
+            if n < 0:
+                octstr = oct(n)[l+1:]
+                prefix = "-0o"
+            else:
+                octstr = oct(n)[l:]
+                prefix = "0o"
+            self.assertEqual(Expression(prefix + octstr)(),n)
     
     def tearDown(self):
         pass
@@ -127,11 +131,13 @@ class TestBinEquation(unittest.TestCase):
 
     def testCall(self):
         for n in xrange(-784323,294924,6831):
-            hexstr = bin(n)[2:]
-            self.assertEqual(Expression('0b' + hexstr)(),n)
-
-    def testType(self):
-        self.assertEqual(type(self.fn(1)), bool)
+            if n < 0:
+                binstr = bin(n)[3:]
+                prefix = "-0b"
+            else:
+                binstr = bin(n)[2:]
+                prefix = "0b"
+            self.assertEqual(Expression(prefix + binstr)(),n)
     
     def tearDown(self):
         pass
