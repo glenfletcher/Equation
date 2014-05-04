@@ -82,7 +82,47 @@ class TestComplexEquation(unittest.TestCase):
 
     def tearDown(self):
         pass
+    
+class TestFloorEquation(unittest.TestCase):
+    def setUp(self):
+        self.fn = Expression("floor(x)")
+    
+    def testCall(self):
+        self.assertEqual(self.fn(3.4),3)
+        self.assertEqual(self.fn(2.9),2)
+        self.assertEqual(self.fn(1.0),1)
+        self.assertEqual(self.fn(-1.2),-2)
+    
+    def tearDown(self):
+        pass
 
+class TestCeilEquation(unittest.TestCase):
+    def setUp(self):
+        self.fn = Expression("ceil(x)")
+    
+    def testCall(self):
+        self.assertEqual(self.fn(3.4),4)
+        self.assertEqual(self.fn(2.9),3)
+        self.assertEqual(self.fn(1.0),1)
+        self.assertEqual(self.fn(-1.2),-1)
+    
+    def tearDown(self):
+        pass
+
+class TestRoundEquation(unittest.TestCase):
+    def setUp(self):
+        self.fn = Expression("round(x)")
+    
+    def testCall(self):
+        self.assertEqual(self.fn(3.4),3)
+        self.assertEqual(self.fn(2.9),3)
+        self.assertEqual(self.fn(1.0),1)
+        self.assertEqual(self.fn(-1.2),-1)
+        self.assertEqual(self.fn(-1.5),-2)
+        self.assertEqual(self.fn(1.5),2)
+    
+    def tearDown(self):
+        pass
 
 class TestAddEquation(unittest.TestCase):
     def setUp(self):
