@@ -15,14 +15,15 @@ try:
 except ImportError:
     import core
 
-def addFn(id,str,latex,args,func):
+def addFn(id,str,latex,args,func,meta={}):
     core.functions[id] = {
         'str': str,
         'latex': latex,
         'args': args,
-        'func': func}
+        'func': func,
+        'meta': meta}
 
-def addOp(id,str,latex,single,prec,func):
+def addOp(id,str,latex,single,prec,func,meta={}):
     if single:
         raise RuntimeError("Single Ops Not Yet Supported")
     core.ops[id] = {
@@ -30,15 +31,23 @@ def addOp(id,str,latex,single,prec,func):
         'latex': latex,
         'args': 2,
         'prec': prec,
-        'func': func}
+        'func': func,
+        'meta': meta}
 
-def addUnaryOp(id,str,latex,func):
+def addUnaryOp(id,str,latex,func,meta={}):
     core.unary_ops[id] = {
         'str': str,
         'latex': latex,
         'args': 1,
         'prec': 0,
-        'func': func}
+        'func': func,
+        'meta': meta}
 
 def addConst(name,value):
     core.constants[name] = value
+
+def addScope(module,variable,default,setter=None,getter=None):
+    core.scope[module + '.' + variable] = {
+        'value': default,
+        'get': getter,
+        'set': setter}

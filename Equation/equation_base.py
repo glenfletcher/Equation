@@ -21,8 +21,8 @@ except ImportError:
     import math
     has_numpy = False
 import operator as op
-from Equation.util import addOp, addFn, addConst, addUnaryOp
-from Equation.similar import sim, nsim, gsim, lsim
+from Equation.util import addOp, addFn, addConst, addUnaryOp, addScope
+from Equation.similar import sim, nsim, gsim, lsim, _tol as similar_tol, tol_setter, tol_getter
 
 def equation_extend():
     def product(*args):
@@ -36,7 +36,8 @@ def equation_extend():
             return sum(args[0])
         else:
             return sum(args)
-            
+    
+    addScope('similar','tol',similar_tol,tol_setter,tol_getter)
     addOp('+',"({0:s} + {1:s})","\\left({0:s} + {1:s}\\right)",False,3,op.add)
     addOp('-',"({0:s} - {1:s})","\\left({0:s} - {1:s}\\right)",False,3,op.sub)
     addOp('*',"({0:s} * {1:s})","\\left({0:s} \\times {1:s}\\right)",False,2,op.mul)
@@ -51,8 +52,8 @@ def equation_extend():
     addOp('|&',"({0:s} </> {1:s})","\\left({0:s} \\oplus {1:s}\\right)",False,4,op.xor)
     addOp('==',"({0:s} == {1:s})","\\left({0:s} = {1:s}\\right)",False,5,op.eq)
     addOp('=',"({0:s} == {1:s})","\\left({0:s} = {1:s}\\right)",False,5,op.eq)
-    addOp('~',"({0:s} ~ {1:s})","\\left({0:s} \\sim {1:s}\\right)",False,5,sim)
-    addOp('!~',"({0:s} !~ {1:s})","\\left({0:s} \\nsim {1:s}\\right)",False,5,nsim)
+    addOp('~',"({0:s} ~ {1:s})","\\left({0:s} \\sim {1:s}\\right)",False,5,sim,{'has_scope':True})
+    addOp('!~',"({0:s} !~ {1:s})","\\left({0:s} \\nsim {1:s}\\right)",False,5,nsim,{'has_scope':True})
     addOp('!=',"({0:s} != {1:s})","\\left({0:s} \\neg {1:s}\\right)",False,5,op.ne)
     addOp('<>',"({0:s} != {1:s})","\\left({0:s} \\neg {1:s}\\right)",False,5,op.ne)
     addOp('><',"({0:s} != {1:s})","\\left({0:s} \\neg {1:s}\\right)",False,5,op.ne)
@@ -62,10 +63,10 @@ def equation_extend():
     addOp('>=',"({0:s} >= {1:s})","\\left({0:s} \\geq {1:s}\\right)",False,5,op.ge)
     addOp('=<',"({0:s} <= {1:s})","\\left({0:s} \\leq {1:s}\\right)",False,5,op.le)
     addOp('=>',"({0:s} >= {1:s})","\\left({0:s} \\geq {1:s}\\right)",False,5,op.ge)
-    addOp('<~',"({0:s} <~ {1:s})","\\left({0:s} \\lesssim {1:s}\\right)",False,5,lsim)
-    addOp('>~',"({0:s} >~ {1:s})","\\left({0:s} \\gtrsim {1:s}\\right)",False,5,gsim)
-    addOp('~<',"({0:s} <~ {1:s})","\\left({0:s} \\lesssim {1:s}\\right)",False,5,lsim)
-    addOp('~>',"({0:s} >~ {1:s})","\\left({0:s} \\gtrsim {1:s}\\right)",False,5,gsim)
+    addOp('<~',"({0:s} <~ {1:s})","\\left({0:s} \\lesssim {1:s}\\right)",False,5,lsim,{'has_scope':True})
+    addOp('>~',"({0:s} >~ {1:s})","\\left({0:s} \\gtrsim {1:s}\\right)",False,5,gsim,{'has_scope':True})
+    addOp('~<',"({0:s} <~ {1:s})","\\left({0:s} \\lesssim {1:s}\\right)",False,5,lsim,{'has_scope':True})
+    addOp('~>',"({0:s} >~ {1:s})","\\left({0:s} \\gtrsim {1:s}\\right)",False,5,gsim,{'has_scope':True})
     addUnaryOp('!',"(!{0:s})","\\neg{0:s}",op.not_)
     addUnaryOp('-',"-{0:s}","-{0:s}",op.neg)
     addFn('abs',"abs({0:s})","\\left|{0:s}\\right|",1,op.abs)

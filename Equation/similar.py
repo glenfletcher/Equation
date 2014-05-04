@@ -52,36 +52,49 @@ changing the tolerance to :math:`10^{-2}`, 1.001 is condisered similar to 1
 
 _tol = 1e-5
 
-def sim(a,b):
+def sim(a,b,scope={}):
+    tol = scope['similar.tol'] if 'similar.tol' in scope else _tol
     if (a==b):
         return True
     elif a == 0 or b == 0:
         return False
     if (a<b):
-        return (1-a/b)<=_tol
+        return (1-a/b)<=tol
     else:
-        return (1-b/a)<=_tol
+        return (1-b/a)<=tol
 
-def nsim(a,b):
+def nsim(a,b,scope={}):
+    tol = scope['similar.tol'] if 'similar.tol' in scope else _tol
     if (a==b):
         return False
     elif a == 0 or b == 0:
         return True
     if (a<b):
-        return (1-a/b)>_tol
+        return (1-a/b)>tol
     else:
-        return (1-b/a)>_tol
+        return (1-b/a)>tol
     
-def gsim(a,b):
+def gsim(a,b,scope={}):
+    tol = scope['similar.tol'] if 'similar.tol' in scope else _tol
     if a >= b:
         return True
-    return (1-a/b)<=_tol
+    return (1-a/b)<=tol
 
-def lsim(a,b):
+def lsim(a,b,scope={}):
+    tol = scope['similar.tol'] if 'similar.tol' in scope else _tol
     if a <= b:
         return True
-    return (1-b/a)<=_tol
-    
+    return (1-b/a)<=tol
+
+def tol_setter(value=1e-5):
+    if isinstance(value,float):
+        return value
+    else:
+        raise TypeError(type(value))
+
+def tol_getter(value):
+    return value
+
 def set_tol(value=1e-5):
     r"""Set Error Tolerance
     

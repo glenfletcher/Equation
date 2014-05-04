@@ -111,7 +111,7 @@ class ExpressionValue( ExpressionObject ):
             return "<{0:s}.{1:s}({2:s}) object at {3:0=#10x}>".format(type(self).__module__,type(self).__name__,str(self.value),id(self))
 
 class ExpressionFunction( ExpressionObject ):
-    def __init__(self,function,nargs,form,display,id,isfunc,*args,**kwargs):
+    def __init__(self,function,nargs,form,display,meta,id,isfunc,*args,**kwargs):
         super(ExpressionFunction,self).__init__(*args,**kwargs)
         self.function = function
         self.nargs = nargs
@@ -119,6 +119,7 @@ class ExpressionFunction( ExpressionObject ):
         self.display = display
         self.id = id
         self.isfunc = isfunc
+        self.meta = meta
 
     def toStr(self,args,expression):
         params = []
@@ -140,9 +141,18 @@ class ExpressionFunction( ExpressionObject ):
             
     def __call__(self,args,expression):
         params = []
+        kwargs ={}
+        if 'has_scope' in self.meta:
+            if 'scope' in self.meta:
+                kwargs[self.meta['scope']] = expression.scope()
+            else:
+                kwargs['scope'] = expression.scope()
+        if 'kwars' in self.meta and isinstance(self.meta['kwargs'],dict):
+            for k in self.meta['kwargs']:
+                kwargs[k] = self.meta['kwargs'][k]
         for i in xrange(self.nargs):
             params.append(args.pop())
-        return self.function(*params[::-1])
+        return self.function(*params[::-1],**kwargs)
     
     def __repr__(self):
         return "<{0:s}.{1:s}({2:s},{3:d}) object at {4:0=#10x}>".format(type(self).__module__,type(self).__name__,str(self.id),self.nargs,id(self))
@@ -166,6 +176,16 @@ class ExpressionVariable( ExpressionObject ):
         
     def __repr__(self):
         return "<{0:s}.{1:s}({2:s}) object at {3:0=#10x}>".format(type(self).__module__,type(self).__name__,str(self.name),id(self))
+
+def get_setter(scope,id,setter):
+    def _setter(value):
+        scope[id] = setter(value)
+    return _setter
+
+def get_getter(scope,id,getter):
+    def _getter():
+        return getter(scope[id])
+    return _getter
 
 class Expression( object ):
     """Expression or Equation Object
@@ -208,6 +228,7 @@ class Expression( object ):
             self.__argsused = set(expression.__argsused)
             self.__expr = list(expression.__expr)
             self.variables = {} # call variables
+            self.__scope = dict(expression.__scope)
         else:
             self.__expression = expression
             self.__args = argorder;
@@ -216,7 +237,34 @@ class Expression( object ):
             self.__expr = [] # compiled equation tokens
             self.variables = {} # call variables
             self.__compile()
+            self.__scope = {}
+            for name in scope:
+                self.__scope[name] = scope[name]['value']
             del self.__expression
+        self.__scope_keys = dict([(k.replace('.','_'),k) for k in self.__scope.keys()])
+    
+    def scope(self):
+        return dict(self.__scope)
+    
+    def __getattr__(self,name):
+        if name[:4] == 'get_':
+            if name[4:] in self.__scope_keys:
+                id = self.__scope_keys[name[4:]]
+            getter = scope[id]['get']
+            if getter != None and hasattr(getter,'__call__'):
+                return get_getter(self.__scope,id,getter)
+            else:
+                raise AttributeError
+        elif name[:4] == 'set_':
+            if name[4:] in self.__scope_keys:
+                id = self.__scope_keys[name[4:]]
+            setter = scope[id]['set']
+            if setter != None and hasattr(setter,'__call__'):
+                return get_setter(self.__scope,id,setter)
+            else:
+                raise AttributeError
+        else:
+            raise AttributeError
     
     def __getitem__(self, name):
         """fn[var]
@@ -443,7 +491,7 @@ class Expression( object ):
                     elif v != obj.__vars[k]:
                         raise RuntimeError("Predifined Variable Conflict in '{0:s}' two differing values defined".format(k))
             fn = ops[op]
-            obj.__expr.append(ExpressionFunction(fn['func'],fn['args'],fn['str'],fn['latex'],op,False))
+            obj.__expr.append(ExpressionFunction(fn['func'],fn['args'],fn['str'],fn['latex'],fn['meta'],op,False))
         return obj
 
     def __rcombine(self,other,op):
@@ -472,7 +520,7 @@ class Expression( object ):
                     elif v != obj.__vars[k]:
                         raise RuntimeError("Predifined Variable Conflict in '{0:s}' two differing values defined".format(k))
             fn = ops[op]
-            obj.__expr.append(ExpressionFunction(fn['func'],fn['args'],fn['str'],fn['latex'],op,False))
+            obj.__expr.append(ExpressionFunction(fn['func'],fn['args'],fn['str'],fn['latex'],fn['meta'],op,False))
         return obj
         
     def __icombine(self,other,op):  
@@ -499,13 +547,13 @@ class Expression( object ):
                     elif v != obj.__vars[k]:
                         raise RuntimeError("Predifined Variable Conflict in '{0:s}' two differing values defined".format(k))
             fn = ops[op]
-            obj.__expr.append(ExpressionFunction(fn['func'],fn['args'],fn['str'],fn['latex'],op,False))
+            obj.__expr.append(ExpressionFunction(fn['func'],fn['args'],fn['str'],fn['latex'],fn['meta'],op,False))
         return obj
 
     def __apply(self,op):
         fn = unary_ops[op]
         obj = type(self)(self)
-        obj.__expr.append(ExpressionFunction(fn['func'],1,fn['str'],fn['latex'],op,False))
+        obj.__expr.append(ExpressionFunction(fn['func'],1,fn['str'],fn['latex'],fn['meta'],op,False))
         return obj
     
     def __applycall(self,op):
@@ -513,7 +561,7 @@ class Expression( object ):
         if 1 not in fn['args'] or '*' not in fn['args']:
             raise RuntimeError("Can't Apply {0:s} function, dosen't accept only 1 argument".format(op))
         obj = type(self)(self)
-        obj.__expr.append(ExpressionFunction(fn['func'],1,fn['str'],fn['latex'],op,False))
+        obj.__expr.append(ExpressionFunction(fn['func'],1,fn['str'],fn['latex'],fn['meta'],op,False))
         return obj
 
     def __add__(self,other):
@@ -642,7 +690,7 @@ class Expression( object ):
                 op = stack.pop()
                 while op[1] != "OPEN":
                     fs = self.__getfunction(op)
-                    self.__expr.append(ExpressionFunction(fs['func'],fs['args'],fs['str'],fs['latex'],op[0],False))
+                    self.__expr.append(ExpressionFunction(fs['func'],fs['args'],fs['str'],fs['latex'],fs['meta'],op[0],False))
                     op = stack.pop()
                 if len(stack) > 0 and stack[-1][0] in functions:
                     op = stack.pop()
@@ -650,14 +698,14 @@ class Expression( object ):
                     args = argc.pop()
                     if fs['args'] != '+' and (args != fs['args'] and args not in fs['args']):
                         raise SyntaxError("Invalid number of arguments for {0:s} function".format(op[0]))
-                    self.__expr.append(ExpressionFunction(fs['func'],args,fs['str'],fs['latex'],op[0],True))
+                    self.__expr.append(ExpressionFunction(fs['func'],args,fs['str'],fs['latex'],fs['meta'],op[0],True))
                 __expect_op = True
             elif __expect_op and v[0] == ",":
                 argc[-1] += 1
                 op = stack.pop()
                 while op[1] != "OPEN":
                     fs = self.__getfunction(op)
-                    self.__expr.append(ExpressionFunction(fs['func'],fs['args'],fs['str'],fs['latex'],op[0],False))
+                    self.__expr.append(ExpressionFunction(fs['func'],fs['args'],fs['str'],fs['latex'],fs['meta'],op[0],False))
                     op = stack.pop()
                 stack.append(op)
                 __expect_op = False
@@ -678,7 +726,7 @@ class Expression( object ):
                 fs = self.__getfunction(op)
                 while True:
                     if (fn['prec'] >= fs['prec']):
-                        self.__expr.append(ExpressionFunction(fs['func'],fs['args'],fs['str'],fs['latex'],op[0],False))
+                        self.__expr.append(ExpressionFunction(fs['func'],fs['args'],fs['str'],fs['latex'],fs['meta'],op[0],False))
                         if len(stack) == 0:
                             stack.append(v)
                             break
@@ -717,12 +765,13 @@ class Expression( object ):
             op = stack.pop()
             while op != "(":
                 fs = self.__getfunction(op)
-                self.__expr.append(ExpressionFunction(fs['func'],fs['args'],fs['str'],fs['latex'],op[0],False))
+                self.__expr.append(ExpressionFunction(fs['func'],fs['args'],fs['str'],fs['latex'],fs['meta'],op[0],False))
                 if len(stack) > 0:
                     op = stack.pop()
                 else:
                     break
 
+scope = {}
 constants = {}
 unary_ops = {}
 ops = {}
