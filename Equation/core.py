@@ -329,12 +329,21 @@ class Expression( object ):
             if m != None:
                 self.__expression = self.__expression[m.end():]
                 g = m.groupdict(0)
-                if g["ivalue"]:
-                    return complex(int(g["rsign"]+"1")*float(g["rvalue"])*10**int(g["rexpoent"]),int(g["isign"]+"1")*float(g["ivalue"])*10**int(g["iexpoent"])),'VALUE'
-                elif g["rexpoent"] or g["rvalue"].find('.')>=0:
-                    return int(g["rsign"]+"1")*float(g["rvalue"])*10**int(g["rexpoent"]),'VALUE'
+                if g['dec']:
+                    if g["ivalue"]:
+                        return complex(int(g["rsign"]+"1")*float(g["rvalue"])*10**int(g["rexpoent"]),int(g["isign"]+"1")*float(g["ivalue"])*10**int(g["iexpoent"])),'VALUE'
+                    elif g["rexpoent"] or g["rvalue"].find('.')>=0:
+                        return int(g["rsign"]+"1")*float(g["rvalue"])*10**int(g["rexpoent"]),'VALUE'
+                    else:
+                        return int(g["rsign"]+"1")*int(g["rvalue"]),'VALUE'
+                elif g["hex"]:
+                    return int(g["hexsign"]+"1")*int(g["hexvalue"],16),'VALUE'
+                elif g["oct"]:
+                    return int(g["octsign"]+"1")*int(g["octvalue"],8),'VALUE'
+                elif g["bin"]:
+                    return int(g["binsign"]+"1")*int(g["binvalue"],2),'VALUE'
                 else:
-                    return int(g["rsign"]+"1")*int(g["rvalue"]),'VALUE'
+                    raise NotImplemented("'{0:s}' Values Not Implemented Yet".format(m.string))
             m = nmatch.match(self.__expression)
             if m != None:
                 self.__expression = self.__expression[m.end():]
@@ -728,7 +737,43 @@ unary_ops = {}
 ops = {}
 functions = {}
 smatch = re.compile("\s*,")
-vmatch = re.compile("\s*(?P<rsign>[+-]?)\s*(?P<rvalue>(?:\d+\.\d+|\d+\.|\.\d+|\d+))(?:[Ee](?P<rexpoent>[+-]?\d+))?(?:\s*(?P<sep>(?(rvalue)\+|))?\s*(?P<isign>(?(rvalue)(?(sep)[+-]?|[+-])|[+-]?)?)\s*(?P<ivalue>(?:\d+\.\d+|\d+\.|\.\d+|\d+))(?:[Ee](?P<iexpoent>[+-]?\d+))?[ij])?")
+vmatch = re.compile("\s*"
+                    "(?:"
+                        "(?P<oct>"
+                            "(?P<octsign>[+-]?)"
+                            "\s*0o"
+                            "(?P<octvalue>[0-7]+)"
+                        ")|(?P<hex>"
+                            "(?P<hexsign>[+-]?)"
+                            "\s*0x"
+                            "(?P<hexvalue>[0-9a-fA-F]+)"
+                        ")|(?P<bin>"
+                            "(?P<binsign>[+-]?)"
+                            "\s*0b"
+                            "(?P<binvalue>[01]+)"
+                        ")|(?P<dec>"
+                            "(?P<rsign>[+-]?)"
+                            "\s*"
+                            "(?P<rvalue>(?:\d+\.\d+|\d+\.|\.\d+|\d+))"
+                            "(?:"
+                                "[Ee]"
+                                "(?P<rexpoent>[+-]?\d+)"
+                            ")?"
+                            "(?:"
+                                "\s*"
+                                "(?P<sep>(?(rvalue)\+|))?"
+                                "\s*"
+                                "(?P<isign>(?(rvalue)(?(sep)[+-]?|[+-])|[+-]?)?)"
+                                "\s*"
+                                "(?P<ivalue>(?:\d+\.\d+|\d+\.|\.\d+|\d+))"
+                                "(?:"
+                                    "[Ee]"
+                                    "(?P<iexpoent>[+-]?\d+)"
+                                ")?"
+                                "[ij]"
+                            ")?"
+                        ")"
+                    ")")
 nmatch = re.compile("\s*([a-zA-Z_][a-zA-Z0-9_]*)")
 gsmatch = re.compile('\s*(\()')
 gematch = re.compile('\s*(\))')
