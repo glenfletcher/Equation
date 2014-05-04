@@ -1,9 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import sys
 import unittest
 from Equation import Expression
 
+if sys.version_info.major == 3:
+    xrange = range
 
 class TestEquation(unittest.TestCase):
     """Test example in README.md"""
@@ -83,6 +86,55 @@ class TestComplexEquation(unittest.TestCase):
     def tearDown(self):
         pass
 
+class TestHexEquation(unittest.TestCase):
+    def setUp(self):
+        pass
+
+    def testCall(self):
+        for n in xrange(-784323,294924,6831):
+            hexstr = hex(n)[2:]
+            self.assertEqual(Expression('0x' + hexstr)(),n)
+            self.assertEqual(Expression('0x' + hexstr.upper())(),n)
+
+    def testType(self):
+        self.assertEqual(type(self.fn(1)), bool)
+    
+    def tearDown(self):
+        pass
+
+class TestOctEquation(unittest.TestCase):
+    def setUp(self):
+        pass
+
+    def testCall(self):
+        if sys.version_info.major == 3:
+            l = 2
+        else:
+            l = 1
+        for n in xrange(-784323,294924,6831):
+            hexstr = oct(n)[l:]
+            self.assertEqual(Expression('0x' + hexstr)(),n)
+
+    def testType(self):
+        self.assertEqual(type(self.fn(1)), bool)
+    
+    def tearDown(self):
+        pass
+
+class TestBinEquation(unittest.TestCase):
+    def setUp(self):
+        pass
+
+    def testCall(self):
+        for n in xrange(-784323,294924,6831):
+            hexstr = bin(n)[2:]
+            self.assertEqual(Expression('0b' + hexstr)(),n)
+
+    def testType(self):
+        self.assertEqual(type(self.fn(1)), bool)
+    
+    def tearDown(self):
+        pass
 
 class TestAddEquation(unittest.TestCase):
     def setUp(self):
