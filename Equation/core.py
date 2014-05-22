@@ -18,7 +18,7 @@ import math
 import sys
 import re
 
-if sys.version_info.major == 3:
+if sys.version_info < (3,):
     xrange = range
     basestring = str
 
