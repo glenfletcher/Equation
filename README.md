@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/alphaomega-technology/Equation.png)](https://travis-ci.org/alphaomega-technology/Equation)
+[![Coverage Status](https://img.shields.io/coveralls/alphaomega-technology/Equation.svg)](https://coveralls.io/r/alphaomega-technology/Equation)
+
 Equation Interpeter
 ===================
 The Equation Package provide an extentable Equation Parser and Evaluation System.
