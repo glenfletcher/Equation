@@ -1,5 +1,5 @@
 Please when adding new features to this project,
-create each seperate feature in its own branch.
+create each separate feature in its own branch.
 
 If one feature requires another to work please branch off
 that feature.
@@ -7,7 +7,7 @@ that feature.
 It is requires several please branch off the closes and merge
 the others.
 
-This allows indivdual features to be seperatly merged back into
+This allows individual features to be separately merged back into
 the master branch, once their working, and I have approved of them.
 
 Thanks
