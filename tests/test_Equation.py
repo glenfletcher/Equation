@@ -1,7 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import unittest
+import sys
+if sys.version_info >= (2,7):
+    import unittest
+else:
+    import unittest2 as unittest # Use backport in python 2.6
 from Equation import Expression
 
 
@@ -9,7 +13,7 @@ class TestEquation(unittest.TestCase):
     """Test example in README.md"""
     def setUp(self):
         self.fn = Expression("sin(x+y^2)", ["y","x"])
-        
+
     def testRepr(self):
         self.assertEqual(Expression(repr(self.fn)),self.fn)
 
@@ -30,7 +34,7 @@ class TestEquation(unittest.TestCase):
 class TestEquation2(unittest.TestCase):
     def setUp(self):
         self.fn = Expression("sin(x+y^2)")
-    
+
     def testRepr(self):
         self.assertEqual(Expression(repr(self.fn)),self.fn)
 
@@ -51,7 +55,7 @@ class TestEquation2(unittest.TestCase):
 class TestEquation3(unittest.TestCase):
     def setUp(self):
         self.fn = Expression("x+y^2")
-        
+
     def testRepr(self):
         self.assertEqual(Expression(repr(self.fn)),self.fn)
 
@@ -87,7 +91,7 @@ class TestComplexEquation(unittest.TestCase):
 class TestAddEquation(unittest.TestCase):
     def setUp(self):
         self.fn = Expression("x + y")
-        
+
     def testRepr(self):
         self.assertEqual(Expression(repr(self.fn)),self.fn)
 
@@ -109,7 +113,7 @@ class TestAddEquation(unittest.TestCase):
 class TestSubtractEquation(unittest.TestCase):
     def setUp(self):
         self.fn = Expression("x - y")
-        
+
     def testRepr(self):
         self.assertEqual(Expression(repr(self.fn)),self.fn)
 
@@ -131,7 +135,7 @@ class TestSubtractEquation(unittest.TestCase):
 class TestMultiplyEquation(unittest.TestCase):
     def setUp(self):
         self.fn = Expression("x * y")
-        
+
     def testRepr(self):
         self.assertEqual(Expression(repr(self.fn)),self.fn)
 
@@ -149,11 +153,11 @@ class TestMultiplyEquation(unittest.TestCase):
 
     def tearDown(self):
         pass
-    
+
 class TestPowerEquation(unittest.TestCase):
     def setUp(self):
         self.fn = Expression("x ^ y")
-        
+
     def testRepr(self):
         self.assertEqual(Expression(repr(self.fn)),self.fn)
 
@@ -176,7 +180,7 @@ class TestPowerEquation(unittest.TestCase):
 class TestDivisionEquation(unittest.TestCase):
     def setUp(self):
         self.fn = Expression("x / y")
-        
+
     def testRepr(self):
         self.assertEqual(Expression(repr(self.fn)),self.fn)
 
@@ -200,7 +204,7 @@ class TestDivisionEquation(unittest.TestCase):
 class TestAndEquation(unittest.TestCase):
     def setUp(self):
         self.fn = Expression("x & y")
-        
+
     def testRepr(self):
         self.assertEqual(Expression(repr(self.fn)),self.fn)
 
@@ -222,7 +226,7 @@ class TestAndEquation(unittest.TestCase):
 class TestOrEquation(unittest.TestCase):
     def setUp(self):
         self.fn = Expression("x | y")
-        
+
     def testRepr(self):
         self.assertEqual(Expression(repr(self.fn)),self.fn)
 
@@ -245,7 +249,7 @@ class TestOrEquation(unittest.TestCase):
 class TestNotEquation(unittest.TestCase):
     def setUp(self):
         self.fn = Expression("!x")
-        
+
     def testRepr(self):
         self.assertEqual(Expression(repr(self.fn)),self.fn)
 
@@ -268,7 +272,7 @@ class TestNotEquation(unittest.TestCase):
 class TestNegEquation(unittest.TestCase):
     def setUp(self):
         self.fn = Expression("-x")
-        
+
     def testRepr(self):
         self.assertEqual(Expression(repr(self.fn)),self.fn)
 
@@ -304,7 +308,7 @@ class TestEqualsEquation(unittest.TestCase):
 
     def tearDown(self):
         pass
-    
+
 
 class TestSimilarEquation(unittest.TestCase):
     def setUp(self):
@@ -318,7 +322,7 @@ class TestSimilarEquation(unittest.TestCase):
         # floating point error may caluse failure for large expoents
         # i.e. for 10000 (1-(a(1-1e-5))/a)=1.0000000000065512e-05
         # This is floating due to folating point error
-        for a in [0.001,1,1.5,4,100,1000]: 
+        for a in [0.001,1,1.5,4,100,1000]:
             ge = a*(1+1e-5)
             le = a*(1-1e-5)
             gt = a*(1+1.1e-5)
@@ -338,7 +342,7 @@ class TestSimilarEquation(unittest.TestCase):
 class TestNotEqualsEquation(unittest.TestCase):
     def setUp(self):
         self.fn = Expression("x != y")
-        
+
     def testRepr(self):
         self.assertEqual(Expression(repr(self.fn)),self.fn)
 
@@ -373,7 +377,7 @@ class TestNotSimilarEquation(unittest.TestCase):
         # floating point error may caluse failure for large expoents
         # i.e. for 10000 (1-(a(1-1e-5))/a)=1.0000000000065512e-05
         # This is floating due to folating point error
-        for a in [0.001,1,1.5,4,100,1000]: 
+        for a in [0.001,1,1.5,4,100,1000]:
             ge = a*(1+1e-5)
             le = a*(1-1e-5)
             gt = a*(1+1.1e-5)
@@ -394,10 +398,10 @@ class TestNotSimilarEquation(unittest.TestCase):
 class TestGreaterThanEquation(unittest.TestCase):
     def setUp(self):
         self.fn = Expression("x > y")
-        
+
     def testRepr(self):
-        self.assertEqual(Expression(repr(self.fn)),self.fn)        
-        
+        self.assertEqual(Expression(repr(self.fn)),self.fn)
+
     def testCall(self):
         self.assertTrue(self.fn(1, 0))
         self.assertFalse(self.fn(0, 0))
@@ -420,7 +424,7 @@ class TestGreaterThanEquation(unittest.TestCase):
 class TestGreaterThanOrEqualToEquation(unittest.TestCase):
     def setUp(self):
         self.fn = Expression("x >= y")
-        
+
     def testRepr(self):
         self.assertEqual(Expression(repr(self.fn)),self.fn)
 
@@ -453,7 +457,7 @@ class TestGreaterThanOrSimilarToEquation(unittest.TestCase):
         # floating point error may caluse failure for large expoents
         # i.e. for 10000 (1-(a(1-1e-5))/a)=1.0000000000065512e-05
         # This is floating due to folating point error
-        for a in [0.001,1,1.5,4,100,1000]: 
+        for a in [0.001,1,1.5,4,100,1000]:
             ge = a*(1+1e-5)
             le = a*(1-1e-5)
             gt = a*(1+1.1e-5)
@@ -473,7 +477,7 @@ class TestGreaterThanOrSimilarToEquation(unittest.TestCase):
 class TestLessThanEquation(unittest.TestCase):
     def setUp(self):
         self.fn = Expression("x < y")
-        
+
     def testRepr(self):
         self.assertEqual(Expression(repr(self.fn)),self.fn)
 
@@ -496,7 +500,7 @@ class TestLessThanEquation(unittest.TestCase):
 class TestLessThanOrEqualToEquation(unittest.TestCase):
     def setUp(self):
         self.fn = Expression("x <= y")
-        
+
     def testRepr(self):
         self.assertEqual(Expression(repr(self.fn)),self.fn)
 
@@ -532,7 +536,7 @@ class TestLessThanOrSimilarToEquation(unittest.TestCase):
         # floating point error may caluse failure for large expoents
         # i.e. for 10000 (1-(a(1-1e-5))/a)=1.0000000000065512e-05
         # This is floating due to folating point error
-        for a in [0.001,1,1.5,4,100,1000]: 
+        for a in [0.001,1,1.5,4,100,1000]:
             ge = a*(1+1e-5)
             le = a*(1-1e-5)
             gt = a*(1+1.1e-5)
