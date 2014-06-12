@@ -6,7 +6,7 @@ import unittest
 from Equation import Expression
 import numpy as np
 
-if sys.version_info.major == 3:
+if sys.version_info >= (3,):
     xrange = range
 
 class TestEquation(unittest.TestCase):
