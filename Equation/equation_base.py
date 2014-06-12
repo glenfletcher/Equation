@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 #==============================================================================
 #   Copyright 2014 AlphaOmega Technology
-# 
+#
 #   Licensed under the AlphaOmega Technology Open License Version 1.0
 #   You may not use this file except in compliance with this License.
 #   You may obtain a copy of the License at
-#  
+#
 #       http://www.alphaomega-technology.com.au/license/AOT-OL/1.0
 #==============================================================================
 
@@ -30,13 +30,13 @@ def equation_extend():
             return np.prod(args[0])
         else:
             return reduce(op.mul,args,1)
-    
+
     def sumargs(*args):
         if len(args) == 1:
             return sum(args[0])
         else:
             return sum(args)
-            
+
     addOp('+',"({0:s} + {1:s})","\\left({0:s} + {1:s}\\right)",False,3,op.add)
     addOp('-',"({0:s} - {1:s})","\\left({0:s} - {1:s}\\right)",False,3,op.sub)
     addOp('*',"({0:s} * {1:s})","\\left({0:s} \\times {1:s}\\right)",False,2,op.mul)
@@ -72,6 +72,9 @@ def equation_extend():
     addFn('sum',"sum({0:s})","\\sum\\left({0:s}\\right)",'+',sumargs)
     addFn('prod',"prod({0:s})","\\prod\\left({0:s}\\right)",'+',product)
     if has_numpy:
+        addFn('floor',"floor({0:s})","\\lfloor {0:s} \\rfloor",1,np.floor)
+        addFn('ceil',"ceil({0:s})","\\lceil {0:s} \\rceil",1,np.ceil)
+        addFn('round',"round({0:s})","\\lfloor {0:s} \\rceil",1,np.round)
         addFn('sin',"sin({0:s})","\\sin\\left({0:s}\\right)",1,np.sin)
         addFn('cos',"cos({0:s})","\\cos\\left({0:s}\\right)",1,np.cos)
         addFn('tan',"tan({0:s})","\\tan\\left({0:s}\\right)",1,np.tan)
@@ -83,6 +86,9 @@ def equation_extend():
         addConst("Inf",np.Inf)
         addConst("NaN",np.NaN)
     else:
+        addFn('floor',"floor({0:s})","\\lfloor {0:s} \\rfloor",1,math.floor)
+        addFn('ceil',"ceil({0:s})","\\lceil {0:s} \\rceil",1,math.ceil)
+        addFn('round',"round({0:s})","\\lfloor {0:s} \\rceil",1,round)
         addFn('sin',"sin({0:s})","\\sin\\left({0:s}\\right)",1,math.sin)
         addFn('cos',"cos({0:s})","\\cos\\left({0:s}\\right)",1,math.cos)
         addFn('tan',"tan({0:s})","\\tan\\left({0:s}\\right)",1,math.tan)

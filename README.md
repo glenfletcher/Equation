@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/alphaomega-technology/Equation.png)](https://travis-ci.org/alphaomega-technology/Equation)
+
 Equation Interpeter
 ===================
 The Equation Package provide an extentable Equation Parser and Evaluation System.
@@ -35,7 +37,7 @@ Latex Support
 
 The display string format i.e. str() is set to use Latex syntax allowing high quality equations to be rendered in output this syntax is supported by the grqaphing package matplotlib
 
-.. Note:: repr() method will return a string suitable for passing to Expression, however it is recalucated from the tokenized expression, and has all brackets.
+Note: repr() method will return a string suitable for passing to Expression, however it is recalucated from the tokenized expression, and has all brackets.
 
 Future Versions
 ---------------

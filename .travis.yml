@@ -3,23 +3,14 @@
 language: python
 
 python:
+    - "3.3"
     - "2.7"
 
-env:
-# - TOX_ENV=py34 # not yet supported by travis-ci.org
-  - TOX_ENV=py33
-  - TOX_ENV=py27
-  - TOX_ENV=pypy
-# - TOX_ENV=pep8 # project not pep8
-# - TOX_ENV=pylint # too many errors
-  - TOX_ENV=coverage
-  - TOX_ENV=docs
-
 # command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
-install: pip install tox
+#install: pip install tox
 
 # command to run tests, e.g. python setup.py test
-script: tox -e $TOX_ENV
+script: python setup.py test
 
 notifications:
-    email: false
+    email: glen.fletcher@alphaomega-technology.com.au
