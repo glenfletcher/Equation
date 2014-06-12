@@ -110,7 +110,7 @@ class TestOctEquation(unittest.TestCase):
         pass
 
     def testCall(self):
-        if sys.version_info.major == 3:
+        if sys.version_info >= (3,):
             l = 2
         else:
             l = 1
