@@ -1,10 +1,10 @@
 #==============================================================================
 #   Copyright 2014 AlphaOmega Technology
-# 
+#
 #   Licensed under the AlphaOmega Technology Open License Version 1.0
 #   You may not use this file except in compliance with this License.
 #   You may obtain a copy of the License at
-#  
+#
 #       http://www.alphaomega-technology.com.au/license/AOT-OL/1.0
 #==============================================================================
 """
@@ -19,7 +19,7 @@ Its recomended you use the code::
 
     from Equation import Expression
     ...
-    
+
 to import the Expression Class, as this is the only Class/Function you
 should use.
 
@@ -45,7 +45,16 @@ def load():
     import os.path
     import sys
     import traceback
-    import importlib
+    try:
+        import importlib
+    except ImportError:
+        # Python 2.6 dosen't have importlib used dummy object
+        # wrap __import__
+        class importlib():
+            @staticmethod
+            def import_module(name):
+                __import__(name)
+                return sys.modules[name]
     try:
         from Equation.core import recalculateFMatch
     except ImportError:
