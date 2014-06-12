@@ -289,8 +289,7 @@ class TestDivisionEquation(unittest.TestCase):
         self.assertEqual(self.fn(2, 1), 2)
         self.assertEqual(self.fn(3, 1), 3)
         self.assertEqual(self.fn(15, 3), 5)
-        with self.assertRaises(ZeroDivisionError):
-            self.fn(1,0)
+        self.assertRaises(ZeroDivisionError,self.fn,1,0)
 
     def testType(self):
         self.assertEqual(type(self.fn(1, 2)), float)
