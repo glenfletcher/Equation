@@ -12,6 +12,10 @@
 from . import __authors__, __copyright__, __license__, __contact__, __version__
 
 from core import Expression
+import re
+
+from collections import defaultdict
+from operator import itemgetter
 
 
 def parseUnits(expression, argorder=[], units=None):
@@ -142,7 +146,8 @@ _units = {
             '°C': {
                 'unit': {'K': 1},
                 'mulitpler': (1, 0),
-                'warn': '°C relative to 273.15K, unit conversion may cause unexpected errors.'
+                'warn': '°C relative to 273.15K,'
+                    ' unit conversion may cause unexpected errors.'
                 },
             'lm': {
                 'unit': {'cd': 1, 'sr': 1},
@@ -173,31 +178,136 @@ _units = {
     }
 
 
+_matchunit = re.compile(r'\s*(?P<prefix>{prefix:s})?(?P<unit>{unit:s})'.format(
+                prefix='|'.join(map(re.escape, _units['prefix'].keys())),
+                unit='|'.join(map(re.escape, sorted(
+                    _units['units']['base'].keys() +
+                        _units['units']['derived'].keys(),
+                    key=len,
+                    reverse=True)))))
+
+_matchop = re.compile(r'\s*(?P<op>/|\^)')
+
+_matchopen = re.compile(r'\s*(?P<open>\()')
+
+_matchclose = re.compile(r'\s*(?P<open>\))')
+
+_matchindex = re.compile(r'\s*(?P<sign>\+|\-)?\s*(?P<value>\d+)')
+
+
 class Units(object):
     def __init__(self, unitexpr='', units=None, *args, **kwargs):
-        super(Units, self)(*args, **kwargs)
+        super(Units, self).__init__(*args, **kwargs)
         if isinstance(unitexpr, type(self)):
             pass
         else:
             if unitexpr[:6] == '$attr.' and hasattr(self, unitexpr[6:]):
-                __expression = getattr(self, unitexpr[6:])
+                self.__expression = getattr(self, unitexpr[6:])
             else:
-                __expression = unitexpr
+                self.__expression = unitexpr
+            self.__baseunits = defaultdict(int)  # this is the unit type
+            # multipler for base units i.e. g -> 0.001 as kg is SI,
+            # k will appear in multiplyer not base multipler,
+            # as base just respresents type, i.e.
+            #     we can convert between units with matching base type
+            self.__basemultiplyer = [1, 0]
+            self.__multiplyer = [1, 0]  # multipler to apply to base units
+            self.__units = defaultdict(int)  # actuall units
+            self.__parse()
+
+    def __str__(self):
+        s = ''
+        for k, v in sorted(self.__baseunits.items(), key=itemgetter(1), reverse=True):
+            s += r" \textup{" + k + "}" + (("^{" + str(v) + "}") if v != 0 else "")
+        return s
+
+    def __parse(self):
+        invert = False
+        nextinvert = False
+        grouped = False
+        index = 0
+        while True:
+            m = _matchunit.match(self.__expression)
+            if m is not None:
+                self.__expression = self.__expression[m.end():]
+                print self.__expression
+            else:
+                break
+            g = m.groupdict()
+            if g['unit'] is None:
+                raise SyntaxError("Missing Unit")
+            if g['prefix'] is not None:
+                self.__multiplyer[1] += _units['prefix'][g['prefix']]
+            m = _matchop.match(self.__expression)
+            index = 1
+            if m is not None:
+                self.__expression = self.__expression[m.end():]
+                print self.__expression
+                opg = m.groupdict()
+                if opg['op'] == '^': # index
+                    m = _matchindex.match(self.__expression)
+                    print m
+                    if m is not None:
+                        self.__expression = self.__expression[m.end():]
+                        print self.__expression
+                        ig = m.groupdict()
+                        print ig
+                        index = int(
+                            (ig['sign'] if ig['sign'] is not None else '') +
+                            ig['value'])
+                        print (
+                            (ig['sign'] if ig['sign'] is not None else '') +
+                            ig['value'])
+                        print index
+                elif opg['op'] == '/': # invert
+                    nextinvert = True
+            if invert:
+                index *= -1
+            print index
+            if g['unit'] in _units['units']['base']: # is base unit
+                unit = _units['units']['base'][g['unit']]
+                self.__units[g['unit']] += index
+                self.__baseunits[g['unit']] += index
+                self.__basemultiplyer[0] *= unit['mulitpler'][0]
+                self.__basemultiplyer[1] += unit['mulitpler'][1]*index
+            elif g['unit'] in _units['units']['derived']: # is derived unit
+                unit = _units['units']['derived'][g['unit']]
+                self.__units[g['unit']] += index
+                for k,v in unit['unit'].items():
+                    bunit = _units['units']['base'][k]
+                    self.__baseunits[g['unit']] += index*v
+                    self.__basemultiplyer[0] *= unit['mulitpler'][0]
+                    self.__basemultiplyer[1] += unit['mulitpler'][1]*index*v
+                self.__multiplyer[0] *= unit['mulitpler'][0]
+                self.__multiplyer[1] += unit['mulitpler'][1]*index
+            if grouped:
+                m = _matchclose.match(self.__expression)
+                if m is not None:
+                    self.__expression = self.__expression[m.end():]
+                    grouped = False
+            if not grouped and invert:
+                invert = False
+            if nextinvert:
+                invert = True
+                m = _matchopen.match(self.__expression)
+                if m is not None:
+                    self.__expression = self.__expression[m.end():]
+                    grouped = True
 
 
-class UnitsExpression(Expression, Units):
-    def __init__(self, expression, argorder=[], units=None, *args, **kwargs):
-        if isinstance(expression, type(self)):
-            super(UnitsExpression, self)(
-                expression=expression,
-                argorder=[],
-                unitexpr=expression,
-                units=None,
-                *args, **kwargs)
-        else:
-            super(UnitsExpression, self)(
-                expression=expression,
-                argorder=argorder,
-                unitexpr='$attr._Expression__expression',
-                units=units,
-                *args, **kwargs)
+#class UnitsExpression(Expression, Units):
+#    def __init__(self, expression, argorder=[], units=None, *args, **kwargs):
+#        if isinstance(expression, type(self)):
+#            super(UnitsExpression, self)(
+#                expression=expression,
+#                argorder=[],
+#                unitexpr=expression,
+#                units=None,
+#                *args, **kwargs)
+#        else:
+#            super(UnitsExpression, self)(
+#                expression=expression,
+#                argorder=argorder,
+#                unitexpr='$attr._Expression__expression',
+#                units=units,
+#                *args, **kwargs)
