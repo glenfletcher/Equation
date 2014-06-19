@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/alphaomega-technology/Equation.png)](https://travis-ci.org/alphaomega-technology/Equation)
+[![Build Status](https://travis-ci.org/alphaomega-technology/Equation.svg?branch=master)](https://travis-ci.org/alphaomega-technology/Equation)
 
 Equation Interpeter
 ===================
