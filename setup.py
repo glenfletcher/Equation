@@ -26,6 +26,7 @@ setup(
     url='https://github.com/alphaomega-technology/' + pkg.__title__,
     long_description=read('README.md'),
     install_requires = [],
+    tests_require=['numpy'],
     extras_require = {
         'VectorMaths': ['numpy'],
         'SciConst': ['scipy>=0.12.0']
