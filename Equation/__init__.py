@@ -25,15 +25,14 @@ should use.
 
 .. moduleauthor:: Glen Fletcher <glen.fletcher@alphaomega-technology.com.au>
 """
-__authors__   = [("Glen Fletcher","glen.fletcher@alphaomega-technology.com.au")]
-__copyright__ = "(c) 2014, AlphaOmega Technology"
-__license__   = "AlphaOmega Technology Open License Version 1.0 (http://www.alphaomega-technology.com.au/license/AOT-OL/1.0)"
-__contact__   = "Glen Fletcher <glen.fletcher@alphaomega-technology.com.au>"
-__version__   = "1.2"
-__title__     = "Equation"
-__desc__      = "General Equation Parser and Evaluator"
+
 
 all = ['util']
+
+try:
+    from Equation._info import *
+except ImportError:
+    from _info import *
 
 try:
     from Equation.core import Expression

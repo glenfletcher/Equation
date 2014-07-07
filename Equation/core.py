@@ -1,17 +1,15 @@
 # -*- coding: utf-8 -*-
 #==============================================================================
 #   Copyright 2014 AlphaOmega Technology
-# 
+#
 #   Licensed under the AlphaOmega Technology Open License Version 1.0
 #   You may not use this file except in compliance with this License.
 #   You may obtain a copy of the License at
-#  
+#
 #       http://www.alphaomega-technology.com.au/license/AOT-OL/1.0
 #==============================================================================
 
 from __future__ import print_function
-
-from . import __authors__,__copyright__,__license__,__contact__,__version__
 
 import math
 
@@ -34,7 +32,7 @@ class ExpressionObject (object):
 
     def __call__(self,args,expression):
         pass
-        
+
 class ExpressionValue( ExpressionObject ):
     def __init__(self,value,*args,**kwargs):
         super(ExpressionValue,self).__init__(*args,**kwargs)
@@ -100,13 +98,13 @@ class ExpressionValue( ExpressionObject ):
                 return out
         else:
             return str(self.value)
-    
+
     def toRepr(self,args,expression):
         return str(self.value)
 
     def __call__(self,args,expression):
         return self.value
-    
+
     def __repr__(self):
             return "<{0:s}.{1:s}({2:s}) object at {3:0=#10x}>".format(type(self).__module__,type(self).__name__,str(self.value),id(self))
 
@@ -128,7 +126,7 @@ class ExpressionFunction( ExpressionObject ):
             return str(self.display.format(','.join(params[::-1])))
         else:
             return str(self.display.format(*params[::-1]))
-            
+
     def toRepr(self,args,expression):
         params = []
         for i in xrange(self.nargs):
@@ -137,13 +135,13 @@ class ExpressionFunction( ExpressionObject ):
             return str(self.form.format(','.join(params[::-1])))
         else:
             return str(self.form.format(*params[::-1]))
-            
+
     def __call__(self,args,expression):
         params = []
         for i in xrange(self.nargs):
             params.append(args.pop())
         return self.function(*params[::-1])
-    
+
     def __repr__(self):
         return "<{0:s}.{1:s}({2:s},{3:d}) object at {4:0=#10x}>".format(type(self).__module__,type(self).__name__,str(self.id),self.nargs,id(self))
 
@@ -163,21 +161,21 @@ class ExpressionVariable( ExpressionObject ):
             return expression.variables[self.name]
         else:
             return 0 # Default variables to return 0
-        
+
     def __repr__(self):
         return "<{0:s}.{1:s}({2:s}) object at {3:0=#10x}>".format(type(self).__module__,type(self).__name__,str(self.name),id(self))
 
 class Expression( object ):
     """Expression or Equation Object
-    
+
     This is a object that respresents an equation string in a manner
     that allows for it to be evaluated
-    
+
     Arithmetic Operators:
         Expression objects support combining with the standard arithmetic operators
         to create new Expression objects, they may also be combined with numerical
         constant, and strings containg a valid Expression.
-        
+
             >>> from Equation import Expression
             >>> fn = Expression("x")
             >>> fn += 2
@@ -191,14 +189,14 @@ class Expression( object ):
             (((x + 2) ^ 3) - z)
             >>> fn(1,2)
             25
-    
+
     Parameters
     ----------
     expression: str
         String resprenstation of an equation
     argorder: list of str
         List of variable names, indicating the position of variable
-        for mapping from positional arguments    
+        for mapping from positional arguments
     """
     def __init__(self,expression,argorder=[],*args,**kwargs):
         super(Expression,self).__init__(*args,**kwargs)
@@ -217,10 +215,10 @@ class Expression( object ):
             self.variables = {} # call variables
             self.__compile()
             del self.__expression
-    
+
     def __getitem__(self, name):
         """fn[var]
-        
+
         Fetch the preset variable `var`,from the Expression Object
         """
         if name in self.__argsused:
@@ -230,20 +228,20 @@ class Expression( object ):
                 return None
         else:
             raise KeyError(name)
-    
+
     def __setitem__(self,name,value):
         """fn[var] = value
-        
+
         Set the preset variable `var` to the value `value`
         """
         if name in self.__argsused:
             self.__vars[name] = value
         else:
             raise KeyError(name)
-    
+
     def __delitem__(self,name):
         """del fn[var]
-        
+
         Removes the preset variable `var` from the Expression Object
         """
         if name in self.__argsused:
@@ -251,24 +249,24 @@ class Expression( object ):
                 del self.__vars[name]
         else:
             raise KeyError(name)
-            
+
     def __contains__(self, name):
         """var in fn
-        
+
         Returns True if `fn` has a preset variable `var`
         """
         return name in self.__argsused
-        
+
     def __call__(self,*args,**kwargs):
         """fn(\*args,\*\*kwargs)
-        
+
         Arguments
         ---------
         \*args:
             Positional variables, order as defined by argorder, then position in equation
         \*\*kwargs:
             List of variables to be used by the equation for evaluation
-            
+
         Returns
         -------
         varies
@@ -302,10 +300,10 @@ class Expression( object ):
             return args
         else:
             return args[0]
-        
+
     def __next(self,__expect_op):
         if __expect_op:
-            m = gematch.match(self.__expression)    
+            m = gematch.match(self.__expression)
             if m != None:
                 self.__expression = self.__expression[m.end():]
                 g = m.groups()
@@ -314,13 +312,13 @@ class Expression( object ):
             if m != None:
                 self.__expression = self.__expression[m.end():]
                 return ",",'SEP'
-            m = omatch.match(self.__expression)    
+            m = omatch.match(self.__expression)
             if m != None:
                 self.__expression = self.__expression[m.end():]
                 g = m.groups()
                 return g[0],'OP'
         else:
-            m = gsmatch.match(self.__expression)    
+            m = gsmatch.match(self.__expression)
             if m != None:
                 self.__expression = self.__expression[m.end():]
                 g = m.groups()
@@ -363,18 +361,18 @@ class Expression( object ):
 
     def show(self):
         """Show RPN tokens
-        
+
         This will print out the internal token list (RPN) of the expression
         one token perline.
         """
         for expr in self.__expr:
             print(expr)
-            
+
     def __str__(self):
         """str(fn)
-        
+
         Generates a Printable version of the Expression
-        
+
         Returns
         -------
         str
@@ -393,9 +391,9 @@ class Expression( object ):
 
     def __repr__(self):
         """repr(fn)
-        
+
         Generates a String that correctrly respresents the equation
-        
+
         Returns
         -------
         str
@@ -412,10 +410,10 @@ class Expression( object ):
             return args
         else:
             return args[0]
-    
+
     def __iter__(self):
         return iter(self.__argsused)
-            
+
     def __lt__(self, other):
         if isinstance(other, Expression):
             return repr(self) < repr(other)
@@ -427,8 +425,8 @@ class Expression( object ):
             return repr(self) == repr(other)
         else:
             raise TypeError("{0:s} is not an {1:s} Object, and can't be compared to an Expression Object".format(repr(other), type(other)))
-    
-    def __combine(self,other,op):  
+
+    def __combine(self,other,op):
         if op not in ops or not isinstance(other,(int,float,complex,type(self),basestring)):
             return NotImplemented
         else:
@@ -483,8 +481,8 @@ class Expression( object ):
             fn = ops[op]
             obj.__expr.append(ExpressionFunction(fn['func'],fn['args'],fn['str'],fn['latex'],op,False))
         return obj
-        
-    def __icombine(self,other,op):  
+
+    def __icombine(self,other,op):
         if op not in ops or not isinstance(other,(int,float,complex,type(self),basestring)):
             return NotImplemented
         else:
@@ -516,7 +514,7 @@ class Expression( object ):
         obj = type(self)(self)
         obj.__expr.append(ExpressionFunction(fn['func'],1,fn['str'],fn['latex'],op,False))
         return obj
-    
+
     def __applycall(self,op):
         fn = functions[op]
         if 1 not in fn['args'] or '*' not in fn['args']:
@@ -527,107 +525,107 @@ class Expression( object ):
 
     def __add__(self,other):
         return self.__combine(other,'+')
-    
+
     def __sub__(self,other):
         return self.__combine(other,'-')
-    
+
     def __mul__(self,other):
         return self.__combine(other,'*')
-    
+
     def __div__(self,other):
         return self.__combine(other,'/')
-    
+
     def __truediv__(self,other):
         return self.__combine(other,'/')
-    
+
     def __pow__(self,other):
-        return self.__combine(other,'^')  
-    
+        return self.__combine(other,'^')
+
     def __mod__(self,other):
         return self.__combine(other,'%')
-    
+
     def __and__(self,other):
         return self.__combine(other,'&')
-        
+
     def __or__(self,other):
         return self.__combine(other,'|')
-    
+
     def __xor__(self,other):
         return self.__combine(other,'</>')
-    
+
     def __radd__(self,other):
         return self.__rcombine(other,'+')
-    
+
     def __rsub__(self,other):
         return self.__rcombine(other,'-')
-    
+
     def __rmul__(self,other):
         return self.__rcombine(other,'*')
-    
+
     def __rdiv__(self,other):
         return self.__rcombine(other,'/')
-    
+
     def __rtruediv__(self,other):
         return self.__rcombine(other,'/')
-    
+
     def __rpow__(self,other):
-        return self.__rcombine(other,'^')  
-    
+        return self.__rcombine(other,'^')
+
     def __rmod__(self,other):
         return self.__rcombine(other,'%')
-    
+
     def __rand__(self,other):
         return self.__rcombine(other,'&')
-        
+
     def __ror__(self,other):
         return self.__rcombine(other,'|')
-    
+
     def __rxor__(self,other):
         return self.__rcombine(other,'</>')
-        
+
     def __iadd__(self,other):
         return self.__icombine(other,'+')
-    
+
     def __isub__(self,other):
         return self.__icombine(other,'-')
-    
+
     def __imul__(self,other):
         return self.__icombine(other,'*')
-    
+
     def __idiv__(self,other):
         return self.__icombine(other,'/')
-    
+
     def __itruediv__(self,other):
         return self.__icombine(other,'/')
-    
+
     def __ipow__(self,other):
-        return self.__icombine(other,'^')  
-    
+        return self.__icombine(other,'^')
+
     def __imod__(self,other):
         return self.__icombine(other,'%')
-    
+
     def __iand__(self,other):
         return self.__icombine(other,'&')
-        
+
     def __ior__(self,other):
         return self.__icombine(other,'|')
-    
+
     def __ixor__(self,other):
         return self.__icombine(other,'</>')
-    
+
     def __neg__(self):
         return self.__apply('-')
-    
+
     def __invert__(self):
         return self.__apply('!')
-    
+
     def __abs__(self):
         return self.__applycall('abs')
-    
+
     def __getfunction(self,op):
         if op[1] == 'FUNC':
             fn = functions[op[0]]
-            fn['type'] = 'FUNC'            
+            fn['type'] = 'FUNC'
         elif op[1] == 'UNARY':
             fn = unary_ops[op[0]]
             fn['type'] = 'UNARY'
@@ -635,7 +633,7 @@ class Expression( object ):
         elif op[1] == 'OP':
             fn = ops[op[0]]
             fn['type'] = 'OP'
-        return fn            
+        return fn
 
     def __compile(self):
         self.__expr = []
@@ -646,7 +644,7 @@ class Expression( object ):
         while v != None:
             if not __expect_op and v[1] == "OPEN":
                 stack.append(v)
-                __expect_op = False       
+                __expect_op = False
             elif __expect_op and v[1] == "CLOSE":
                 op = stack.pop()
                 while op[1] != "OPEN":
@@ -695,7 +693,7 @@ class Expression( object ):
                         if op[0] == "(":
                             stack.append(op)
                             stack.append(v)
-                            break                            
+                            break
                         fs = self.__getfunction(op)
                     else:
                         stack.append(op)
