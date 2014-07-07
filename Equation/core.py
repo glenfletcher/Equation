@@ -272,6 +272,8 @@ class Expression( object ):
         varies
             Result of evaluating the Expression, type will depende appon the expression and the variables used to evaluate the expression.
         """
+        if len(self.__expr) == 0:
+            return None
         self.variables = {}
         self.variables.update(constants) # i.e. pi, e, i, etc.
         self.variables.update(self.__vars)
