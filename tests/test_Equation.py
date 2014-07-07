@@ -75,6 +75,9 @@ class TestEmpty(unittest.TestCase):
 
     def testStr(self):
         self.assertEqual(str(self.fn),"")
+        
+    def testCall(self):
+        self.assertEqual(self.fn(), 0)
 
     def tearDown(self):
         pass
