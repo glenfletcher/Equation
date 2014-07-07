@@ -79,6 +79,19 @@ class TestEmpty(unittest.TestCase):
     def tearDown(self):
         pass
 
+class TestPostionalArgs(unittest.TestCase):
+    def setUp(self):
+        self.fn = Expression("x+x-y")
+
+    def testCall(self):
+        try:
+            self.fn(1,2)
+        except TypeError:
+            self.fail("Postional Args Rises a TypeError Exception.")
+
+    def tearDown(self):
+        pass
+
 class TestComplexEquation(unittest.TestCase):
     def setUp(self):
         pass

@@ -714,7 +714,7 @@ class Expression( object ):
                 __expect_op = False
             elif not __expect_op and v[1] == 'NAME':
                 self.__argsused.add(v[0])
-                if v not in self.__args:
+                if v[0] not in self.__args:
                     self.__args.append(v[0])
                 self.__expr.append(ExpressionVariable(v[0]))
                 __expect_op = True
