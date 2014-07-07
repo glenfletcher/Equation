@@ -66,6 +66,19 @@ class TestEquation3(unittest.TestCase):
     def tearDown(self):
         pass
 
+class TestEmpty(unittest.TestCase):
+    def setUp(self):
+        self.fn = Expression("")
+
+    def testRepr(self):
+        self.assertEqual(repr(self.fn),"")
+
+    def testStr(self):
+        self.assertEqual(str(self.fn),"")
+
+    def tearDown(self):
+        pass
+
 class TestComplexEquation(unittest.TestCase):
     def setUp(self):
         pass

@@ -379,6 +379,8 @@ class Expression( object ):
             Latex String respresation of the Expression, suitable for rendering the equation
         """
         expr = self.__expr[::-1]
+        if len(expr) == 0:
+            return ""
         args = [];
         while len(expr) > 0:
             t = expr.pop()
@@ -401,6 +403,8 @@ class Expression( object ):
             an identical equation object (in terms of sequence of tokens, and token type/value)
         """
         expr = self.__expr[::-1]
+        if len(expr) == 0:
+            return ""
         args = [];
         while len(expr) > 0:
             t = expr.pop()
