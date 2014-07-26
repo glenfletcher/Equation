@@ -328,6 +328,47 @@ class TestDivisionEquation(unittest.TestCase):
     def tearDown(self):
         pass
 
+
+class TestBoolAndEquation(unittest.TestCase):
+    def setUp(self):
+        self.fn = Expression("x && y")
+
+    def testRepr(self):
+        self.assertEqual(Expression(repr(self.fn)),self.fn)
+
+    def testCall(self):
+        self.assertEqual(self.fn(0, 0), False)
+        self.assertEqual(self.fn(1, 0), False)
+        self.assertEqual(self.fn(0, 1), False)
+        self.assertEqual(self.fn(1, 1), True)
+        self.assertEqual(self.fn(2, 1), True)
+        self.assertEqual(self.fn(3, 1), True)
+        self.assertEqual(self.fn(15, 3), True)
+
+    def testType(self):
+        self.assertEqual(type(self.fn(1, 2)), bool)
+
+
+class TestBoolOrEquation(unittest.TestCase):
+    def setUp(self):
+        self.fn = Expression("x || y")
+
+    def testRepr(self):
+        self.assertEqual(Expression(repr(self.fn)),self.fn)
+
+    def testCall(self):
+        self.assertEqual(self.fn(0, 0), False)
+        self.assertEqual(self.fn(1, 0), True)
+        self.assertEqual(self.fn(0, 1), True)
+        self.assertEqual(self.fn(1, 1), True)
+        self.assertEqual(self.fn(2, 1), True)
+        self.assertEqual(self.fn(3, 1), True)
+        self.assertEqual(self.fn(15, 3), True)
+
+    def testType(self):
+        self.assertEqual(type(self.fn(1, 2)), bool)
+
+
 class TestAndEquation(unittest.TestCase):
     def setUp(self):
         self.fn = Expression("x & y")
