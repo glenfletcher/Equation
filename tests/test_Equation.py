@@ -332,6 +332,7 @@ class TestDivisionEquation(unittest.TestCase):
 class TestBoolAndEquation(unittest.TestCase):
     def setUp(self):
         self.fn = Expression("x && y")
+        self.fn2 = Expression("x == y && z")
 
     def testRepr(self):
         self.assertEqual(Expression(repr(self.fn)),self.fn)
@@ -344,6 +345,8 @@ class TestBoolAndEquation(unittest.TestCase):
         self.assertEqual(self.fn(2, 1), True)
         self.assertEqual(self.fn(3, 1), True)
         self.assertEqual(self.fn(15, 3), True)
+        self.assertEqual(self.fn2(1, 3,True), False)
+        self.assertEqual(self.fn2(2, 2,True), True)
 
     def testType(self):
         self.assertEqual(type(self.fn(1, 2)), bool)
@@ -352,6 +355,7 @@ class TestBoolAndEquation(unittest.TestCase):
 class TestBoolOrEquation(unittest.TestCase):
     def setUp(self):
         self.fn = Expression("x || y")
+        self.fn2 = Expression("x == y || z")
 
     def testRepr(self):
         self.assertEqual(Expression(repr(self.fn)),self.fn)
@@ -364,6 +368,8 @@ class TestBoolOrEquation(unittest.TestCase):
         self.assertEqual(self.fn(2, 1), True)
         self.assertEqual(self.fn(3, 1), True)
         self.assertEqual(self.fn(15, 3), True)
+        self.assertEqual(self.fn2(1, 3,False), False)
+        self.assertEqual(self.fn2(2, 2,False), True)
 
     def testType(self):
         self.assertEqual(type(self.fn(1, 2)), bool)
