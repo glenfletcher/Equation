@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 #==============================================================================
 #   Copyright 2014 AlphaOmega Technology
-# 
+#
 #   Licensed under the AlphaOmega Technology Open License Version 1.0
 #   You may not use this file except in compliance with this License.
 #   You may obtain a copy of the License at
-#  
+#
 #       http://www.alphaomega-technology.com.au/license/AOT-OL/1.0
 #==============================================================================
 
@@ -51,3 +51,10 @@ def addScope(module,variable,default,setter=None,getter=None):
         'value': default,
         'get': getter,
         'set': setter}
+
+def getScopeOr(module,variable,scope,default):
+    name = module + '.' + variable
+    if name in scope and scope[name] != None:
+        return scope[name]
+    else:
+        return default

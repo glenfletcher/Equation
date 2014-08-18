@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 #==============================================================================
 #   Copyright 2014 AlphaOmega Technology
-# 
+#
 #   Licensed under the AlphaOmega Technology Open License Version 1.0
 #   You may not use this file except in compliance with this License.
 #   You may obtain a copy of the License at
-#  
+#
 #       http://www.alphaomega-technology.com.au/license/AOT-OL/1.0
 #==============================================================================
 
@@ -30,14 +30,14 @@ def equation_extend():
             return np.prod(args[0])
         else:
             return reduce(op.mul,args,1)
-    
+
     def sumargs(*args):
         if len(args) == 1:
             return sum(args[0])
         else:
             return sum(args)
-    
-    addScope('similar','tol',similar_tol,tol_setter,tol_getter)
+
+    addScope('similar','tol',None,tol_setter,tol_getter)
     addOp('+',"({0:s} + {1:s})","\\left({0:s} + {1:s}\\right)",False,3,op.add)
     addOp('-',"({0:s} - {1:s})","\\left({0:s} - {1:s}\\right)",False,3,op.sub)
     addOp('*',"({0:s} * {1:s})","\\left({0:s} \\times {1:s}\\right)",False,2,op.mul)
