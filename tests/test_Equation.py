@@ -473,6 +473,23 @@ class TestMinEquation(unittest.TestCase):
         self.assertEqual(self.fn([1]),1)
         self.assertEqual(self.fn([9,2,8,4,5]),2)
 
+class TestLastEquation(unittest.TestCase):
+    def setUp(self):
+        self.fn = Expression("last(x)")
+
+    def testCall(self):
+        self.assertEqual(self.fn([1]), 1)
+        self.assertEqual(self.fn([1,2,8,4,5]),5)
+
+class TestMeanEquation(unittest.TestCase):
+    def setUp(self):
+        self.fn = Expression("mean(x)")
+
+    def testCall(self):
+        self.assertEqual(self.fn([42]), 42)
+        self.assertEqual(self.fn(42), 42)
+        self.assertEqual(self.fn([1,2,3,4,5]),3)
+
 class TestEqualsEquation(unittest.TestCase):
     def setUp(self):
         self.fn = Expression("x == y")
