@@ -72,6 +72,8 @@ def equation_extend():
     addUnaryOp('-',"-{0:s}","-{0:s}",op.neg)
     addFn('abs',"abs({0:s})","\\left|{0:s}\\right|",1,op.abs)
     addFn('sum',"sum({0:s})","\\sum\\left({0:s}\\right)",'+',sumargs)
+    addFn('max',"max({0:s})","\\max\\left({0:s}\\right)",'+',max)
+    addFn('min',"min({0:s})","\\min\\left({0:s}\\right)",'+',min)
     addFn('prod',"prod({0:s})","\\prod\\left({0:s}\\right)",'+',product)
     if has_numpy:
         addFn('floor',"floor({0:s})","\\lfloor {0:s} \\rfloor",1,np.floor)

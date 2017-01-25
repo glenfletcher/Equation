@@ -457,6 +457,22 @@ class TestNegEquation(unittest.TestCase):
     def tearDown(self):
         pass
 
+class TestMaxEquation(unittest.TestCase):
+    def setUp(self):
+        self.fn = Expression("max(x)")
+
+    def testCall(self):
+        self.assertEqual(self.fn([1]),1)
+        self.assertEqual(self.fn([1,2,8,4,5]),8)
+
+class TestMinEquation(unittest.TestCase):
+    def setUp(self):
+        self.fn = Expression("min(x)")
+
+    def testCall(self):
+        self.assertEqual(self.fn([1]),1)
+        self.assertEqual(self.fn([9,2,8,4,5]),2)
+
 class TestEqualsEquation(unittest.TestCase):
     def setUp(self):
         self.fn = Expression("x == y")
