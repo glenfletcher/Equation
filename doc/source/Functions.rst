@@ -90,6 +90,7 @@ Name      Operation                   Syntax        Display
 **re**    Real Compoent of A          ``re(A)``     :math:`\Re\left(A\right)`
 **im**    Imagery Compoent of A       ``im(A)``     :math:`\Im\left(A\right)`
 **sqrt**  Square root of A            ``sqrt(A)``   :math:`\sqrt{A}`
+**log**   Logarithm of A              ``log(A)``    :math:`\log{A}`
 ========= =========================== ============= ============================
 
 Examples
