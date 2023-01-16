@@ -5,25 +5,27 @@ Created on Fri Apr 11 00:30:51 2014
 .. moduleauthor:: Glen Fletcher <glen.fletcher@alphaomega-technology.com.au>
 """
 from ez_setup import use_setuptools
-use_setuptools()
 from setuptools import setup, find_packages
 import os.path
 import re
 
+use_setuptools()
+
 pkg_name = 'Equation'
 pkg = {}
-with open(os.path.join(pkg_name,'_info.py')) as f: exec(f.read(),pkg,pkg)
+with open(os.path.join(pkg_name, '_info.py')) as f:
+    exec(f.read(), pkg, pkg)
 
-reimg = re.compile("^!\[(?P<label>[^\]]*)\]\((?P<src>[^\)]*)\)$")
-relink = re.compile("\[(?P<label>[^\]]*)\]\((?P<href>[^\)]*)\)")
-reimglink = re.compile(
-"^\[!\[(?P<label>[^\]]*)\]\((?P<src>[^\)]*)\)\]\((?P<href>[^\)]*)\)$")
+reimg = re.compile(r"^!\[(?P<label>[^\]]*)\]\((?P<src>[^\)]*)\)$")
+relink = re.compile(r"\[(?P<label>[^\]]*)\]\((?P<href>[^\)]*)\)")
+reimglink = re.compile(r"^\[!\[(?P<label>[^\]]*)\]\((?P<src>[^\)]*)\)\]\((?P<href>[^\)]*)\)$")
+
 
 def read(fname):
     """Read Markdown File And Convert to reST"""
     imgindex = 0
     lines = ""
-    for line in open(os.path.join(os.path.dirname(__file__), fname),'rt'):
+    for line in open(os.path.join(os.path.dirname(__file__), fname), 'rt'):
         m = reimg.match(line)
         if m is not None:
             g = m.groupdict()
@@ -44,14 +46,14 @@ def read(fname):
             continue
         if line[0:5] == "Note:":
             line = ".. Note::" + line[5:]
-        line = relink.sub('`\g<label> <\g<href>>`_',line)
+        line = relink.sub(r'`\g<label> <\g<href>>`_', line)
         lines += line
     return lines
 
+
 def readlist(fname):
-    return open(os.path.join(
-        os.path.dirname(__file__),
-        fname),'rt').read().split('\n')
+    return open(os.path.join(os.path.dirname(__file__), fname), 'rt').read().split('\n')
+
 
 if '__appname__' in pkg:
     console_scripts = [pkg['__appname__'] + '=' + pkg_name + ".console:run"]
@@ -73,9 +75,9 @@ setup(
     url='https://github.com/alphaomega-technology/' + pkg['__title__'],
     long_description=read('README.md'),
     entry_points=entry_points,
-    install_requires = [],
+    install_requires=[],
     tests_require=['numpy'],
-    extras_require = {
+    extras_require={
         'VectorMaths': ['numpy'],
         'SciConst': ['scipy>=0.12.0']
     },
