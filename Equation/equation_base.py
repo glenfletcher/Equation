@@ -72,6 +72,11 @@ def equation_extend():
     addUnaryOp('-',"-{0:s}","-{0:s}",op.neg)
     addFn('abs',"abs({0:s})","\\left|{0:s}\\right|",1,op.abs)
     addFn('sum',"sum({0:s})","\\sum\\left({0:s}\\right)",'+',sumargs)
+    addFn('max',"max({0:s})","\\max\\left({0:s}\\right)",'+',max)
+    addFn('min',"min({0:s})","\\min\\left({0:s}\\right)",'+',min)
+    def last_of_list(args):
+        return args[-1]
+    addFn('last',"min({0:s})","\\text{last}\\left({0:s}\\right)",'+',last_of_list)
     addFn('prod',"prod({0:s})","\\prod\\left({0:s}\\right)",'+',product)
     if has_numpy:
         addFn('floor',"floor({0:s})","\\lfloor {0:s} \\rfloor",1,np.floor)
@@ -87,6 +92,7 @@ def equation_extend():
         addFn('im',"re({0:s})","\\Im\\left({0:s}\\right)",1,np.imag)
         addFn('sqrt',"sqrt({0:s})","\\sqrt{{{0:s}}}",1,np.sqrt)
         addFn('log',"log({0:s})","\\log{{{0:s}}}",1,np.log)
+        addFn('mean',"mean({0:s})","\\text{mean}\\left({0:s}\\right)",'+',np.mean)
         addConst("pi",np.pi)
         addConst("e",np.e)
         addConst("Inf",np.Inf)
@@ -105,6 +111,9 @@ def equation_extend():
         addFn('im',"re({0:s})","\\Im\\left({0:s}\\right)",1,complex.imag)
         addFn('sqrt',"sqrt({0:s})","\\sqrt{{{0:s}}}",1,math.sqrt)
         addFn('log',"log({0:s})","\\log{{{0:s}}}",1,math.log)
+        def mean(args):
+            return float(sum(args)) / len(args)
+        addFn('mean',"mean({0:s})","\\text{mean}\\left({0:s}\\right)",'+',mean)
         addConst("pi",math.pi)
         addConst("e",math.e)
         addConst("Inf",float("Inf"))
