@@ -23,7 +23,9 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - uses: actions/checkout@v2
-      - run: pip install -r requirements.txt
+      - run: |
+          pip install -r requirements.txt
+          pip install numpy scipy
         name: Install requirements
       - run: pip install flake8 pytest
         name: Install flake8 and pytest
